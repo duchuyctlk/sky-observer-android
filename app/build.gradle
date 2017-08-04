@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 25
@@ -12,18 +13,66 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+}
+
+jacoco {
+    toolVersion "0.7.6.201602180812"
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+
     testCompile 'junit:junit:4.12'
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'connectedCheck']) {
+    group = 'Reporting'
+    description = 'Generate Jacoco coverage reports after running tests.'
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    // use hidden configuration, for details look into JacocoPlugin.groovy
+    jacocoClasspath = project.configurations['androidJacocoAnt']
+
+    // exclude auto-generated classes and tests
+    def fileFilter = ['**/R.class',
+                      '**/R$*.class',
+                      '**/*$ViewBinder*.*',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'com/android/databinding/**/*.*',
+                      'com/huynd/skyobserver/databinding/*.*',
+                      'com/huynd/skyobserver/BR.*',
+                      'android/**/*.*']
+    def debugTree = fileTree(dir: "${project.buildDir}/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.projectDir, includes: ['**/*.exec', '**/*.ec'])
 }
