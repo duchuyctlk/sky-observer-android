@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 
 android {
     compileSdkVersion 25
@@ -75,4 +76,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'conn
     sourceDirectories = files([mainSrc])
     classDirectories = files([debugTree])
     executionData = fileTree(dir: project.projectDir, includes: ['**/*.exec', '**/*.ec'])
+}
+
+tasks.coveralls {
+    onlyIf { System.getenv("COVERALLS_REPO_TOKEN") }
 }

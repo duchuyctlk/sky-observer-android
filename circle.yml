@@ -42,6 +42,7 @@ test:
     - ./gradlew jacocoTestReport -PdisablePreDex:
           timeout: 3000
     - mv $BUILD_PATH/reports/jacoco/jacocoTestReport $BUILD_PATH/reports/jacoco/test
+    - ./gradlew coveralls
 
   post:
     - cp -r $BUILD_PATH/outputs $CIRCLE_ARTIFACTS
