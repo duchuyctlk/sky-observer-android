@@ -1,0 +1,51 @@
+machine:
+  environment:
+    BUILD_PATH: $HOME/$CIRCLE_PROJECT_REPONAME/app/build
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+    CI_BUILD_NUMBER: $CIRCLE_BUILD_NUM
+    CI_BUILD_URL: $CIRCLE_BUILD_URL
+    CI_BRANCH: $CIRCLE_BRANCH
+    CI_COMMITTER_NAME: $CIRCLE_USERNAME
+
+dependencies:
+  override:
+     - chmod +x gradlew
+  pre:
+    - if [ ! -d "/usr/local/android-sdk-linux/platforms/android-25" ]; then echo y | android update sdk --no-ui --all --filter "android-25"; fi
+    - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
+    - echo y | android update sdk --no-ui --all --filter "platform-tools"
+    - echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"
+
+  cache_directories:
+    - /usr/local/android-sdk-linux/platforms/android-25
+    - /usr/local/android-sdk-linux/build-tools/25.0.2
+    - /usr/local/android-sdk-linux/extras/android/m2repository
+
+test:
+  override:
+    # try as mentioned in https://discuss.circleci.com/t/git-commit-message-in-environment-variable/533/3
+    - echo $GIT_COMMIT_DESC:
+        environment:
+          GIT_COMMIT_DESC: $(git log --format=oneline -n 1 $CIRCLE_SHA1)
+    - export CI_MESSAGE="$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+
+    # start the emulator and wait for it to have booted
+    - emulator -avd circleci-android22 -no-audio -no-window:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
+
+    # unlock the emulator screen
+    - sleep 30
+    - adb shell input keyevent 82
+
+    # run test ad collect coverage
+    - ./gradlew jacocoTestReport -PdisablePreDex:
+          timeout: 3000
+    - mv $BUILD_PATH/reports/jacoco/jacocoTestReport $BUILD_PATH/reports/jacoco/test
+    - ./gradlew coveralls
+
+  post:
+    - cp -r $BUILD_PATH/outputs $CIRCLE_ARTIFACTS
+    - cp -r $BUILD_PATH/reports $CIRCLE_TEST_REPORTS
