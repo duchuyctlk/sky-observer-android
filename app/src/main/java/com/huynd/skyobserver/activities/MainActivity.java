@@ -1,4 +1,4 @@
-package com.huynd.skyobserver;
+package com.huynd.skyobserver.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.adapters.NavigationDrawerListAdapter;
 import com.huynd.skyobserver.databinding.ActivityMainBinding;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
@@ -33,15 +34,6 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         setupNavigationDrawer();
 
         mNavigationDrawerPresenter.onItemClick(0);
-    }
-
-    private void setupToolbar() {
-        // Find the toolbar view and set as ActionBar
-        setSupportActionBar(binding.toolbar);
-        // Display icon in the toolbar
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
     private void setupNavigationDrawer() {

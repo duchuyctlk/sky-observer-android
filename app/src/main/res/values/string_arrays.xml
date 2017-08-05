@@ -3,6 +3,6 @@
     <string-array
         name="array_of_navigation_drawer_item_title">
         <item>Price per day</item>
-        <item>Peice per month</item>
+        <item>Price per month</item>
     </string-array>
 </resources>
