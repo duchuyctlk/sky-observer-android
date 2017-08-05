@@ -2,7 +2,10 @@ package com.huynd.skyobserver;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +17,9 @@ import com.huynd.skyobserver.views.NavigationDrawerView;
 
 public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener, NavigationDrawerView {
     ActivityMainBinding binding;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+
     private NavigationDrawerListAdapter mNavigationDrawerListAdapter;
     private NavigationDrawerPresenter mNavigationDrawerPresenter;
 
@@ -22,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setupToolbar();
+        setSupportActionBar(binding.toolbar);
 
         setupNavigationDrawer();
 
@@ -45,11 +51,30 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                 getResources().getStringArray(R.array.array_of_navigation_drawer_item_title),
                 binding.listviewLeftDrawer);
         mNavigationDrawerPresenter = new NavigationDrawerPresenter(this, mNavigationDrawerListAdapter);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, binding.layoutDrawer,
+                R.string.drawer_open, R.string.drawer_close);
+
+        binding.layoutDrawer.addDrawerListener(mDrawerToggle);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mNavigationDrawerPresenter.onItemClick(position);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
