@@ -13,6 +13,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    dataBinding {
+        enabled true
+    }
+
     buildTypes {
         debug {
             testCoverageEnabled true
@@ -45,6 +50,7 @@ dependencies {
     })
 
     testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:shadows-support-v4:3.1.4"
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'connectedCheck']) {
