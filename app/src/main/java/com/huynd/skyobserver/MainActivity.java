@@ -22,14 +22,29 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        setupToolbar();
+
+        setupNavigationDrawer();
+
+        mNavigationDrawerPresenter.onItemClick(0);
+    }
+
+    private void setupToolbar() {
+        // Find the toolbar view and set as ActionBar
+        setSupportActionBar(binding.toolbar);
+        // Display icon in the toolbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+    }
+
+    private void setupNavigationDrawer() {
         binding.listviewLeftDrawer.setOnItemClickListener(this);
 
         mNavigationDrawerListAdapter = new NavigationDrawerListAdapter(this, R.layout.drawer_list_item,
                 getResources().getStringArray(R.array.array_of_navigation_drawer_item_title),
                 binding.listviewLeftDrawer);
         mNavigationDrawerPresenter = new NavigationDrawerPresenter(this, mNavigationDrawerListAdapter);
-
-        mNavigationDrawerPresenter.onItemClick(0);
     }
 
     @Override
