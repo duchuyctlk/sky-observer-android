@@ -2,4 +2,15 @@
     <string name="app_name">Sky Observer</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="month">Month:</string>
+    <string name="year">Year:</string>
+
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="sun">SUN</string>
+    <string name="string_holder">string_holder</string>
 </resources>

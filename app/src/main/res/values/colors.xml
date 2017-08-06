@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#2E40FF</color>
     <color name="navigation_drawer_list_background_color">#111</color>
+
+    <color name="price_per_day_day_color">#CC0000</color>
+    <color name="price_per_day_price_color">#22CC11</color>
 </resources>
