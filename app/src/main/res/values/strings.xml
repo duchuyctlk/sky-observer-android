@@ -13,4 +13,5 @@
     <string name="sat">SAT</string>
     <string name="sun">SUN</string>
     <string name="string_holder">string_holder</string>
+    <string name="get_prices">Get Prices</string>
 </resources>
