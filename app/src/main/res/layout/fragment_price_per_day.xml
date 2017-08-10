@@ -4,15 +4,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/month_year_spinners_horizontal_margin"
-        android:paddingStart="@dimen/month_year_spinners_horizontal_margin"
+        android:paddingEnd="@dimen/price_per_day_spinners_horizontal_margin"
+        android:paddingStart="@dimen/price_per_day_spinners_horizontal_margin"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/month_year_spinners_vertical_margin"
-            android:paddingTop="@dimen/month_year_spinners_vertical_margin">
+            android:paddingBottom="@dimen/price_per_day_spinners_vertical_margin"
+            android:paddingTop="@dimen/price_per_day_spinners_vertical_margin">
 
             <TextView
                 style="@style/month_year_text_views"
@@ -26,8 +26,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/month_year_spinners_vertical_margin"
-            android:paddingTop="@dimen/month_year_spinners_vertical_margin">
+            android:paddingBottom="@dimen/price_per_day_spinners_vertical_margin"
+            android:paddingTop="@dimen/price_per_day_spinners_vertical_margin">
 
             <TextView
                 style="@style/month_year_text_views"
@@ -35,6 +35,36 @@
 
             <Spinner
                 android:id="@+id/spinner_year"
+                style="@style/equally_share_width_within_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/price_per_day_spinners_vertical_margin"
+            android:paddingTop="@dimen/price_per_day_spinners_vertical_margin">
+
+            <TextView
+                style="@style/month_year_text_views"
+                android:text="@string/src_port" />
+
+            <Spinner
+                android:id="@+id/spinner_src_port"
+                style="@style/equally_share_width_within_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/price_per_day_spinners_vertical_margin"
+            android:paddingTop="@dimen/price_per_day_spinners_vertical_margin">
+
+            <TextView
+                style="@style/month_year_text_views"
+                android:text="@string/dst_port" />
+
+            <Spinner
+                android:id="@+id/spinner_dst_port"
                 style="@style/equally_share_width_within_parent" />
         </LinearLayout>
 
