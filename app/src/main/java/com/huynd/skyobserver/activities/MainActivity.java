@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,10 +12,11 @@ import android.widget.ListView;
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.adapters.NavigationDrawerListAdapter;
 import com.huynd.skyobserver.databinding.ActivityMainBinding;
+import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
-public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener, NavigationDrawerView {
+public class MainActivity extends BaseActivity implements ListView.OnItemClickListener, NavigationDrawerView {
     ActivityMainBinding binding;
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -71,7 +71,12 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     @Override
     public void selectItem(int position, String title) {
-        // TODO
+        switch (position) {
+            case 0:
+                setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG);
+                break;
+        }
+
         // Highlight the selected item, update the title, and close the drawer
         binding.listviewLeftDrawer.setItemChecked(position, true);
         setTitle(title);

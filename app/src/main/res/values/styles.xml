@@ -26,4 +26,26 @@
         <item name="android:divider">@android:color/transparent</item>
         <item name="android:dividerHeight">0dp</item>
     </style>
+
+    <style name="week_day_title">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/week_day_title_margin_top</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="equally_share_width_within_parent">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="month_year_text_views" parent="equally_share_width_within_parent">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:paddingStart">@dimen/fragment_horizontal_margin</item>
+        <item name="android:paddingEnd">@dimen/fragment_horizontal_margin</item>
+    </style>
 </resources>
