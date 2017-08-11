@@ -48,4 +48,8 @@
         <item name="android:paddingStart">@dimen/fragment_horizontal_margin</item>
         <item name="android:paddingEnd">@dimen/fragment_horizontal_margin</item>
     </style>
+
+    <style name="month_year_spinners" parent="equally_share_width_within_parent">
+        <item name="android:layout_weight">1.5</item>
+    </style>
 </resources>

@@ -10,6 +10,5 @@
     <dimen name="week_day_title_margin_top">4dp</dimen>
     <dimen name="grid_view_price_per_day_margin">5dp</dimen>
     <dimen name="image_view_price_per_day_airline_widtht">100dp</dimen>
-    <dimen name="price_per_day_spinners_vertical_margin">10dp</dimen>
     <dimen name="price_per_day_spinners_horizontal_margin">10dp</dimen>
 </resources>
