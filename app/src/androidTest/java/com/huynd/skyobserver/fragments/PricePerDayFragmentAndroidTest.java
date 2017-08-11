@@ -17,6 +17,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static org.hamcrest.Matchers.anything;
 
 /**
@@ -39,6 +40,17 @@ public class PricePerDayFragmentAndroidTest {
     public void shouldContainViewWidgets() throws Exception {
         checkViewWidgetsIsDisplayed(R.id.spinner_month, R.id.spinner_year, R.id.btn_get_prices);
         onView(withId(R.id.grid_view_price)).check(matches(isEnabled()));
+    }
+
+    @Test
+    public void shouldDisplayCorrectAirports() throws Exception {
+        checkViewWidgetsIsDisplayed(R.id.spinner_src_port, R.id.spinner_dst_port);
+        onView(withId(R.id.spinner_src_port)).check(matches(withSpinnerText("Tân Sơn Nhất")));
+        onView(withId(R.id.spinner_dst_port)).check(matches(withSpinnerText("Nội Bài")));
+
+        onView(withId(R.id.spinner_src_port)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
+        onView(withId(R.id.spinner_src_port)).check(matches(withSpinnerText("Côn Đảo")));
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {
