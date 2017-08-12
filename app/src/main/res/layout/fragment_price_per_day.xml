@@ -71,6 +71,10 @@
 
             <TextView
                 style="@style/week_day_title"
+                android:text="@string/sun" />
+
+            <TextView
+                style="@style/week_day_title"
                 android:text="@string/mon" />
 
             <TextView
@@ -92,10 +96,6 @@
             <TextView
                 style="@style/week_day_title"
                 android:text="@string/sat" />
-
-            <TextView
-                style="@style/week_day_title"
-                android:text="@string/sun" />
         </LinearLayout>
 
         <GridView
