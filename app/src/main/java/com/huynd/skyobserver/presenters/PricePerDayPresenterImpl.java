@@ -22,10 +22,15 @@ public class PricePerDayPresenterImpl implements PricePerDayPresenter {
     @Override
     public void initSpinnersValues() {
         mView.updateAvailYears(mModel.getAvailYears());
+        mView.updateAirports(mModel.getAirports());
     }
 
     @Override
     public void onYearSelected(int year) {
         mView.updateAvailMonths(mModel.getAvailMonths(year));
+    }
+
+    @Override
+    public void onBtnGetPricesClick(int year, int month, String srcPort, String dstPort) {
     }
 }

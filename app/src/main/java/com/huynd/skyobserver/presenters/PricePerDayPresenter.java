@@ -9,6 +9,8 @@ import com.huynd.skyobserver.models.PricePerDayModel;
 public interface PricePerDayPresenter {
     void setModel(PricePerDayModel model);
 
+    void onBtnGetPricesClick(int year, int month, String srcPort, String dstPort);
+
     void initSpinnersValues();
 
     void onYearSelected(int year);
