@@ -9,7 +9,7 @@ import com.huynd.skyobserver.BuildConfig;
 public class Constants {
     public static String API_URL = BuildConfig.API_URL;
 
-    public static String COOKIES_DATA = BuildConfig.COOKIES_DATA;
+    public static String COOKIES_DATA = BuildConfig.COOKIES_DATA.replace("'", "\"");
 
     public static String HEADER_HOST = BuildConfig.HEADER_HOST;
     public static String HEADER_CONNECTION = BuildConfig.HEADER_CONNECTION;
@@ -23,4 +23,7 @@ public class Constants {
     public static String HEADER_REFERER = BuildConfig.HEADER_REFERER;
     public static String HEADER_ACCEPT_ENCODING = BuildConfig.HEADER_ACCEPT_ENCODING;
     public static String HEADER_ACCEPT_LANGUAGE = BuildConfig.HEADER_ACCEPT_LANGUAGE;
+
+    public static String[] CARRIERS = new String[]{"VJ", "BL", "VN"};
+    public static int CONVENIENCE_FEE_IN_K = 70;
 }

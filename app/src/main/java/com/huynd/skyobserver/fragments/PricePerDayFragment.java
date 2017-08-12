@@ -10,8 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.huynd.skyobserver.R;
+import com.huynd.skyobserver.SkyObserverApp;
+import com.huynd.skyobserver.adapters.GridViewPricePerDayAdapter;
 import com.huynd.skyobserver.databinding.FragmentPricePerDayBinding;
 import com.huynd.skyobserver.models.Airport;
+import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.models.PricePerDayModel;
 import com.huynd.skyobserver.presenters.PricePerDayPresenter;
 import com.huynd.skyobserver.presenters.PricePerDayPresenterImpl;
@@ -21,11 +24,16 @@ import com.huynd.skyobserver.views.PricePerDayView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by HuyND on 8/6/2017.
  */
 
 public class PricePerDayFragment extends BaseFragment implements PricePerDayView, View.OnClickListener {
+    @Inject
+    PricesAPI mPricesAPI;
+
     public static final String TAG = PricePerDayFragment.class.getSimpleName();
 
     FragmentPricePerDayBinding mBinding;
@@ -35,6 +43,8 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
     private ArrayAdapter<Airport> mSpinnerDstPortAdapter;
+
+    private GridViewPricePerDayAdapter mGridViewAdapter;
 
     private PricePerDayPresenter mPresenter;
     private PricePerDayModel mModel;
@@ -46,9 +56,13 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentPricePerDayBinding.inflate(inflater, container, false);
+        // inject
+        SkyObserverApp app = (SkyObserverApp)getActivity().getApplication();
+        app.getSkyObserverComponent().inject(this);
 
         // initialize UI widgets
+        mBinding = FragmentPricePerDayBinding.inflate(inflater, container, false);
+
         mSpinnerYearAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Integer>());
         mSpinnerMonthAdapter = new ArrayAdapter<>(this.getContext(),
@@ -74,8 +88,13 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
+        mBinding.btnGetPrices.setOnClickListener(this);
+
+        mGridViewAdapter = new GridViewPricePerDayAdapter(this.getContext());
+        mBinding.gridViewPrice.setAdapter(mGridViewAdapter);
+
         // initialize MPV pattern
-        mPresenter = new PricePerDayPresenterImpl(this);
+        mPresenter = new PricePerDayPresenterImpl(this, mPricesAPI);
         mModel = new PricePerDayModel(mPresenter);
         mPresenter.setModel(mModel);
         mPresenter.initSpinnersValues();
@@ -109,6 +128,13 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mSpinnerDstPortAdapter.addAll(airports);
         mSpinnerDstPortAdapter.notifyDataSetChanged();
         mBinding.spinnerDstPort.setSelection(1);
+    }
+
+    @Override
+    public void updateGridViewPrices(List<PricePerDay> prices) {
+        mGridViewAdapter.clear();
+        mGridViewAdapter.addAll(prices);
+        mGridViewAdapter.notifyDataSetChanged();
     }
 
     @Override

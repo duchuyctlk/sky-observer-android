@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.views;
 
 import com.huynd.skyobserver.models.Airport;
+import com.huynd.skyobserver.models.PricePerDay;
 
 import java.util.List;
 import java.util.Map;
@@ -15,4 +16,6 @@ public interface PricePerDayView extends BaseView {
     void updateAvailMonths(List<Integer> months);
 
     void updateAirports(List<Airport> airports);
+
+    void updateGridViewPrices(List<PricePerDay> prices);
 }
