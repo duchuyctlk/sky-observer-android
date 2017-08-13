@@ -8,6 +8,10 @@ import java.util.Map;
  */
 
 public class RequestHelper {
+    public RequestHelper() {
+        throw new AssertionError();
+    }
+
     public static Map<String, String> getDefaultHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Host", Constants.HEADER_HOST);

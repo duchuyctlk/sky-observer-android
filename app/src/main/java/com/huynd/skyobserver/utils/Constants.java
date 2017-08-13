@@ -7,6 +7,10 @@ import com.huynd.skyobserver.BuildConfig;
  */
 
 public class Constants {
+    public Constants() {
+        throw new AssertionError();
+    }
+
     public static String API_URL = BuildConfig.API_URL;
 
     public static String COOKIES_DATA = BuildConfig.COOKIES_DATA.replace("'", "\"");

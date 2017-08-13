@@ -39,6 +39,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -97,6 +98,22 @@ public class PricePerDayFragmentAndroidTest {
 
         onView(withId(R.id.btn_get_prices)).perform(click());
         onView(withId(R.id.grid_view_price)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void shouldBtnGetPricesClickFailed() throws Exception {
+        mockApiResponse(false, true);
+
+        onView(withId(R.id.spinner_month)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
+
+        onView(withId(R.id.btn_get_prices)).perform(click());
+        onView(withId(R.id.grid_view_price)).check(matches(isDisplayed()));
+        onData(anything())
+                .inAdapterView(withId(R.id.grid_view_price))
+                .atPosition(0)
+                .onChildView(withId(R.id.text_view_day))
+                .check(matches(withText("")));
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {

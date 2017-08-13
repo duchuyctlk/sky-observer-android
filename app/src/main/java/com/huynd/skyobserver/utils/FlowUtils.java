@@ -44,12 +44,4 @@ public class FlowUtils {
     private boolean isLoadingDialogShowing() {
         return mProgressDialog != null && mProgressDialog.isShowing();
     }
-
-    public void showAlert(Context context, String title, String message) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(context);
-        bld.setTitle(title);
-        bld.setMessage(message);
-        bld.setNeutralButton(context.getString(R.string.ok), null);
-        bld.create().show();
-    }
 }
