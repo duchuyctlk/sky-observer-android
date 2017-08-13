@@ -8,6 +8,10 @@ import java.util.Map;
  */
 
 public class RequestHelper {
+    public RequestHelper() {
+        throw new AssertionError();
+    }
+
     public static Map<String, String> getDefaultHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Host", Constants.HEADER_HOST);
@@ -27,18 +31,7 @@ public class RequestHelper {
     }
 
     public static String requestHashBuilder(String srcPort, String dstPort, String carrier,
-                                            String strYear, String strMonth, String strDay) {
+                                            String strYear, String strMonth) {
         return carrier + "_" + srcPort + "_" + dstPort + "_" + strYear + strMonth + "01";
-    }
-
-    public static Map<String, String> requestDataBuilder(String strYear, String strMonth, String strDay) {
-        Map<String, String> data = new HashMap<>();
-        data.put("departureDate", strYear + "-" + strMonth + "-" + strDay);
-        data.put("returnDate", strYear + "-" + strMonth + "-" + strDay);
-        data.put("isRoundTrip", "false");
-        data.put("adultCount", "1");
-        data.put("childCount", "0");
-        data.put("infantCount", "0");
-        return data;
     }
 }

@@ -43,9 +43,19 @@
         <item name="android:layout_weight">1</item>
     </style>
 
+    <style name="equally_share_height_within_parent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
     <style name="month_year_text_views" parent="equally_share_width_within_parent">
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:paddingStart">@dimen/fragment_horizontal_margin</item>
         <item name="android:paddingEnd">@dimen/fragment_horizontal_margin</item>
+    </style>
+
+    <style name="month_year_spinners" parent="equally_share_width_within_parent">
+        <item name="android:layout_weight">1.5</item>
     </style>
 </resources>

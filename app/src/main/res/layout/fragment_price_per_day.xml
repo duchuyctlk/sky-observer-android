@@ -4,15 +4,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/month_year_spinners_horizontal_margin"
-        android:paddingStart="@dimen/month_year_spinners_horizontal_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/price_per_day_spinners_horizontal_margin"
+        android:paddingStart="@dimen/price_per_day_spinners_horizontal_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/month_year_spinners_vertical_margin"
-            android:paddingTop="@dimen/month_year_spinners_vertical_margin">
+            android:layout_height="wrap_content">
 
             <TextView
                 style="@style/month_year_text_views"
@@ -20,14 +18,7 @@
 
             <Spinner
                 android:id="@+id/spinner_month"
-                style="@style/equally_share_width_within_parent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/month_year_spinners_vertical_margin"
-            android:paddingTop="@dimen/month_year_spinners_vertical_margin">
+                style="@style/month_year_spinners" />
 
             <TextView
                 style="@style/month_year_text_views"
@@ -35,7 +26,33 @@
 
             <Spinner
                 android:id="@+id/spinner_year"
-                style="@style/equally_share_width_within_parent" />
+                style="@style/month_year_spinners" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/month_year_text_views"
+                android:text="@string/src_port" />
+
+            <Spinner
+                android:id="@+id/spinner_src_port"
+                style="@style/month_year_spinners" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/month_year_text_views"
+                android:text="@string/dst_port" />
+
+            <Spinner
+                android:id="@+id/spinner_dst_port"
+                style="@style/month_year_spinners" />
         </LinearLayout>
 
         <Button
@@ -51,6 +68,10 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:orientation="horizontal">
+
+            <TextView
+                style="@style/week_day_title"
+                android:text="@string/sun" />
 
             <TextView
                 style="@style/week_day_title"
@@ -75,10 +96,6 @@
             <TextView
                 style="@style/week_day_title"
                 android:text="@string/sat" />
-
-            <TextView
-                style="@style/week_day_title"
-                android:text="@string/sun" />
         </LinearLayout>
 
         <GridView

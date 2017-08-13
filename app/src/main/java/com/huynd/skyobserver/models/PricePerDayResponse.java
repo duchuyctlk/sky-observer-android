@@ -17,4 +17,12 @@ public class PricePerDayResponse {
 
     @SerializedName("priceList")
     private List<PricePerDay> priceList;
+
+    public List<PricePerDay> getPriceList() {
+        return priceList;
+    }
+
+    public int getDepartureDate() {
+        return departureDate;
+    }
 }

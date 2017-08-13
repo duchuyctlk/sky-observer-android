@@ -12,6 +12,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ServiceGenerator {
+    public ServiceGenerator() {
+        throw new AssertionError();
+    }
+
     public static Retrofit createService() {
 
         return new Retrofit.Builder()

@@ -1,0 +1,12 @@
+[
+  {
+    "flightNumber": "VJ805",
+    "departureDate": 20171001,
+    "priceList": [
+      {
+        "priceTotal": 1000000,
+        "price": 500000
+      }
+    ]
+  }
+]

@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+import static org.mockito.Mockito.mock;
+
 /**
  * Created by HuyND on 8/6/2017.
  */
@@ -15,7 +17,6 @@ public class ApiModuleAndroidTest {
     @Singleton
     @Provides
     public PricesAPI providesPricesAPI() {
-        // TODO mock(PricesAPI.class);
-        return null;
+        return mock(PricesAPI.class);
     }
 }
