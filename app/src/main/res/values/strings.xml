@@ -20,4 +20,5 @@
     <string name="ok">OK</string>
     <string name="src_port">Source:</string>
     <string name="dst_port">Destination:</string>
+    <string name="show_taxes_and_fees">Show prices with taxes and fees</string>
 </resources>
