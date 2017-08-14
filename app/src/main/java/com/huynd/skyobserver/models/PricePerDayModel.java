@@ -1,7 +1,5 @@
 package com.huynd.skyobserver.models;
 
-import android.util.Log;
-
 import com.huynd.skyobserver.presenters.PricePerDayPresenter;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.Constants;
