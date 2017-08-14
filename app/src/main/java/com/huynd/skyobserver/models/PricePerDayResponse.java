@@ -1,7 +1,9 @@
 package com.huynd.skyobserver.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.huynd.skyobserver.utils.DateUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,11 +20,28 @@ public class PricePerDayResponse {
     @SerializedName("priceList")
     private List<PricePerDay> priceList;
 
+    @SerializedName("arrivalTime")
+    private String arrivalTime;
+
+    @SerializedName("departureTime")
+    private String departureTime;
+
+    public PricePerDayResponse() {
+    }
+
     public List<PricePerDay> getPriceList() {
         return priceList;
     }
 
     public int getDepartureDate() {
         return departureDate;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
     }
 }

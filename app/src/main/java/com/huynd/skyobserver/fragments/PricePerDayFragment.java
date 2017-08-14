@@ -30,7 +30,15 @@ import javax.inject.Inject;
  * Created by HuyND on 8/6/2017.
  */
 
-public class PricePerDayFragment extends BaseFragment implements PricePerDayView, View.OnClickListener {
+public class PricePerDayFragment extends BaseFragment implements PricePerDayView,
+        View.OnClickListener,
+        AdapterView.OnItemSelectedListener,
+        AdapterView.OnItemClickListener {
+
+    public interface OnGridViewPriceItemSelectedListener {
+        void OnGridViewPriceItemSelected(Bundle flightInfo);
+    }
+
     @Inject
     PricesAPI mPricesAPI;
 
@@ -57,7 +65,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // inject
-        SkyObserverApp app = (SkyObserverApp)getActivity().getApplication();
+        SkyObserverApp app = (SkyObserverApp) getActivity().getApplication();
         app.getSkyObserverComponent().inject(this);
 
         // initialize UI widgets
@@ -68,17 +76,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mSpinnerMonthAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Integer>());
         mBinding.spinnerYear.setAdapter(mSpinnerYearAdapter);
-        mBinding.spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int selectedYear = mSpinnerYearAdapter.getItem(position);
-                mPresenter.onYearSelected(selectedYear);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        mBinding.spinnerYear.setOnItemSelectedListener(this);
         mBinding.spinnerMonth.setAdapter(mSpinnerMonthAdapter);
 
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
@@ -92,6 +90,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
         mGridViewAdapter = new GridViewPricePerDayAdapter(this.getContext());
         mBinding.gridViewPrice.setAdapter(mGridViewAdapter);
+        mBinding.gridViewPrice.setOnItemClickListener(this);
 
         // initialize MPV pattern
         mPresenter = new PricePerDayPresenterImpl(this, mPricesAPI);
@@ -150,5 +149,51 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
                 mPresenter.onBtnGetPricesClick(year, month, srcPort.getId(), dstPort.getId());
                 break;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.spinner_year:
+                int selectedYear = mSpinnerYearAdapter.getItem(position);
+                mPresenter.onYearSelected(selectedYear);
+                break;
+        }
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.grid_view_price:
+                PricePerDay price = mGridViewAdapter.getItem(position);
+                if (price != null) {
+                    try {
+                        int year = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
+                        int month = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
+                        int day = price.getDay();
+
+                        Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
+                        Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
+
+                        Bundle flightInfo = new Bundle();
+                        flightInfo.putInt("year", year);
+                        flightInfo.putInt("month", month);
+                        flightInfo.putInt("day", day);
+                        flightInfo.putString("srcPort", srcPort.getId());
+                        flightInfo.putString("dstPort", dstPort.getId());
+
+                        ((OnGridViewPriceItemSelectedListener) getActivity()).OnGridViewPriceItemSelected(flightInfo);
+                    } catch (ClassCastException e) {
+                        throw new ClassCastException("Activity must implement OnGridViewPriceItemSelectedListener.");
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

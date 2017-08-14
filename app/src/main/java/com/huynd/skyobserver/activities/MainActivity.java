@@ -12,11 +12,15 @@ import android.widget.ListView;
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.adapters.NavigationDrawerListAdapter;
 import com.huynd.skyobserver.databinding.ActivityMainBinding;
+import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
+import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
-public class MainActivity extends BaseActivity implements ListView.OnItemClickListener, NavigationDrawerView {
+public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
+        NavigationDrawerView,
+        PricePerDayFragment.OnGridViewPriceItemSelectedListener {
     ActivityMainBinding binding;
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -81,5 +85,12 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         binding.listviewLeftDrawer.setItemChecked(position, true);
         setTitle(title);
         binding.layoutDrawer.closeDrawer(binding.listviewLeftDrawer);
+    }
+
+    @Override
+    public void OnGridViewPriceItemSelected(Bundle flightInfo) {
+        PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
+        fragment.setArguments(flightInfo);
+        setFragment(fragment, PriceOneDayFragment.TAG);
     }
 }

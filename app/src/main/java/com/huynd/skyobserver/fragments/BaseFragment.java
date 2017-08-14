@@ -21,4 +21,13 @@ public class BaseFragment extends Fragment implements BaseView {
     public void showLoadingDialog() {
         FlowUtils.getInstance().showLoadingDialog(this.getContext());
     }
+
+    @Override
+    public void showFailedDialog(String errorMessage) {
+        Context context = this.getContext();
+        if (errorMessage == null) {
+            errorMessage = context.getString(R.string.failed_to_get_prices_message);
+        }
+        FlowUtils.getInstance().showAlert(context, context.getString(R.string.error), errorMessage);
+    }
 }
