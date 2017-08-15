@@ -72,12 +72,14 @@ public class PriceOneDayModel {
                                         PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
                                         String departureTime = pricePerDayResponse.getDepartureTime();
                                         String arrivalTime = pricePerDayResponse.getArrivalTime();
+                                        String carrier = pricePerDayResponse.getProvider();
                                         List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
                                         PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
                                         if (price != null) {
                                             price.setDay(day);
                                             price.setDepartureTime(departureTime);
                                             price.setArrivalTime(arrivalTime);
+                                            price.setCarrier(carrier);
                                             mPrices.add(price);
                                         }
                                     }

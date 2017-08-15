@@ -22,6 +22,8 @@ public class PricePerDay implements Comparable<PricePerDay> {
 
     private String departureTime;
 
+    private String carrier;
+
     public int getPriceTotal() {
         return priceTotal;
     }
@@ -60,6 +62,14 @@ public class PricePerDay implements Comparable<PricePerDay> {
 
     public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public String getCarrier() {
+        return carrier;
+    }
+
+    public void setCarrier(String carrier) {
+        this.carrier = carrier;
     }
 
     @Override

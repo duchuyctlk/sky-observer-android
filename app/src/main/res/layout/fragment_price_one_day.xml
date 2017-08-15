@@ -33,6 +33,8 @@
             android:text="@string/show_taxes_and_fees" />
 
         <ListView
+            android:layout_marginTop="@dimen/list_view_prices_vertical_spacing"
+            android:layout_marginStart="@dimen/list_view_prices_horizontal_spacing"
             android:id="@+id/lst_prices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -34,4 +34,8 @@ public class RequestHelper {
                                             String strYear, String strMonth) {
         return carrier + "_" + srcPort + "_" + dstPort + "_" + strYear + strMonth + "01";
     }
+
+    public static String airlinesIconUrlBuilder(String carrier) {
+        return Constants.ICON_URL + carrier + ".jpg";
+    }
 }

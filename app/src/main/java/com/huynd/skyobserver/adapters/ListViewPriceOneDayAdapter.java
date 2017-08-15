@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.models.PricePerDay;
+import com.huynd.skyobserver.utils.RequestHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -30,20 +33,23 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ImageView imgvAirline;
         View view = convertView;
         TextView tvDepart, tvArrive;
         Button btnSelect;
 
         if (view == null) {
             view = mInflater.inflate(R.layout.list_view_price_one_day_item, parent, false);
+            imgvAirline = (ImageView) view.findViewById(R.id.image_view_airline);
             tvDepart = (TextView) view.findViewById(R.id.text_view_depart_time);
             tvArrive = (TextView) view.findViewById(R.id.text_arrive_time);
             btnSelect = (Button) view.findViewById(R.id.btn_select_price);
-            ViewHolder viewHolder = new ViewHolder(tvDepart, tvArrive, btnSelect);
+            ViewHolder viewHolder = new ViewHolder(imgvAirline, tvDepart, tvArrive, btnSelect);
             view.setTag(viewHolder);
 
         } else {
             ViewHolder viewHolder = (ViewHolder) view.getTag();
+            imgvAirline = viewHolder.getImageViewAirline();
             tvDepart = viewHolder.getTextViewDepartTime();
             tvArrive = viewHolder.getTextViewArriveTime();
             btnSelect = viewHolder.getButtonSelectPrice();
@@ -60,6 +66,10 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
             tvArrive.setText(localDateFormat.format(item.getArrivalTime()));
             btnSelect.setText(String.valueOf(item.getPriceTotal() / 1000 + CONVENIENCE_FEE_IN_K));
             btnSelect.setOnClickListener(this);
+
+            Glide.with(getContext())
+                    .load(RequestHelper.airlinesIconUrlBuilder(item.getCarrier()))
+                    .into(imgvAirline);
         } else {
             tvDepart.setText("");
             tvArrive.setText("");
@@ -76,11 +86,13 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
     }
 
     public static class ViewHolder {
+        private ImageView mImageViewAirline;
         private TextView mTextViewDepartTime;
         private TextView mTextViewArriveTime;
         private Button mButtonSelectPrice;
 
-        public ViewHolder(TextView tvDepart, TextView tvArrive, Button btnSelect) {
+        public ViewHolder(ImageView imgvAirline, TextView tvDepart, TextView tvArrive, Button btnSelect) {
+            mImageViewAirline = imgvAirline;
             mTextViewDepartTime = tvDepart;
             mTextViewArriveTime = tvArrive;
             mButtonSelectPrice = btnSelect;
@@ -96,6 +108,10 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
 
         public Button getButtonSelectPrice() {
             return mButtonSelectPrice;
+        }
+
+        public ImageView getImageViewAirline() {
+            return mImageViewAirline;
         }
     }
 }

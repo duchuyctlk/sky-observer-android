@@ -10,6 +10,8 @@
     <dimen name="grid_view_price_horizontal_spacing">10dp</dimen>
     <dimen name="week_day_title_margin_top">4dp</dimen>
     <dimen name="grid_view_price_per_day_margin">5dp</dimen>
-    <dimen name="image_view_price_per_day_airline_width">100dp</dimen>
+    <dimen name="image_view_price_per_day_airline_width">50dp</dimen>
     <dimen name="price_per_day_spinners_horizontal_margin">10dp</dimen>
+    <dimen name="list_view_prices_vertical_spacing">5dp</dimen>
+    <dimen name="list_view_prices_horizontal_spacing">5dp</dimen>
 </resources>
