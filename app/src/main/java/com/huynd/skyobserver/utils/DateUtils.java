@@ -10,6 +10,9 @@ import java.util.TimeZone;
  */
 
 public class DateUtils {
+    public DateUtils() {
+        throw new AssertionError();
+    }
 
     public static Date convertStringToDate(String strDate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
