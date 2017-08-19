@@ -15,9 +15,11 @@
     <string name="string_holder">string_holder</string>
     <string name="get_prices">Get Prices</string>
     <string name="loading_string">Loading</string>
-    <string name="get_prices_failed">Get Prices Failed</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>
     <string name="src_port">Source:</string>
     <string name="dst_port">Destination:</string>
+    <string name="show_taxes_and_fees">Show prices with taxes and fees</string>
+    <string name="failed_to_get_prices_message">Failed to get prices!!!</string>
+    <string name="invalid_date_message">Invalid date!!!</string>
 </resources>

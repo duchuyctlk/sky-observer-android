@@ -1,12 +1,15 @@
 [
   {
-    "flightNumber": "VJ805",
     "departureDate": 20171001,
+    "flightNumber": "VJ805",
     "priceList": [
       {
         "priceTotal": 1000000,
         "price": 500000
       }
-    ]
+    ],
+    "arrivalTime": "2017-10-01T10:00:00.000Z",
+    "departureTime": "2017-10-01T08:00:00.000Z",
+    "provider": "VN"
   }
 ]

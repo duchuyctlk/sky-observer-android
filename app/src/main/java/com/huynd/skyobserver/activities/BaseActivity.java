@@ -45,6 +45,8 @@ public class BaseActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.fragment_container, fragment, tag);
             }
 
+            fragmentTransaction.addToBackStack(tag);
+
             fragmentTransaction.commit();
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
@@ -59,5 +61,19 @@ public class BaseActivity extends AppCompatActivity {
 
     private String getCurrentFragmentTag() {
         return mCurrentFragmentTag;
+    }
+
+    @Override
+    public void onBackPressed() {
+        fragmentManager.popBackStackImmediate();
+
+        int backStackEntryCount = fragmentManager.getBackStackEntryCount();
+        if (backStackEntryCount < 1) {
+            super.onBackPressed();
+        } else {
+            mCurrentFragmentTag = fragmentManager
+                    .getBackStackEntryAt(backStackEntryCount - 1)
+                    .getName();
+        }
     }
 }

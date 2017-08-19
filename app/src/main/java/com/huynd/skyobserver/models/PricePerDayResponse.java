@@ -18,11 +18,35 @@ public class PricePerDayResponse {
     @SerializedName("priceList")
     private List<PricePerDay> priceList;
 
+    @SerializedName("arrivalTime")
+    private String arrivalTime;
+
+    @SerializedName("departureTime")
+    private String departureTime;
+
+    @SerializedName("provider")
+    private String provider;
+
+    public PricePerDayResponse() {
+    }
+
     public List<PricePerDay> getPriceList() {
         return priceList;
     }
 
     public int getDepartureDate() {
         return departureDate;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public String getProvider() {
+        return provider;
     }
 }

@@ -8,4 +8,6 @@ public interface BaseView {
     void showLoadingDialog();
 
     void dismissLoadingDialog();
+
+    void showFailedDialog(String errorMessage);
 }
