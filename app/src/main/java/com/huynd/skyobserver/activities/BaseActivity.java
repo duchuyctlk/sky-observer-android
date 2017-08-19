@@ -65,9 +65,15 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        fragmentManager.popBackStack();
-        if (fragmentManager.getBackStackEntryCount() <= 1) {
+        fragmentManager.popBackStackImmediate();
+
+        int backStackEntryCount = fragmentManager.getBackStackEntryCount();
+        if (backStackEntryCount < 1) {
             super.onBackPressed();
+        } else {
+            mCurrentFragmentTag = fragmentManager
+                    .getBackStackEntryAt(backStackEntryCount - 1)
+                    .getName();
         }
     }
 }

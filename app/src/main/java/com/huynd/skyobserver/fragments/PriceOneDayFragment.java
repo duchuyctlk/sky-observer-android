@@ -3,6 +3,7 @@ package com.huynd.skyobserver.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,10 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
         mPresenter = new PriceOneDayPresenterImpl(this, mPricesAPI);
         mModel = new PriceOneDayModel(mPresenter);
         mPresenter.setModel(mModel);
-        mPresenter.getPrices(year, month, day, srcPort, dstPort);
+
+        if (!TextUtils.isEmpty(srcPort) && !TextUtils.isEmpty(dstPort)) {
+            mPresenter.getPrices(year, month, day, srcPort, dstPort);
+        }
 
         return mBinding.getRoot();
     }
