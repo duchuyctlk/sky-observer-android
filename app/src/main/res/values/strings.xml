@@ -22,4 +22,8 @@
     <string name="show_taxes_and_fees">Show prices with taxes and fees</string>
     <string name="failed_to_get_prices_message">Failed to get prices!!!</string>
     <string name="invalid_date_message">Invalid date!!!</string>
+    <string name="day">Day:</string>
+    <string name="outbound_flight">Outbound flight date:</string>
+    <string name="inbound_flight">Inbound flight date:</string>
+    <string name="find_flights">Find Flights</string>
 </resources>

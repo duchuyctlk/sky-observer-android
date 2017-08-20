@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingEnd="@dimen/fragment_horizontal_margin"
+        android:paddingStart="@dimen/fragment_horizontal_margin"
+        android:paddingTop="@dimen/fragment_vertical_margin">
+
+        <Button
+            android:id="@+id/btn_find_flights"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/find_flights" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_find_flights"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/fragment_horizontal_margin"
+            android:paddingStart="@dimen/fragment_horizontal_margin"
+            android:paddingTop="@dimen/fragment_vertical_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/src_port" />
+
+                <Spinner
+                    android:id="@+id/spinner_src_port"
+                    style="@style/month_year_spinners" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/dst_port" />
+
+                <Spinner
+                    android:id="@+id/spinner_dst_port"
+                    style="@style/month_year_spinners" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/outbound_flight" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/year" />
+
+                <Spinner
+                    android:id="@+id/spinner_year_outbound"
+                    style="@style/month_year_spinners" />
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/month" />
+
+                <Spinner
+                    android:id="@+id/spinner_month_outbound"
+                    style="@style/month_year_spinners" />
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/day" />
+
+                <Spinner
+                    android:id="@+id/spinner_day_outbound"
+                    style="@style/month_year_spinners" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/inbound_flight" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/year" />
+
+                <Spinner
+                    android:id="@+id/spinner_year_inbound"
+                    style="@style/month_year_spinners" />
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/month" />
+
+                <Spinner
+                    android:id="@+id/spinner_month_inbound"
+                    style="@style/month_year_spinners" />
+
+                <TextView
+                    style="@style/month_year_text_views"
+                    android:text="@string/day" />
+
+                <Spinner
+                    android:id="@+id/spinner_day_inbound"
+                    style="@style/month_year_spinners" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>
