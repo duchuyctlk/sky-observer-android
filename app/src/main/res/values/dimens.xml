@@ -14,4 +14,6 @@
     <dimen name="price_per_day_spinners_horizontal_margin">10dp</dimen>
     <dimen name="list_view_prices_vertical_spacing">5dp</dimen>
     <dimen name="list_view_prices_horizontal_spacing">5dp</dimen>
+    <dimen name="text_view_flight_direction_padding_top">10dp</dimen>
+    <dimen name="text_view_flight_direction_padding_bottom">5dp</dimen>
 </resources>

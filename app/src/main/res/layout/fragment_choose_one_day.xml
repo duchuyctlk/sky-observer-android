@@ -51,9 +51,10 @@
             </LinearLayout>
 
             <TextView
+                style="@style/text_view_flight_direction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/outbound_flight" />
+                android:text="@string/outbound_date" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,9 +86,10 @@
             </LinearLayout>
 
             <TextView
+                style="@style/text_view_flight_direction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/inbound_flight" />
+                android:text="@string/inbound_date" />
 
             <LinearLayout
                 android:layout_width="match_parent"
