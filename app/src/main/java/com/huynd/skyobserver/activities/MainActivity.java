@@ -12,9 +12,9 @@ import android.widget.ListView;
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.adapters.NavigationDrawerListAdapter;
 import com.huynd.skyobserver.databinding.ActivityMainBinding;
+import com.huynd.skyobserver.fragments.ChooseOneDayFragment;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
-import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
@@ -78,6 +78,9 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         switch (position) {
             case 0:
                 setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG);
+                break;
+            case 1:
+                setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG);
                 break;
         }
 
