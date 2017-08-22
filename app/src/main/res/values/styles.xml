@@ -65,4 +65,12 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="choose_one_day_fragment_month_year_text_views" parent="month_year_text_views">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="choose_one_day_fragment_month_year_spinners" parent="month_year_spinners">
+        <item name="android:layout_weight">0.75</item>
+    </style>
 </resources>

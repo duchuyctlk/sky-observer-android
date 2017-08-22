@@ -61,28 +61,28 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    style="@style/month_year_text_views"
+                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/year" />
 
                 <Spinner
                     android:id="@+id/spinner_year_outbound"
-                    style="@style/month_year_spinners" />
+                    style="@style/choose_one_day_fragment_month_year_spinners" />
 
                 <TextView
-                    style="@style/month_year_text_views"
+                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/month" />
 
                 <Spinner
                     android:id="@+id/spinner_month_outbound"
-                    style="@style/month_year_spinners" />
+                    style="@style/choose_one_day_fragment_month_year_spinners" />
 
                 <TextView
-                    style="@style/month_year_text_views"
+                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/day" />
 
                 <Spinner
                     android:id="@+id/spinner_day_outbound"
-                    style="@style/month_year_spinners" />
+                    style="@style/choose_one_day_fragment_month_year_spinners" />
             </LinearLayout>
 
             <TextView
@@ -96,28 +96,28 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    style="@style/month_year_text_views"
+                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/year" />
 
                 <Spinner
                     android:id="@+id/spinner_year_inbound"
-                    style="@style/month_year_spinners" />
+                    style="@style/choose_one_day_fragment_month_year_spinners" />
 
                 <TextView
-                    style="@style/month_year_text_views"
+                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/month" />
 
                 <Spinner
                     android:id="@+id/spinner_month_inbound"
-                    style="@style/month_year_spinners" />
+                    style="@style/choose_one_day_fragment_month_year_spinners" />
 
                 <TextView
-                    style="@style/month_year_text_views"
+                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/day" />
 
                 <Spinner
                     android:id="@+id/spinner_day_inbound"
-                    style="@style/month_year_spinners" />
+                    style="@style/choose_one_day_fragment_month_year_spinners" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
