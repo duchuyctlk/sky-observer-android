@@ -22,6 +22,7 @@ public class ChooseOneDayPresenterImpl implements ChooseOneDayPresenter {
 
     @Override
     public void initSpinnersValues() {
+        mView.updateAirports(mModel.getAirports());
         mView.updateAvailOutBoundMonths(mModel.getAvailMonths());
         mView.updateAvailInBoundMonths(mModel.getAvailMonths());
     }

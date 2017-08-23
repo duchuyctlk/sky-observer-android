@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
+import com.huynd.skyobserver.models.Airport;
 import com.huynd.skyobserver.models.AvailableMonth;
 import com.huynd.skyobserver.models.ChooseOneDayModel;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenter;
@@ -37,6 +38,9 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
     private ArrayAdapter<AvailableMonth> mSpinnerInboundMonthAdapter;
     private ArrayAdapter<Integer> mSpinnerInboundDayAdapter;
+
+    private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
+    private ArrayAdapter<Airport> mSpinnerDstPortAdapter;
 
     private ChooseOneDayPresenter mPresenter;
     private ChooseOneDayModel mModel;
@@ -66,6 +70,13 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
         mBinding.spinnerMonthInbound.setAdapter(mSpinnerInboundMonthAdapter);
         mBinding.spinnerDayInbound.setAdapter(mSpinnerInboundDayAdapter);
+
+        mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
+                android.R.layout.simple_list_item_1, new ArrayList<Airport>());
+        mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
+                android.R.layout.simple_list_item_1, new ArrayList<Airport>());
+        mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
+        mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
         mBinding.spinnerMonthOutbound.setOnItemSelectedListener(this);
 
@@ -144,5 +155,18 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mSpinnerInboundDayAdapter.addAll(days);
         mSpinnerInboundDayAdapter.notifyDataSetChanged();
         mBinding.spinnerDayInbound.setSelection(0);
+    }
+
+    @Override
+    public void updateAirports(List<Airport> airports) {
+        mSpinnerSrcPortAdapter.clear();
+        mSpinnerSrcPortAdapter.addAll(airports);
+        mSpinnerSrcPortAdapter.notifyDataSetChanged();
+        mBinding.spinnerSrcPort.setSelection(0);
+
+        mSpinnerDstPortAdapter.clear();
+        mSpinnerDstPortAdapter.addAll(airports);
+        mSpinnerDstPortAdapter.notifyDataSetChanged();
+        mBinding.spinnerDstPort.setSelection(1);
     }
 }

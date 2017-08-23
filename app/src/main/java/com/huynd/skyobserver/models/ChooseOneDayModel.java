@@ -1,5 +1,7 @@
 package com.huynd.skyobserver.models;
 
+import com.huynd.skyobserver.utils.AirportUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,5 +62,9 @@ public class ChooseOneDayModel {
                 mSpinnerMonthValues.add(new AvailableMonth(year, months.get(j)));
             }
         }
+    }
+
+    public List<Airport> getAirports() {
+        return AirportUtils.getAirports();
     }
 }

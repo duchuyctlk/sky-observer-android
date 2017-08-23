@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.views;
 
+import com.huynd.skyobserver.models.Airport;
 import com.huynd.skyobserver.models.AvailableMonth;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ChooseOneDayView extends BaseView {
     void updateAvailOutBoundDays(List<Integer> days);
 
     void updateAvailInBoundDays(List<Integer> availDays);
+
+    void updateAirports(List<Airport> airports);
 }
