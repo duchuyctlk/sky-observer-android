@@ -8,4 +8,10 @@ import com.huynd.skyobserver.models.ChooseOneDayModel;
 
 public interface ChooseOneDayPresenter {
     void setModel(ChooseOneDayModel model);
+
+    void initSpinnersValues();
+
+    void onOutboundMonthSelected(int selectedYear, int selectedMonth);
+
+    void onInboundMonthSelected(int selectedYear, int selectedMonth);
 }

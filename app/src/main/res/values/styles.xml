@@ -71,6 +71,6 @@
     </style>
 
     <style name="choose_one_day_fragment_month_year_spinners" parent="month_year_spinners">
-        <item name="android:layout_weight">0.75</item>
+        <item name="android:layout_weight">2</item>
     </style>
 </resources>

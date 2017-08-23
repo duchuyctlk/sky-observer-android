@@ -62,14 +62,6 @@
 
                 <TextView
                     style="@style/choose_one_day_fragment_month_year_text_views"
-                    android:text="@string/year" />
-
-                <Spinner
-                    android:id="@+id/spinner_year_outbound"
-                    style="@style/choose_one_day_fragment_month_year_spinners" />
-
-                <TextView
-                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/month" />
 
                 <Spinner
@@ -82,7 +74,8 @@
 
                 <Spinner
                     android:id="@+id/spinner_day_outbound"
-                    style="@style/choose_one_day_fragment_month_year_spinners" />
+                    style="@style/equally_share_width_within_parent"
+                    android:layout_weight="1.25" />
             </LinearLayout>
 
             <TextView
@@ -94,14 +87,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    style="@style/choose_one_day_fragment_month_year_text_views"
-                    android:text="@string/year" />
-
-                <Spinner
-                    android:id="@+id/spinner_year_inbound"
-                    style="@style/choose_one_day_fragment_month_year_spinners" />
 
                 <TextView
                     style="@style/choose_one_day_fragment_month_year_text_views"
@@ -117,7 +102,8 @@
 
                 <Spinner
                     android:id="@+id/spinner_day_inbound"
-                    style="@style/choose_one_day_fragment_month_year_spinners" />
+                    style="@style/equally_share_width_within_parent"
+                    android:layout_weight="1.25" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

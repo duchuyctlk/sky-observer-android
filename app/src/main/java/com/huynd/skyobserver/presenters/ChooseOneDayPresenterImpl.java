@@ -19,4 +19,20 @@ public class ChooseOneDayPresenterImpl implements ChooseOneDayPresenter {
     public void setModel(ChooseOneDayModel model) {
         mModel = model;
     }
+
+    @Override
+    public void initSpinnersValues() {
+        mView.updateAvailOutBoundMonths(mModel.getAvailMonths());
+        mView.updateAvailInBoundMonths(mModel.getAvailMonths());
+    }
+
+    @Override
+    public void onOutboundMonthSelected(int year, int month) {
+        mView.updateAvailOutBoundDays(mModel.getAvailDays(year, month));
+    }
+
+    @Override
+    public void onInboundMonthSelected(int year, int month) {
+        mView.updateAvailInBoundDays(mModel.getAvailDays(year, month));
+    }
 }
