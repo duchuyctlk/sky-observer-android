@@ -27,21 +27,21 @@ public class BaseActivityAndroidTest {
     public ActivityTestRule mActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     private MainActivity mActivity;
-    private ChangeFragmentIdlingResource mIdlingResource;
+    private ChangeFragmentIdlingResource<PriceOneDayFragment> mIdlingResource;
 
     @Before
     public void setUp() throws Exception {
         mActivity = (MainActivity) mActivityRule.getActivity();
-        mIdlingResource = new ChangeFragmentIdlingResource(mActivity);
+        mIdlingResource = new ChangeFragmentIdlingResource<>(PriceOneDayFragment.class, mActivity);
     }
 
     @Test
     public void shouldPressBackOnPriceOneDayProperly() throws Exception {
-        mActivity.setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG);
+        mActivity.setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG, false);
 
         Fragment priceOneDayFragment = PriceOneDayFragment.newInstance();
         priceOneDayFragment.setArguments(new Bundle());
-        mActivity.setFragment(priceOneDayFragment, PriceOneDayFragment.TAG);
+        mActivity.setFragment(priceOneDayFragment, PriceOneDayFragment.TAG, false);
 
         Espresso.registerIdlingResources(mIdlingResource);
         pressBack();
@@ -52,7 +52,7 @@ public class BaseActivityAndroidTest {
 
     @Test
     public void shouldPressBackOnPricePerDayProperly() throws Exception {
-        mActivity.setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG);
+        mActivity.setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG, false);
 
         try {
             pressBack();
@@ -66,15 +66,15 @@ public class BaseActivityAndroidTest {
     @Test
     public void shouldShowCorrectFragments() throws Exception {
         Fragment pricePerDayFragment = PricePerDayFragment.newInstance();
-        mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG);
+        mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG, false);
 
         Fragment priceOneDayFragment = PriceOneDayFragment.newInstance();
         priceOneDayFragment.setArguments(new Bundle());
-        mActivity.setFragment(priceOneDayFragment, PriceOneDayFragment.TAG);
+        mActivity.setFragment(priceOneDayFragment, PriceOneDayFragment.TAG, false);
 
         Espresso.registerIdlingResources(mIdlingResource);
 
-        mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG);
+        mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG, false);
         assertTrue(mActivity.getCurrentFragment() instanceof PricePerDayFragment);
     }
 }

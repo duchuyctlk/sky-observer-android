@@ -79,10 +79,10 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     public void selectItem(int position, String title) {
         switch (position) {
             case 0:
-                setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG);
+                setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG, true);
                 break;
             case 1:
-                setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG);
+                setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG, true);
                 break;
         }
 
@@ -96,6 +96,6 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     public void OnFlightInfoSelected(Bundle flightInfo) {
         PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
         fragment.setArguments(flightInfo);
-        setFragment(fragment, PriceOneDayFragment.TAG);
+        setFragment(fragment, PriceOneDayFragment.TAG, false);
     }
 }

@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.fragments;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
 import com.google.gson.Gson;
@@ -7,11 +8,13 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverAndroidTestApp;
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest;
+import com.huynd.skyobserver.idlingResource.ChangeFragmentIdlingResource;
 import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.FileUtils;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,6 +61,8 @@ public class PriceOneDayFragmentAndroidTest {
 
     private MainActivity mActivity;
 
+    private ChangeFragmentIdlingResource<PricePerDayFragment> mPricePerDayFragmentIdlingResource;
+
     @Inject
     PricesAPI mPricesAPI;
 
@@ -68,7 +73,15 @@ public class PriceOneDayFragmentAndroidTest {
         SkyObserverComponentAndroidTest component = (SkyObserverComponentAndroidTest) app.getSkyObserverComponent();
         component.inject(this);
 
+        mPricePerDayFragmentIdlingResource = new ChangeFragmentIdlingResource<>(PricePerDayFragment.class, mActivity);
+        Espresso.registerIdlingResources(mPricePerDayFragmentIdlingResource);
+
         setUpPriceOneDayFragment();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Espresso.unregisterIdlingResources(mPricePerDayFragmentIdlingResource);
     }
 
     @Test

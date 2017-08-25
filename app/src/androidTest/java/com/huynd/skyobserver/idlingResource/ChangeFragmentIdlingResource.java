@@ -5,18 +5,20 @@ import android.support.v4.app.Fragment;
 
 import com.huynd.skyobserver.activities.BaseActivity;
 import com.huynd.skyobserver.activities.MainActivity;
-import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 
 /**
  * Created by HuyND on 8/19/2017.
  */
 
-public class ChangeFragmentIdlingResource implements IdlingResource {
+public class ChangeFragmentIdlingResource<T extends Fragment> implements IdlingResource {
     private ResourceCallback resourceCallback;
     private boolean isIdle;
     private BaseActivity mActivity;
 
-    public ChangeFragmentIdlingResource(MainActivity activity) {
+    Class<T> mClass;
+
+    public ChangeFragmentIdlingResource(Class<T> clazz, MainActivity activity) {
+        mClass = clazz;
         mActivity = activity;
     }
 
@@ -36,7 +38,7 @@ public class ChangeFragmentIdlingResource implements IdlingResource {
 
         Fragment fragment = mActivity.getCurrentFragment();
 
-        isIdle = fragment != null && fragment instanceof PriceOneDayFragment;
+        isIdle = fragment != null && mClass.isInstance(fragment);
         if (isIdle) {
             resourceCallback.onTransitionToIdle();
         }
