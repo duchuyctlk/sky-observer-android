@@ -10,6 +10,9 @@ import java.util.List;
  */
 
 public class AirportUtils {
+    public AirportUtils() {
+        throw new AssertionError();
+    }
 
     public static List<Airport> getAirports() {
         List<Airport> airports = new ArrayList<>();

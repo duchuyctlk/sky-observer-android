@@ -9,7 +9,7 @@ import java.util.Map;
 import static com.huynd.skyobserver.utils.DateUtils.getAvailableMonthsByYears;
 import static com.huynd.skyobserver.utils.DateUtils.getAvailableYears;
 import static com.huynd.skyobserver.utils.DateUtils.getCurrentDayOfMonth;
-import static com.huynd.skyobserver.utils.DateUtils.isLeapYear;
+import static com.huynd.skyobserver.utils.DateUtils.getNumberOfDaysInMonth;
 
 /**
  * Created by HuyND on 8/22/2017.
@@ -28,17 +28,7 @@ public class ChooseOneDayModel {
     }
 
     public List<Integer> getAvailDays(int year, int month) {
-        int numberOfDays = 31;
-
-        if (month == 2) {
-            if (isLeapYear(year)) {
-                numberOfDays = 29;
-            } else {
-                numberOfDays = 28;
-            }
-        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
-            numberOfDays = 30;
-        }
+        int numberOfDays = getNumberOfDaysInMonth(year, month);
 
         List<Integer> days = new ArrayList<>();
         AvailableMonth thisMonth = mSpinnerMonthValues.get(0);

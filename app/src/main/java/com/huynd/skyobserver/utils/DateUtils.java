@@ -89,4 +89,20 @@ public class DateUtils {
         Calendar cal = Calendar.getInstance();
         return cal.get(Calendar.DAY_OF_MONTH);
     }
+
+    public static int getNumberOfDaysInMonth(int year, int month) {
+        int numberOfDays = 31;
+
+        if (month == 2) {
+            if (isLeapYear(year)) {
+                numberOfDays = 29;
+            } else {
+                numberOfDays = 28;
+            }
+        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+            numberOfDays = 30;
+        }
+
+        return numberOfDays;
+    }
 }

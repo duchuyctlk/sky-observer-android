@@ -155,4 +155,16 @@ public class PriceOneDayFragmentAndroidTest {
         when(mPricesAPI.getPricePerDay(any(Map.class), any(PricePerDayBody.class), any(String.class),
                 any(String.class), any(String.class))).thenReturn(mockCall);
     }
+
+    @Test
+    public void shouldLoadPricesWhenOpenFromChooseOneDayFragment() throws Exception {
+        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
+
+        onView(withId(R.id.spinner_month_outbound)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
+
+        onView(withId(R.id.btn_find_flights)).perform(click());
+        checkViewWidgetsIsDisplayed(R.id.txt_routine, R.id.txt_flight_date, R.id.chk_show_total_price, R.id.lst_prices);
+    }
 }
