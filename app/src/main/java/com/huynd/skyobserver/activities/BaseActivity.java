@@ -25,9 +25,13 @@ public class BaseActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
     }
 
-    public void setFragment(Fragment fragment, @NonNull String tag) {
+    public void setFragment(Fragment fragment, @NonNull String tag, boolean clearFragmentBackStack) {
         if (tag.equals(getCurrentFragmentTag())) {
             return;
+        }
+
+        if (clearFragmentBackStack) {
+            clearFragmentBackStack();
         }
 
         try {
@@ -53,6 +57,10 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         mCurrentFragmentTag = tag;
+    }
+
+    public void clearFragmentBackStack() {
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     public Fragment getCurrentFragment() {

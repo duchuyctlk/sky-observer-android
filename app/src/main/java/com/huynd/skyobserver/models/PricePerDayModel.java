@@ -2,19 +2,22 @@ package com.huynd.skyobserver.models;
 
 import com.huynd.skyobserver.presenters.PricePerDayPresenter;
 import com.huynd.skyobserver.services.PricesAPI;
+import com.huynd.skyobserver.utils.AirportUtils;
 import com.huynd.skyobserver.utils.Constants;
 import com.huynd.skyobserver.utils.RequestHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.huynd.skyobserver.utils.DateUtils.getAvailableMonthsByYears;
+import static com.huynd.skyobserver.utils.DateUtils.getAvailableYears;
 
 /**
  * Created by HuyND on 8/9/2017.
@@ -24,7 +27,6 @@ public class PricePerDayModel {
     private PricePerDayPresenter mPresenter;
     private Map<Integer, List<Integer>> mSpinnerMonthValues;
     private List<Integer> mSpinnerYearValues;
-    private List<Airport> mAirports;
     private PricePerDay[] mPrices;
     private int mNoOfReceivedRequests;
 
@@ -53,59 +55,12 @@ public class PricePerDayModel {
     }
 
     private void initSpinnersValues() {
-        mSpinnerMonthValues = new HashMap<>();
-
-        Calendar cal = Calendar.getInstance();
-        int thisYear = cal.get(Calendar.YEAR);
-        int thisMonth = cal.get(Calendar.MONTH);
-
-        mSpinnerYearValues = new ArrayList<>();
-        mSpinnerYearValues.add(thisYear);
-        mSpinnerYearValues.add(thisYear + 1);
-
-        int noOfMonthsInOneYear = 12;
-        List<Integer> thisYearAvailMonths = new ArrayList<>();
-        for (int i = thisMonth; i < noOfMonthsInOneYear; i++) {
-            thisYearAvailMonths.add(i + 1);
-        }
-
-        List<Integer> nextYearAvailMonths = new ArrayList<>();
-        for (int i = 0; i < noOfMonthsInOneYear; i++) {
-            nextYearAvailMonths.add(i + 1);
-        }
-
-        mSpinnerMonthValues.put(thisYear, thisYearAvailMonths);
-        mSpinnerMonthValues.put(thisYear + 1, nextYearAvailMonths);
+        mSpinnerYearValues = getAvailableYears();
+        mSpinnerMonthValues = getAvailableMonthsByYears(mSpinnerYearValues);
     }
 
     public List<Airport> getAirports() {
-        if (mAirports == null) {
-            mAirports = new ArrayList<>();
-
-            mAirports.add(new Airport("SGN", "Tân Sơn Nhất"));
-            mAirports.add(new Airport("HAN", "Nội Bài"));
-            mAirports.add(new Airport("VCS", "Côn Đảo"));
-            mAirports.add(new Airport("UIH", "Phù Cát"));
-            mAirports.add(new Airport("CAH", "Cà Mau"));
-            mAirports.add(new Airport("VCA", "Cần Thơ"));
-            mAirports.add(new Airport("BMV", "Buôn Ma Thuột"));
-            mAirports.add(new Airport("DAD", "Đà Nẵng"));
-            mAirports.add(new Airport("DIN", "Điện Biên Phủ"));
-            mAirports.add(new Airport("PXU", "Pleiku"));
-            mAirports.add(new Airport("HPH", "Cát Bi"));
-            mAirports.add(new Airport("CXR", "Cam Ranh"));
-            mAirports.add(new Airport("VKG", "Rạch Giá"));
-            mAirports.add(new Airport("PQC", "Phú Quốc"));
-            mAirports.add(new Airport("DLI", "Liên Khương"));
-            mAirports.add(new Airport("TBB", "Tuy Hòa"));
-            mAirports.add(new Airport("VDH", "Đồng Hới"));
-            mAirports.add(new Airport("VCL", "Chu Lai"));
-            mAirports.add(new Airport("THD", "Thọ Xuân"));
-            mAirports.add(new Airport("HUI", "Phú Bài"));
-            mAirports.add(new Airport("VII", "Vinh"));
-        }
-
-        return mAirports;
+        return AirportUtils.getAirports();
     }
 
     public void getPrices(PricesAPI mPricesAPI, int year, int month, String srcPort, String dstPort) {

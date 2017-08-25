@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.fragments;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
 import com.google.gson.Gson;
@@ -7,11 +8,13 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverAndroidTestApp;
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest;
+import com.huynd.skyobserver.idlingResource.ChangeFragmentIdlingResource;
 import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.FileUtils;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,6 +61,8 @@ public class PriceOneDayFragmentAndroidTest {
 
     private MainActivity mActivity;
 
+    private ChangeFragmentIdlingResource<PricePerDayFragment> mPricePerDayFragmentIdlingResource;
+
     @Inject
     PricesAPI mPricesAPI;
 
@@ -68,7 +73,15 @@ public class PriceOneDayFragmentAndroidTest {
         SkyObserverComponentAndroidTest component = (SkyObserverComponentAndroidTest) app.getSkyObserverComponent();
         component.inject(this);
 
+        mPricePerDayFragmentIdlingResource = new ChangeFragmentIdlingResource<>(PricePerDayFragment.class, mActivity);
+        Espresso.registerIdlingResources(mPricePerDayFragmentIdlingResource);
+
         setUpPriceOneDayFragment();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Espresso.unregisterIdlingResources(mPricePerDayFragmentIdlingResource);
     }
 
     @Test
@@ -141,5 +154,17 @@ public class PriceOneDayFragmentAndroidTest {
 
         when(mPricesAPI.getPricePerDay(any(Map.class), any(PricePerDayBody.class), any(String.class),
                 any(String.class), any(String.class))).thenReturn(mockCall);
+    }
+
+    @Test
+    public void shouldLoadPricesWhenOpenFromChooseOneDayFragment() throws Exception {
+        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
+
+        onView(withId(R.id.spinner_month_outbound)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
+
+        onView(withId(R.id.btn_find_flights)).perform(click());
+        checkViewWidgetsIsDisplayed(R.id.txt_routine, R.id.txt_flight_date, R.id.chk_show_total_price, R.id.lst_prices);
     }
 }

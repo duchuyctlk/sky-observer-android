@@ -58,4 +58,19 @@
     <style name="month_year_spinners" parent="equally_share_width_within_parent">
         <item name="android:layout_weight">1.5</item>
     </style>
+
+    <style name="text_view_flight_direction">
+        <item name="android:paddingTop">@dimen/text_view_flight_direction_padding_top</item>
+        <item name="android:paddingBottom">@dimen/text_view_flight_direction_padding_bottom</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="choose_one_day_fragment_month_year_text_views" parent="month_year_text_views">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="choose_one_day_fragment_month_year_spinners" parent="month_year_spinners">
+        <item name="android:layout_weight">2</item>
+    </style>
 </resources>
