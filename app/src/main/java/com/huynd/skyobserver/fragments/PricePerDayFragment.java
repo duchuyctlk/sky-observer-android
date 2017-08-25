@@ -35,10 +35,6 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener {
 
-    public interface OnGridViewPriceItemSelectedListener {
-        void OnGridViewPriceItemSelected(Bundle flightInfo);
-    }
-
     @Inject
     PricesAPI mPricesAPI;
 
@@ -169,23 +165,24 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
                 PricePerDay price = mGridViewAdapter.getItem(position);
                 if (price != null) {
                     try {
-                        int year = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
-                        int month = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
-                        int day = price.getDay();
+                        int yearOutbound = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
+                        int monthOutbound = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
+                        int dayOutbound = price.getDay();
 
                         Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
                         Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
 
                         Bundle flightInfo = new Bundle();
-                        flightInfo.putInt("year", year);
-                        flightInfo.putInt("month", month);
-                        flightInfo.putInt("day", day);
+                        flightInfo.putBoolean("return", false);
+                        flightInfo.putInt("yearOutbound", yearOutbound);
+                        flightInfo.putInt("monthOutbound", monthOutbound);
+                        flightInfo.putInt("dayOutbound", dayOutbound);
                         flightInfo.putString("srcPort", srcPort.getId());
                         flightInfo.putString("dstPort", dstPort.getId());
 
-                        ((OnGridViewPriceItemSelectedListener) getActivity()).OnGridViewPriceItemSelected(flightInfo);
+                        ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
                     } catch (ClassCastException e) {
-                        throw new ClassCastException("Activity must implement OnGridViewPriceItemSelectedListener.");
+                        throw new ClassCastException("Activity must implement OnFlightInfoSelectedListener.");
                     }
                 }
                 break;

@@ -53,16 +53,16 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
 
         // get data from intent
         Bundle args = getArguments();
-        int year = args.getInt("year");
-        int month = args.getInt("month");
-        int day = args.getInt("day");
+        int yearOutbound = args.getInt("yearOutbound");
+        int monthOutbound = args.getInt("monthOutbound");
+        int dayOutbound = args.getInt("dayOutbound");
         String srcPort = args.getString("srcPort");
         String dstPort = args.getString("dstPort");
 
         // initialize UI widgets
         mBinding = FragmentPriceOneDayBinding.inflate(inflater, container, false);
         mBinding.txtRoutine.setText(srcPort + " - " + dstPort);
-        mBinding.txtFlightDate.setText(day + "/" + month + "/" + year);
+        mBinding.txtFlightDate.setText(dayOutbound + "/" + monthOutbound + "/" + yearOutbound);
         mListViewAdapter = new ListViewPriceOneDayAdapter(this.getContext());
         mBinding.lstPrices.setAdapter(mListViewAdapter);
 
@@ -72,7 +72,7 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
         mPresenter.setModel(mModel);
 
         if (!TextUtils.isEmpty(srcPort) && !TextUtils.isEmpty(dstPort)) {
-            mPresenter.getPrices(year, month, day, srcPort, dstPort);
+            mPresenter.getPrices(yearOutbound, monthOutbound, dayOutbound, srcPort, dstPort);
         }
 
         return mBinding.getRoot();

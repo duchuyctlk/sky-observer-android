@@ -13,6 +13,7 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.adapters.NavigationDrawerListAdapter;
 import com.huynd.skyobserver.databinding.ActivityMainBinding;
 import com.huynd.skyobserver.fragments.ChooseOneDayFragment;
+import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
@@ -20,7 +21,8 @@ import com.huynd.skyobserver.views.NavigationDrawerView;
 
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
-        PricePerDayFragment.OnGridViewPriceItemSelectedListener {
+        OnFlightInfoSelectedListener {
+
     ActivityMainBinding binding;
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -91,7 +93,7 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     }
 
     @Override
-    public void OnGridViewPriceItemSelected(Bundle flightInfo) {
+    public void OnFlightInfoSelected(Bundle flightInfo) {
         PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
         fragment.setArguments(flightInfo);
         setFragment(fragment, PriceOneDayFragment.TAG);

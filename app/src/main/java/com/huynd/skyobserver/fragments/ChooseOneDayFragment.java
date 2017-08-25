@@ -97,7 +97,28 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_find_flights:
-                // TODO
+                try {
+                    AvailableMonth availableMonthOutbound = mSpinnerOutboundMonthAdapter.getItem(
+                            mBinding.spinnerMonthOutbound.getSelectedItemPosition());
+                    int yearOutbound = availableMonthOutbound.getYear();
+                    int monthOutbound = availableMonthOutbound.getMonth();
+                    int dayOutbound = mSpinnerOutboundDayAdapter.getItem(
+                            mBinding.spinnerDayOutbound.getSelectedItemPosition());
+
+                    Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
+                    Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
+
+                    Bundle flightInfo = new Bundle();
+                    flightInfo.putInt("yearOutbound", yearOutbound);
+                    flightInfo.putInt("monthOutbound", monthOutbound);
+                    flightInfo.putInt("dayOutbound", dayOutbound);
+                    flightInfo.putString("srcPort", srcPort.getId());
+                    flightInfo.putString("dstPort", dstPort.getId());
+
+                    ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
+                } catch (ClassCastException e) {
+                    throw new ClassCastException("Activity must implement OnFlightInfoSelectedListener.");
+                }
                 break;
         }
     }
