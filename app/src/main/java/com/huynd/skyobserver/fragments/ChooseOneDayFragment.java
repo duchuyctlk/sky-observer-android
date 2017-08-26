@@ -3,6 +3,7 @@ package com.huynd.skyobserver.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
     FragmentChooseOneDayBinding mBinding;
 
-    private ArrayAdapter<AvailableMonth> mSpinnerOutboundMonthAdapter;
+    ArrayAdapter<AvailableMonth> mSpinnerOutboundMonthAdapter;
     private ArrayAdapter<Integer> mSpinnerOutboundDayAdapter;
 
     private ArrayAdapter<AvailableMonth> mSpinnerInboundMonthAdapter;
@@ -117,7 +118,7 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
                     ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
                 } catch (ClassCastException e) {
-                    throw new ClassCastException("Activity must implement OnFlightInfoSelectedListener.");
+                    Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
                 }
                 break;
         }

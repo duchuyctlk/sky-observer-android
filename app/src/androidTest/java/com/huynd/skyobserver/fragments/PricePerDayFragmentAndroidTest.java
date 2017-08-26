@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.fragments;
 
 import android.support.test.rule.ActivityTestRule;
+import android.widget.ArrayAdapter;
 
 import com.google.gson.Gson;
 import com.huynd.skyobserver.R;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +42,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.fail;
 import static org.hamcrest.Matchers.anything;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 /**
@@ -114,6 +118,41 @@ public class PricePerDayFragmentAndroidTest {
                 .atPosition(0)
                 .onChildView(withId(R.id.text_view_day))
                 .check(matches(withText("")));
+    }
+
+    @Test
+    public void shouldCoverOnNothingSelected() throws Exception {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ((PricePerDayFragment) mActivity.getCurrentFragment()).updateAvailYears(new ArrayList<Integer>());
+                } catch (Exception exception) {
+                    fail("Unexpected behavior happened.");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void shouldClassCatchCastException() throws Exception {
+        mockApiResponse(true, true);
+
+        onView(withId(R.id.spinner_month)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
+
+        onView(withId(R.id.btn_get_prices)).perform(click());
+
+        PricePerDayFragment fragment = (PricePerDayFragment) mActivity.getCurrentFragment();
+        ArrayAdapter<Integer> adapter = spy(fragment.mSpinnerYearAdapter);
+        when(adapter.getItem(any(int.class))).thenThrow(new ClassCastException());
+        fragment.mSpinnerYearAdapter = adapter;
+
+        try {
+            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+        } catch (Exception exception) {
+            fail("Unexpected behavior happened.");
+        }
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {

@@ -3,6 +3,7 @@ package com.huynd.skyobserver.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
     FragmentPricePerDayBinding mBinding;
 
-    private ArrayAdapter<Integer> mSpinnerYearAdapter;
+    ArrayAdapter<Integer> mSpinnerYearAdapter;
     private ArrayAdapter<Integer> mSpinnerMonthAdapter;
 
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
@@ -182,7 +183,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
                         ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
                     } catch (ClassCastException e) {
-                        throw new ClassCastException("Activity must implement OnFlightInfoSelectedListener.");
+                        Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
                     }
                 }
                 break;
