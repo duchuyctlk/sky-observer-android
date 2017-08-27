@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
@@ -28,7 +29,8 @@ import java.util.List;
 
 public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayView,
         View.OnClickListener,
-        AdapterView.OnItemSelectedListener {
+        AdapterView.OnItemSelectedListener,
+        CompoundButton.OnCheckedChangeListener {
 
     public static final String TAG = ChooseOneDayFragment.class.getSimpleName();
 
@@ -80,10 +82,9 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
         mBinding.spinnerMonthOutbound.setOnItemSelectedListener(this);
-
         mBinding.spinnerMonthInbound.setOnItemSelectedListener(this);
-
         mBinding.btnFindFlights.setOnClickListener(this);
+        mBinding.chkReturnTrip.setOnCheckedChangeListener(this);
 
         // initialize MPV pattern
         mPresenter = new ChooseOneDayPresenterImpl(this);
@@ -190,5 +191,11 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mSpinnerDstPortAdapter.addAll(airports);
         mSpinnerDstPortAdapter.notifyDataSetChanged();
         mBinding.spinnerDstPort.setSelection(1);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mBinding.spinnerMonthInbound.setEnabled(isChecked);
+        mBinding.spinnerDayInbound.setEnabled(isChecked);
     }
 }

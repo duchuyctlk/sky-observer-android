@@ -78,6 +78,13 @@
                     android:layout_weight="1.25" />
             </LinearLayout>
 
+            <CheckBox
+                android:id="@+id/chk_return_trip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/return_trip" />
+
             <TextView
                 style="@style/text_view_flight_direction"
                 android:layout_width="match_parent"
