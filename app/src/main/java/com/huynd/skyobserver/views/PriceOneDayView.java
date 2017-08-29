@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public interface PriceOneDayView extends BaseView {
-    void updateListViewPrices(List<PricePerDay> prices);
+    void updateListViewOutboundPrices(List<PricePerDay> prices);
 
     void showInvalidDateDialog();
 }

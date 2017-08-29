@@ -35,7 +35,7 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
 
     FragmentPriceOneDayBinding mBinding;
 
-    ListViewPriceOneDayAdapter mListViewAdapter;
+    ListViewPriceOneDayAdapter mListViewOutboundAdapter;
 
     private PriceOneDayPresenter mPresenter;
     private PriceOneDayModel mModel;
@@ -61,10 +61,10 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
 
         // initialize UI widgets
         mBinding = FragmentPriceOneDayBinding.inflate(inflater, container, false);
-        mBinding.txtRoutine.setText(srcPort + " - " + dstPort);
-        mBinding.txtFlightDate.setText(dayOutbound + "/" + monthOutbound + "/" + yearOutbound);
-        mListViewAdapter = new ListViewPriceOneDayAdapter(this.getContext());
-        mBinding.lstPrices.setAdapter(mListViewAdapter);
+        mBinding.txtRoutineOutbound.setText(srcPort + " - " + dstPort);
+        mBinding.txtFlightDateOutbound.setText(dayOutbound + "/" + monthOutbound + "/" + yearOutbound);
+        mListViewOutboundAdapter = new ListViewPriceOneDayAdapter(this.getContext());
+        mBinding.lstPricesOutbound.setAdapter(mListViewOutboundAdapter);
 
         // initialize MPV pattern
         mPresenter = new PriceOneDayPresenterImpl(this, mPricesAPI);
@@ -79,10 +79,10 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
     }
 
     @Override
-    public void updateListViewPrices(List<PricePerDay> prices) {
-        mListViewAdapter.clear();
-        mListViewAdapter.addAll(prices);
-        mListViewAdapter.notifyDataSetChanged();
+    public void updateListViewOutboundPrices(List<PricePerDay> prices) {
+        mListViewOutboundAdapter.clear();
+        mListViewOutboundAdapter.addAll(prices);
+        mListViewOutboundAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -46,7 +46,7 @@ public class PriceOneDayPresenterImpl implements PriceOneDayPresenter {
             return;
         }
 
-        mView.updateListViewPrices(prices);
+        mView.updateListViewOutboundPrices(prices);
         mView.dismissLoadingDialog();
     }
 }
