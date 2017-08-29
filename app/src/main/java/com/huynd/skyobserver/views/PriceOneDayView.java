@@ -11,5 +11,7 @@ import java.util.List;
 public interface PriceOneDayView extends BaseView {
     void updateListViewOutboundPrices(List<PricePerDay> prices);
 
+    void updateListViewInboundPrices(List<PricePerDay> prices);
+
     void showInvalidDateDialog();
 }

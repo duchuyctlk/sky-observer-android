@@ -116,6 +116,18 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
                     flightInfo.putInt("dayOutbound", dayOutbound);
                     flightInfo.putString("srcPort", srcPort.getId());
                     flightInfo.putString("dstPort", dstPort.getId());
+                    flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
+                    if (mBinding.chkReturnTrip.isChecked()) {
+                        AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
+                                mBinding.spinnerMonthInbound.getSelectedItemPosition());
+                        int yearInbound = availableMonthInbound.getYear();
+                        int monthInbound = availableMonthInbound.getMonth();
+                        int dayInbound = mSpinnerInboundDayAdapter.getItem(
+                                mBinding.spinnerDayInbound.getSelectedItemPosition());
+                        flightInfo.putInt("yearInbound", yearInbound);
+                        flightInfo.putInt("monthInbound", monthInbound);
+                        flightInfo.putInt("dayInbound", dayInbound);
+                    }
 
                     ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
                 } catch (ClassCastException e) {
