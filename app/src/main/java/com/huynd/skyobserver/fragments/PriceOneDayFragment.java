@@ -89,7 +89,11 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
         mPresenter.setModel(mModel);
 
         if (!TextUtils.isEmpty(srcPort) && !TextUtils.isEmpty(dstPort)) {
-            mPresenter.getPrices(yearOutbound, monthOutbound, dayOutbound, srcPort, dstPort);
+            mPresenter.getPrices(yearOutbound, monthOutbound, dayOutbound, srcPort, dstPort, true);
+
+            if (returnTrip) {
+                mPresenter.getPrices(yearInbound, monthInbound, dayInbound, dstPort, srcPort, false);
+            }
         }
 
         return mBinding.getRoot();
