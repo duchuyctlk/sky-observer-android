@@ -23,7 +23,7 @@ public class PriceOneDayPresenterTest {
     @Test
     public void onBtnGetPricesClickShouldDoNothingIfViewIsNull() throws Exception {
         try {
-            mPresenter.getPrices(2017, 10, 01, "SGN", "HAN");
+            mPresenter.getPrices(2017, 10, 01, "SGN", "HAN", true);
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }
@@ -34,7 +34,7 @@ public class PriceOneDayPresenterTest {
         try {
             mPresenter = new PriceOneDayPresenterImpl((PriceOneDayFragment) PriceOneDayFragment.newInstance(), null);
             mPresenter.setModel(null);
-            mPresenter.getPrices(2017, 10, 01, "SGN", "HAN");
+            mPresenter.getPrices(2017, 10, 01, "SGN", "HAN", true);
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }
@@ -43,7 +43,7 @@ public class PriceOneDayPresenterTest {
     @Test
     public void onResponseShouldDoNothingIfViewIsNull() throws Exception {
         try {
-            mPresenter.onGetPricesResponse(null);
+            mPresenter.onGetPricesResponse(null, true);
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }

@@ -28,7 +28,7 @@ public class PriceOneDayModel {
     private List<PricePerDay> mInboundPrices;
     private int mNoOfReceivedInboundRequests;
 
-    private boolean isOutboundLoadingDone, isInboundLoadingDone;
+    private boolean isOutboundLoadingDone, isInboundLoadingDone, willLoadInbound;
 
     public PriceOneDayModel(PriceOneDayPresenter presenter) {
         mPresenter = presenter;
@@ -59,6 +59,7 @@ public class PriceOneDayModel {
                 mOutboundPrices = new ArrayList<>();
             } else {
                 isInboundLoadingDone = false;
+                willLoadInbound = true;
                 mNoOfReceivedInboundRequests = 0;
                 mInboundPrices = new ArrayList<>();
             }
@@ -126,11 +127,16 @@ public class PriceOneDayModel {
                 isInboundLoadingDone = true;
                 Collections.sort(mInboundPrices);
                 mPresenter.onGetPricesResponse(mInboundPrices, outbound);
+                willLoadInbound = false;
             }
         }
     }
 
     public boolean isLoadingDone() {
-        return isOutboundLoadingDone && isInboundLoadingDone;
+        if (willLoadInbound) {
+            return isOutboundLoadingDone && isInboundLoadingDone;
+        } else {
+            return isOutboundLoadingDone;
+        }
     }
 }
