@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_view_price_per_day_margin"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_view_day"
-        style="@style/equally_share_height_within_parent"
-        android:gravity="center"
-        android:textColor="@color/price_per_day_day_color"
-        android:textSize="12sp" />
+    <LinearLayout
+        android:id="@+id/layout_price"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_view_price"
-        style="@style/equally_share_height_within_parent"
-        android:gravity="center"
-        android:textColor="@color/price_per_day_price_color"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/text_view_day"
+            style="@style/equally_share_height_within_parent"
+            android:gravity="center"
+            android:textColor="@color/price_per_day_day_color"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/text_view_price"
+            style="@style/equally_share_height_within_parent"
+            android:gravity="center"
+            android:textColor="@color/price_per_day_price_color"
+            android:textSize="15sp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/image_view_airline"
         android:layout_width="@dimen/image_view_price_per_day_airline_width"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="@dimen/image_view_price_per_day_airline_width"
         android:contentDescription="@string/string_holder"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/layout_price"
         android:gravity="center" />
-</LinearLayout>
+</RelativeLayout>
