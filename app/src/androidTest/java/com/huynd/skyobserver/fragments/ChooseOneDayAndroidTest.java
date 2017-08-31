@@ -8,6 +8,7 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverAndroidTestApp;
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest;
+import com.huynd.skyobserver.models.AvailableMonth;
 import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
 import com.huynd.skyobserver.services.PricesAPI;
@@ -40,8 +41,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.fail;
 import static org.hamcrest.Matchers.anything;
 import static org.mockito.Matchers.any;
@@ -51,10 +50,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by HuyND on 8/6/2017.
+ * Created by HuyND on 8/26/2017.
  */
 
-public class PricePerDayFragmentAndroidTest {
+public class ChooseOneDayAndroidTest {
     private final String code_200_ok_response = "get_prices_per_day_code_200_ok_response.json";
     private final String code_404_not_found = "code_404_not_found.json";
 
@@ -73,51 +72,34 @@ public class PricePerDayFragmentAndroidTest {
         SkyObserverComponentAndroidTest component = (SkyObserverComponentAndroidTest) app.getSkyObserverComponent();
         component.inject(this);
 
-        setUpPricePerDayFragment();
+        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
     }
 
     @Test
     public void shouldContainViewWidgets() throws Exception {
-        checkViewWidgetsIsDisplayed(R.id.spinner_month, R.id.spinner_year, R.id.btn_get_prices);
-        onView(withId(R.id.grid_view_price)).check(matches(isEnabled()));
+        checkViewWidgetsIsDisplayed(R.id.spinner_src_port, R.id.spinner_dst_port,
+                R.id.spinner_month_outbound, R.id.spinner_day_outbound, R.id.chk_return_trip,
+                R.id.spinner_month_inbound, R.id.spinner_day_inbound);
     }
 
     @Test
-    public void shouldDisplayCorrectAirports() throws Exception {
-        checkViewWidgetsIsDisplayed(R.id.spinner_src_port, R.id.spinner_dst_port);
-        onView(withId(R.id.spinner_src_port)).check(matches(withSpinnerText("Tân Sơn Nhất")));
-        onView(withId(R.id.spinner_dst_port)).check(matches(withSpinnerText("Nội Bài")));
-
-        onView(withId(R.id.spinner_src_port)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
-        onView(withId(R.id.spinner_src_port)).check(matches(withSpinnerText("Côn Đảo")));
-    }
-
-    @Test
-    public void shouldBtnGetPricesClickSuccessfully() throws Exception {
+    public void shouldLoadPricesSuccessfully() throws Exception {
         mockApiResponse(true, true);
 
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        onView(withId(R.id.spinner_month_outbound)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
 
-        onView(withId(R.id.btn_get_prices)).perform(click());
-        onView(withId(R.id.grid_view_price)).check(matches(isDisplayed()));
-    }
+        onView(withId(R.id.spinner_month_inbound)).perform(click());
+        onData(anything()).atPosition(3).perform(click());
 
-    @Test
-    public void shouldBtnGetPricesClickFailed() throws Exception {
-        mockApiResponse(false, true);
+        onView(withId(R.id.btn_find_flights)).perform(click());
 
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        checkViewWidgetsIsDisplayed(R.id.txt_routine_inbound, R.id.txt_flight_date_inbound,
+                R.id.chk_show_total_price_inbound, R.id.lst_prices_inbound);
 
-        onView(withId(R.id.btn_get_prices)).perform(click());
-        onView(withId(R.id.grid_view_price)).check(matches(isDisplayed()));
-        onData(anything())
-                .inAdapterView(withId(R.id.grid_view_price))
-                .atPosition(0)
-                .onChildView(withId(R.id.text_view_day))
-                .check(matches(withText("")));
+        onView(withId(R.id.lst_prices_outbound)).check(matches(isEnabled()));
+        onView(withId(R.id.lst_prices_inbound)).check(matches(isEnabled()));
     }
 
     @Test
@@ -126,7 +108,8 @@ public class PricePerDayFragmentAndroidTest {
             @Override
             public void run() {
                 try {
-                    ((PricePerDayFragment) mActivity.getCurrentFragment()).updateAvailYears(new ArrayList<Integer>());
+                    ((ChooseOneDayFragment) mActivity.getCurrentFragment())
+                            .updateAvailOutBoundMonths(new ArrayList<AvailableMonth>());
                 } catch (Exception exception) {
                     fail("Unexpected behavior happened.");
                 }
@@ -136,20 +119,12 @@ public class PricePerDayFragmentAndroidTest {
 
     @Test
     public void shouldClassCatchCastException() throws Exception {
-        mockApiResponse(true, true);
-
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
-
-        onView(withId(R.id.btn_get_prices)).perform(click());
-
-        PricePerDayFragment fragment = (PricePerDayFragment) mActivity.getCurrentFragment();
-        ArrayAdapter<Integer> adapter = spy(fragment.mSpinnerYearAdapter);
+        ChooseOneDayFragment fragment = (ChooseOneDayFragment) mActivity.getCurrentFragment();
+        ArrayAdapter<AvailableMonth> adapter = spy(fragment.mSpinnerOutboundMonthAdapter);
         when(adapter.getItem(any(int.class))).thenThrow(new ClassCastException());
-        fragment.mSpinnerYearAdapter = adapter;
-
+        fragment.mSpinnerOutboundMonthAdapter = adapter;
         try {
-            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+            onView(withId(R.id.btn_find_flights)).perform(click());
         } catch (Exception exception) {
             fail("Unexpected behavior happened.");
         }
@@ -159,11 +134,6 @@ public class PricePerDayFragmentAndroidTest {
         for (int id : ids) {
             onView(withId(id)).check(matches(isDisplayed()));
         }
-    }
-
-    private void setUpPricePerDayFragment() throws Exception {
-        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(0).perform(click());
     }
 
     private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) {

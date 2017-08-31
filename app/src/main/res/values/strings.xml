@@ -26,4 +26,5 @@
     <string name="outbound_date">Outbound date:</string>
     <string name="inbound_date">Inbound date:</string>
     <string name="find_flights">Find Flights</string>
+    <string name="return_trip">Return trip</string>
 </resources>

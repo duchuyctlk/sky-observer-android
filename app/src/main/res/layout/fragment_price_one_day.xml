@@ -4,39 +4,84 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/fragment_horizontal_margin"
-        android:paddingStart="@dimen/fragment_horizontal_margin"
-        android:paddingTop="@dimen/fragment_vertical_margin">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            style="@style/equally_share_height_within_parent"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/fragment_horizontal_margin"
+            android:paddingStart="@dimen/fragment_horizontal_margin"
+            android:paddingTop="@dimen/fragment_vertical_margin">
 
-            <TextView
-                android:id="@+id/txt_routine"
-                style="@style/equally_share_width_within_parent"
-                android:gravity="start" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txt_flight_date"
-                style="@style/equally_share_width_within_parent"
-                android:gravity="end" />
+                <TextView
+                    android:id="@+id/txt_routine_outbound"
+                    style="@style/equally_share_width_within_parent"
+                    android:gravity="start" />
+
+                <TextView
+                    android:id="@+id/txt_flight_date_outbound"
+                    style="@style/equally_share_width_within_parent"
+                    android:gravity="end" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/chk_show_total_price_outbound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/show_taxes_and_fees" />
+
+            <ListView
+                android:id="@+id/lst_prices_outbound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/list_view_prices_horizontal_spacing"
+                android:layout_marginTop="@dimen/list_view_prices_vertical_spacing" />
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/chk_show_total_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/show_taxes_and_fees" />
+        <LinearLayout
+            style="@style/equally_share_height_within_parent"
+            android:id="@+id/layout_inbound"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/fragment_horizontal_margin"
+            android:paddingStart="@dimen/fragment_horizontal_margin"
+            android:paddingTop="@dimen/fragment_vertical_margin">
 
-        <ListView
-            android:layout_marginTop="@dimen/list_view_prices_vertical_spacing"
-            android:layout_marginStart="@dimen/list_view_prices_horizontal_spacing"
-            android:id="@+id/lst_prices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_routine_inbound"
+                    style="@style/equally_share_width_within_parent"
+                    android:gravity="start" />
+
+                <TextView
+                    android:id="@+id/txt_flight_date_inbound"
+                    style="@style/equally_share_width_within_parent"
+                    android:gravity="end" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/chk_show_total_price_inbound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/show_taxes_and_fees" />
+
+            <ListView
+                android:id="@+id/lst_prices_inbound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/list_view_prices_horizontal_spacing"
+                android:layout_marginTop="@dimen/list_view_prices_vertical_spacing" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

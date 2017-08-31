@@ -26,13 +26,13 @@ public class PriceOneDayPresenterImpl implements PriceOneDayPresenter {
     }
 
     @Override
-    public void getPrices(int year, int month, int day, String srcPort, String dstPort) {
+    public void getPrices(int year, int month, int day, String srcPort, String dstPort, boolean outbound) {
         if (mView == null || mModel == null) {
             return;
         }
 
         mView.showLoadingDialog();
-        mModel.getPrices(mPricesAPI, year, month, day, srcPort, dstPort);
+        mModel.getPrices(mPricesAPI, year, month, day, srcPort, dstPort, outbound);
     }
 
     @Override
@@ -41,12 +41,19 @@ public class PriceOneDayPresenterImpl implements PriceOneDayPresenter {
     }
 
     @Override
-    public void onGetPricesResponse(List<PricePerDay> prices) {
+    public void onGetPricesResponse(List<PricePerDay> prices, boolean outbound) {
         if (mView == null) {
             return;
         }
 
-        mView.updateListViewPrices(prices);
-        mView.dismissLoadingDialog();
+        if (outbound) {
+            mView.updateListViewOutboundPrices(prices);
+        } else {
+            mView.updateListViewInboundPrices(prices);
+        }
+
+        if (mModel.isLoadingDone()) {
+            mView.dismissLoadingDialog();
+        }
     }
 }

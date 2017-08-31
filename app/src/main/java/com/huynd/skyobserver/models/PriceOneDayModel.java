@@ -22,14 +22,20 @@ import retrofit2.Response;
 public class PriceOneDayModel {
     private PriceOneDayPresenter mPresenter;
 
-    private List<PricePerDay> mPrices;
-    private int mNoOfReceivedRequests;
+    private List<PricePerDay> mOutboundPrices;
+    private int mNoOfReceivedOutboundRequests;
+
+    private List<PricePerDay> mInboundPrices;
+    private int mNoOfReceivedInboundRequests;
+
+    private boolean isOutboundLoadingDone, isInboundLoadingDone, willLoadInbound;
 
     public PriceOneDayModel(PriceOneDayPresenter presenter) {
         mPresenter = presenter;
     }
 
-    public void getPrices(PricesAPI mPricesAPI, int year, int month, int day, String srcPort, String dstPort) {
+    public void getPrices(PricesAPI mPricesAPI, int year, int month, int day,
+                          String srcPort, String dstPort, final boolean outbound) {
         Calendar cal = Calendar.getInstance();
         int thisYear = cal.get(Calendar.YEAR);
         int thisMonth = cal.get(Calendar.MONTH) + 1;
@@ -47,9 +53,16 @@ public class PriceOneDayModel {
             String strDay = day < 10 ? "0" + String.valueOf(day) : String.valueOf(day);
 
             PricePerDayBody postData = new PricePerDayBody(strYear, strMonth, strDay);
-
-            mNoOfReceivedRequests = 0;
-            mPrices = new ArrayList<>();
+            if (outbound) {
+                isOutboundLoadingDone = false;
+                mNoOfReceivedOutboundRequests = 0;
+                mOutboundPrices = new ArrayList<>();
+            } else {
+                isInboundLoadingDone = false;
+                willLoadInbound = true;
+                mNoOfReceivedInboundRequests = 0;
+                mInboundPrices = new ArrayList<>();
+            }
 
             for (String carrier : Constants.CARRIERS) {
                 Map<String, String> headers = RequestHelper.getDefaultHeaders();
@@ -80,27 +93,50 @@ public class PriceOneDayModel {
                                             price.setDepartureTime(departureTime);
                                             price.setArrivalTime(arrivalTime);
                                             price.setCarrier(carrier);
-                                            mPrices.add(price);
+                                            if (outbound) {
+                                                mOutboundPrices.add(price);
+                                            } else {
+                                                mInboundPrices.add(price);
+                                            }
                                         }
                                     }
                                 }
-                                returnReceivedPricesWhenFull();
+                                returnReceivedPricesWhenFull(outbound);
                             }
 
                             @Override
                             public void onFailure(Call<List<PricePerDayResponse>> call, Throwable t) {
-                                returnReceivedPricesWhenFull();
+                                returnReceivedPricesWhenFull(outbound);
                             }
                         });
             }
         }
     }
 
-    private void returnReceivedPricesWhenFull() {
-        mNoOfReceivedRequests++;
-        if (mNoOfReceivedRequests == Constants.CARRIERS.length) {
-            Collections.sort(mPrices);
-            mPresenter.onGetPricesResponse(mPrices);
+    private void returnReceivedPricesWhenFull(boolean outbound) {
+        if (outbound) {
+            mNoOfReceivedOutboundRequests++;
+            if (mNoOfReceivedOutboundRequests == Constants.CARRIERS.length) {
+                isOutboundLoadingDone = true;
+                Collections.sort(mOutboundPrices);
+                mPresenter.onGetPricesResponse(mOutboundPrices, outbound);
+            }
+        } else {
+            mNoOfReceivedInboundRequests++;
+            if (mNoOfReceivedInboundRequests == Constants.CARRIERS.length) {
+                isInboundLoadingDone = true;
+                Collections.sort(mInboundPrices);
+                mPresenter.onGetPricesResponse(mInboundPrices, outbound);
+                willLoadInbound = false;
+            }
+        }
+    }
+
+    public boolean isLoadingDone() {
+        if (willLoadInbound) {
+            return isOutboundLoadingDone && isInboundLoadingDone;
+        } else {
+            return isOutboundLoadingDone;
         }
     }
 }

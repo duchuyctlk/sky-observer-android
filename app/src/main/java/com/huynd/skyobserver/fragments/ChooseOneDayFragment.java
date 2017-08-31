@@ -3,11 +3,13 @@ package com.huynd.skyobserver.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
@@ -27,13 +29,14 @@ import java.util.List;
 
 public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayView,
         View.OnClickListener,
-        AdapterView.OnItemSelectedListener {
+        AdapterView.OnItemSelectedListener,
+        CompoundButton.OnCheckedChangeListener {
 
     public static final String TAG = ChooseOneDayFragment.class.getSimpleName();
 
     FragmentChooseOneDayBinding mBinding;
 
-    private ArrayAdapter<AvailableMonth> mSpinnerOutboundMonthAdapter;
+    ArrayAdapter<AvailableMonth> mSpinnerOutboundMonthAdapter;
     private ArrayAdapter<Integer> mSpinnerOutboundDayAdapter;
 
     private ArrayAdapter<AvailableMonth> mSpinnerInboundMonthAdapter;
@@ -79,10 +82,9 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
         mBinding.spinnerMonthOutbound.setOnItemSelectedListener(this);
-
         mBinding.spinnerMonthInbound.setOnItemSelectedListener(this);
-
         mBinding.btnFindFlights.setOnClickListener(this);
+        mBinding.chkReturnTrip.setOnCheckedChangeListener(this);
 
         // initialize MPV pattern
         mPresenter = new ChooseOneDayPresenterImpl(this);
@@ -114,10 +116,22 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
                     flightInfo.putInt("dayOutbound", dayOutbound);
                     flightInfo.putString("srcPort", srcPort.getId());
                     flightInfo.putString("dstPort", dstPort.getId());
+                    flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
+                    if (mBinding.chkReturnTrip.isChecked()) {
+                        AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
+                                mBinding.spinnerMonthInbound.getSelectedItemPosition());
+                        int yearInbound = availableMonthInbound.getYear();
+                        int monthInbound = availableMonthInbound.getMonth();
+                        int dayInbound = mSpinnerInboundDayAdapter.getItem(
+                                mBinding.spinnerDayInbound.getSelectedItemPosition());
+                        flightInfo.putInt("yearInbound", yearInbound);
+                        flightInfo.putInt("monthInbound", monthInbound);
+                        flightInfo.putInt("dayInbound", dayInbound);
+                    }
 
                     ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
                 } catch (ClassCastException e) {
-                    throw new ClassCastException("Activity must implement OnFlightInfoSelectedListener.");
+                    Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
                 }
                 break;
         }
@@ -189,5 +203,11 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mSpinnerDstPortAdapter.addAll(airports);
         mSpinnerDstPortAdapter.notifyDataSetChanged();
         mBinding.spinnerDstPort.setSelection(1);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mBinding.spinnerMonthInbound.setEnabled(isChecked);
+        mBinding.spinnerDayInbound.setEnabled(isChecked);
     }
 }

@@ -38,7 +38,7 @@ public class PriceOneDayViewTest {
                     new PriceOneDayPresenterImpl(fragment, null);
             presenter.setModel(new PriceOneDayModel(presenter));
             mActivity.setFragment(fragment, PriceOneDayFragment.TAG, false);
-            presenter.getPrices(2015, 1, 1, "SGN", "HAN");
+            presenter.getPrices(2015, 1, 1, "SGN", "HAN", true);
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }

@@ -92,7 +92,8 @@ public class PriceOneDayFragmentAndroidTest {
         onView(withId(R.id.btn_get_prices)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
 
-        checkViewWidgetsIsDisplayed(R.id.txt_routine, R.id.txt_flight_date, R.id.chk_show_total_price, R.id.lst_prices);
+        checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
+                R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
     }
 
     @Test
@@ -106,8 +107,8 @@ public class PriceOneDayFragmentAndroidTest {
 
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
 
-        onView(withId(R.id.lst_prices)).check(matches(isEnabled()));
-        onView(withId(R.id.lst_prices)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.lst_prices_outbound)).check(matches(isEnabled()));
+        onView(withId(R.id.lst_prices_outbound)).check(matches(not(isDisplayed())));
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {
@@ -164,7 +165,9 @@ public class PriceOneDayFragmentAndroidTest {
         onView(withId(R.id.spinner_month_outbound)).perform(click());
         onData(anything()).atPosition(2).perform(click());
 
+        onView(withId(R.id.chk_return_trip)).perform(click());
         onView(withId(R.id.btn_find_flights)).perform(click());
-        checkViewWidgetsIsDisplayed(R.id.txt_routine, R.id.txt_flight_date, R.id.chk_show_total_price, R.id.lst_prices);
+        checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
+                R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
     }
 }
