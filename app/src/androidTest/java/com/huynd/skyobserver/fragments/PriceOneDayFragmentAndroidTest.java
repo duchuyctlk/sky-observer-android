@@ -68,6 +68,7 @@ public class PriceOneDayFragmentAndroidTest {
     private MainActivity mActivity;
 
     private ChangeFragmentIdlingResource<PricePerDayFragment> mPricePerDayFragmentIdlingResource;
+    private ChangeFragmentIdlingResource<PriceOneDayFragment> mPriceOneDayFragmentIdlingResource;
 
     @Inject
     PricesAPI mPricesAPI;
@@ -80,6 +81,8 @@ public class PriceOneDayFragmentAndroidTest {
         component.inject(this);
 
         mPricePerDayFragmentIdlingResource = new ChangeFragmentIdlingResource<>(PricePerDayFragment.class, mActivity);
+        mPriceOneDayFragmentIdlingResource = new ChangeFragmentIdlingResource<>(PriceOneDayFragment.class, mActivity);
+
         Espresso.registerIdlingResources(mPricePerDayFragmentIdlingResource);
 
         code_200_ok_response = code_200_ok_response_normal_data;
@@ -97,10 +100,15 @@ public class PriceOneDayFragmentAndroidTest {
         onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
+
+        Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
+
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
 
         checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
                 R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
+
+        Espresso.unregisterIdlingResources(mPriceOneDayFragmentIdlingResource);
     }
 
     @Test
@@ -137,10 +145,14 @@ public class PriceOneDayFragmentAndroidTest {
 
         mockApiResponse(false, true);
 
+        Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
+
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
 
         onView(withId(R.id.lst_prices_outbound)).check(matches(isEnabled()));
         onView(withId(R.id.lst_prices_outbound)).check(matches(not(isDisplayed())));
+
+        Espresso.unregisterIdlingResources(mPriceOneDayFragmentIdlingResource);
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {

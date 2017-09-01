@@ -149,7 +149,7 @@ public class PricePerDayFragmentAndroidTest {
         fragment.mSpinnerYearAdapter = adapter;
 
         try {
-            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(3).perform(click());
         } catch (Exception exception) {
             fail("Unexpected behavior happened.");
         }
