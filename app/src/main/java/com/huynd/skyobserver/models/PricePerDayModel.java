@@ -100,14 +100,18 @@ public class PricePerDayModel {
                                     int minPriceTotal = 1000000000;
                                     int minPriceBeforeTax = 0;
 
+                                    String minCarrier = "";
+
                                     List<PricePerDayResponse> pricePerDayResponses = response.body();
                                     for (int i = 0; i < pricePerDayResponses.size(); i++) {
                                         PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
+                                        String carrier = pricePerDayResponse.getProvider();
                                         List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
                                         PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
                                         if (price != null && price.getPriceTotal() < minPriceTotal) {
                                             minPriceTotal = price.getPriceTotal();
                                             minPriceBeforeTax = price.getPrice();
+                                            minCarrier = carrier;
                                         }
                                     }
 
@@ -120,6 +124,7 @@ public class PricePerDayModel {
                                         minPricePerDay.setDay(day);
                                         minPricePerDay.setPriceTotal(minPriceTotal);
                                         minPricePerDay.setPrice(minPriceBeforeTax);
+                                        minPricePerDay.setCarrier(minCarrier);
                                         mPrices[targetIndex] = minPricePerDay;
                                     }
                                 }

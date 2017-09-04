@@ -41,6 +41,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.huynd.skyobserver.matchers.ImageMatcher.noDrawable;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
@@ -53,8 +55,12 @@ import static org.mockito.Mockito.when;
  */
 
 public class PriceOneDayFragmentAndroidTest {
-    private final String code_200_ok_response = "get_prices_per_day_code_200_ok_response.json";
+    private final String code_200_ok_response_normal_data = "get_prices_per_day_code_200_ok_response.json";
+    private final String code_200_ok_response_prices_with_no_carrier =
+            "get_prices_per_day_code_200_ok_response_prices_with_no_carrier.json";
     private final String code_404_not_found = "code_404_not_found.json";
+
+    private String code_200_ok_response;
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class, true, true);
@@ -62,6 +68,7 @@ public class PriceOneDayFragmentAndroidTest {
     private MainActivity mActivity;
 
     private ChangeFragmentIdlingResource<PricePerDayFragment> mPricePerDayFragmentIdlingResource;
+    private ChangeFragmentIdlingResource<PriceOneDayFragment> mPriceOneDayFragmentIdlingResource;
 
     @Inject
     PricesAPI mPricesAPI;
@@ -74,8 +81,11 @@ public class PriceOneDayFragmentAndroidTest {
         component.inject(this);
 
         mPricePerDayFragmentIdlingResource = new ChangeFragmentIdlingResource<>(PricePerDayFragment.class, mActivity);
+        mPriceOneDayFragmentIdlingResource = new ChangeFragmentIdlingResource<>(PriceOneDayFragment.class, mActivity);
+
         Espresso.registerIdlingResources(mPricePerDayFragmentIdlingResource);
 
+        code_200_ok_response = code_200_ok_response_normal_data;
         setUpPriceOneDayFragment();
     }
 
@@ -87,28 +97,62 @@ public class PriceOneDayFragmentAndroidTest {
     @Test
     public void shouldLoadPricesSuccessfully() throws Exception {
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
+        onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
+
+        Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
+
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
 
         checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
                 R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
+
+        Espresso.unregisterIdlingResources(mPriceOneDayFragmentIdlingResource);
+    }
+
+    @Test
+    public void shouldHidePricesWithNoCarrier() throws Exception {
+        code_200_ok_response = code_200_ok_response_prices_with_no_carrier;
+        mockApiResponse(true, true);
+
+        onView(withId(R.id.spinner_month)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
+
+        onView(withId(R.id.btn_get_prices)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0)
+                .onChildView(withId(R.id.image_view_airline)).check(matches(noDrawable()));
+    }
+
+    @Test
+    public void shouldSetTextViewsEmptyWhenNoData() throws Exception {
+        onView(withId(R.id.spinner_month)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
+
+        onView(withId(R.id.btn_get_prices)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(1)
+                .onChildView(withId(R.id.text_view_day)).check(matches(withText("")));
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(1)
+                .onChildView(withId(R.id.text_view_price)).check(matches(withText("")));
     }
 
     @Test
     public void shouldLoadPricesFailed() throws Exception {
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
+        onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
         mockApiResponse(false, true);
 
+        Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
+
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
 
         onView(withId(R.id.lst_prices_outbound)).check(matches(isEnabled()));
         onView(withId(R.id.lst_prices_outbound)).check(matches(not(isDisplayed())));
+
+        Espresso.unregisterIdlingResources(mPriceOneDayFragmentIdlingResource);
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {
