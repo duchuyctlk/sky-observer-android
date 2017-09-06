@@ -11,9 +11,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by HuyND on 8/15/2017.
@@ -70,42 +71,43 @@ public class PriceOneDayModel {
                         carrier, strYear, strMonth));
                 headers.put("Request_Carrier", carrier);
 
-                mPricesAPI.getPricePerDay(headers, postData, carrier, srcPort, dstPort)
-                        .enqueue(new Callback<List<PricePerDayResponse>>() {
+                Observable<List<PricePerDayResponse>> observableList = mPricesAPI
+                        .getPricePerDay(headers, postData, carrier, srcPort, dstPort);
 
+                observableList
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<List<PricePerDayResponse>>() {
                             @Override
-                            public void onResponse(Call<List<PricePerDayResponse>> call, Response<List<PricePerDayResponse>> response) {
-                                if (response.isSuccessful()) {
-                                    List<PricePerDayResponse> pricePerDayResponses = response.body();
+                            public void accept(List<PricePerDayResponse> pricePerDayResponses) throws Exception {
+                                String departureDate = String.valueOf(pricePerDayResponses.get(0).getDepartureDate());
+                                int day = Integer.parseInt(departureDate.substring(6));
 
-                                    String departureDate = String.valueOf(pricePerDayResponses.get(0).getDepartureDate());
-                                    int day = Integer.parseInt(departureDate.substring(6));
-
-                                    for (int i = 0; i < pricePerDayResponses.size(); i++) {
-                                        PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
-                                        String departureTime = pricePerDayResponse.getDepartureTime();
-                                        String arrivalTime = pricePerDayResponse.getArrivalTime();
-                                        String carrier = pricePerDayResponse.getProvider();
-                                        List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
-                                        PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
-                                        if (price != null) {
-                                            price.setDay(day);
-                                            price.setDepartureTime(departureTime);
-                                            price.setArrivalTime(arrivalTime);
-                                            price.setCarrier(carrier);
-                                            if (outbound) {
-                                                mOutboundPrices.add(price);
-                                            } else {
-                                                mInboundPrices.add(price);
-                                            }
+                                for (int i = 0; i < pricePerDayResponses.size(); i++) {
+                                    PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
+                                    String departureTime = pricePerDayResponse.getDepartureTime();
+                                    String arrivalTime = pricePerDayResponse.getArrivalTime();
+                                    String carrier = pricePerDayResponse.getProvider();
+                                    List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
+                                    PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
+                                    if (price != null) {
+                                        price.setDay(day);
+                                        price.setDepartureTime(departureTime);
+                                        price.setArrivalTime(arrivalTime);
+                                        price.setCarrier(carrier);
+                                        if (outbound) {
+                                            mOutboundPrices.add(price);
+                                        } else {
+                                            mInboundPrices.add(price);
                                         }
                                     }
                                 }
+
                                 returnReceivedPricesWhenFull(outbound);
                             }
-
+                        }, new Consumer<Throwable>() {
                             @Override
-                            public void onFailure(Call<List<PricePerDayResponse>> call, Throwable t) {
+                            public void accept(Throwable throwable) throws Exception {
                                 returnReceivedPricesWhenFull(outbound);
                             }
                         });
