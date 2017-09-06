@@ -27,6 +27,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -137,7 +139,7 @@ public class ChooseOneDayAndroidTest {
     }
 
     private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) {
-        Call<PricePerDayResponse> mockCall = mock(Call.class);
+        Observable<List<PricePerDayResponse>> mockCall = mock(Observable.class);
         doAnswer(new Answer() {
 
             @Override
@@ -164,7 +166,7 @@ public class ChooseOneDayAndroidTest {
                 }
                 return null;
             }
-        }).when(mockCall).enqueue(any(Callback.class));
+        }).when(mockCall).subscribe(any(Consumer.class), any(Consumer.class));
 
         when(mPricesAPI.getPricePerDay(any(Map.class), any(PricePerDayBody.class), any(String.class),
                 any(String.class), any(String.class))).thenReturn(mockCall);
