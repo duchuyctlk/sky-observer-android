@@ -13,6 +13,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -76,8 +77,40 @@ public class PriceOneDayModel {
                 observableList
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new PriceOneDayModelOnNextConsumer(outbound, this),
-                                new PriceOneDayModelOnErrorConsumer(outbound, this));
+                        .subscribe(new Consumer<List<PricePerDayResponse>>() {
+                            @Override
+                            public void accept(List<PricePerDayResponse> pricePerDayResponses) throws Exception {
+                                String departureDate = String.valueOf(pricePerDayResponses.get(0).getDepartureDate());
+                                int day = Integer.parseInt(departureDate.substring(6));
+
+                                for (int i = 0; i < pricePerDayResponses.size(); i++) {
+                                    PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
+                                    String departureTime = pricePerDayResponse.getDepartureTime();
+                                    String arrivalTime = pricePerDayResponse.getArrivalTime();
+                                    String carrier = pricePerDayResponse.getProvider();
+                                    List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
+                                    PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
+                                    if (price != null) {
+                                        price.setDay(day);
+                                        price.setDepartureTime(departureTime);
+                                        price.setArrivalTime(arrivalTime);
+                                        price.setCarrier(carrier);
+                                        if (outbound) {
+                                            mOutboundPrices.add(price);
+                                        } else {
+                                            mInboundPrices.add(price);
+                                        }
+                                    }
+                                }
+
+                                returnReceivedPricesWhenFull(outbound);
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                returnReceivedPricesWhenFull(outbound);
+                            }
+                        });
             }
         }
     }
@@ -107,36 +140,5 @@ public class PriceOneDayModel {
         } else {
             return isOutboundLoadingDone;
         }
-    }
-
-    protected void onNextConsumerAccept(boolean outbound, List<PricePerDayResponse> pricePerDayResponses) throws Exception {
-        String departureDate = String.valueOf(pricePerDayResponses.get(0).getDepartureDate());
-        int day = Integer.parseInt(departureDate.substring(6));
-
-        for (int i = 0; i < pricePerDayResponses.size(); i++) {
-            PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
-            String departureTime = pricePerDayResponse.getDepartureTime();
-            String arrivalTime = pricePerDayResponse.getArrivalTime();
-            String carrier = pricePerDayResponse.getProvider();
-            List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
-            PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
-            if (price != null) {
-                price.setDay(day);
-                price.setDepartureTime(departureTime);
-                price.setArrivalTime(arrivalTime);
-                price.setCarrier(carrier);
-                if (outbound) {
-                    mOutboundPrices.add(price);
-                } else {
-                    mInboundPrices.add(price);
-                }
-            }
-        }
-
-        returnReceivedPricesWhenFull(outbound);
-    }
-
-    protected void onErrorConsumerAccept(boolean outbound, Throwable throwable) throws Exception {
-        returnReceivedPricesWhenFull(outbound);
     }
 }

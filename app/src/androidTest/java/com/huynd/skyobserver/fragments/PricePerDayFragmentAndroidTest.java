@@ -8,7 +8,6 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverAndroidTestApp;
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest;
-import com.huynd.skyobserver.models.PriceOneDayModelOnNextConsumer;
 import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
 import com.huynd.skyobserver.services.PricesAPI;
@@ -17,10 +16,8 @@ import com.huynd.skyobserver.utils.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.internal.stubbing.answers.Returns;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.reactivestreams.Subscriber;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,10 +26,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -49,12 +44,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.fail;
 import static org.hamcrest.Matchers.anything;
-import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -176,7 +167,7 @@ public class PricePerDayFragmentAndroidTest {
     }
 
     private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) {
-        Observable<List<PricePerDayResponse>> mockCall = mock(Observable.class);
+        Call<PricePerDayResponse> mockCall = mock(Call.class);
         doAnswer(new Answer() {
 
             @Override
@@ -203,11 +194,9 @@ public class PricePerDayFragmentAndroidTest {
                 }
                 return null;
             }
-        }).when(mockCall).subscribe(any(PriceOneDayModelOnNextConsumer.class), any(Consumer.class));
+        }).when(mockCall).enqueue(any(Callback.class));
 
         when(mPricesAPI.getPricePerDay(any(Map.class), any(PricePerDayBody.class), any(String.class),
                 any(String.class), any(String.class))).thenReturn(mockCall);
     }
-
-
 }
