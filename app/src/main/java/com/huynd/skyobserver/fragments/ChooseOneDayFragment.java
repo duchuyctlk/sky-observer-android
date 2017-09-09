@@ -7,11 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 
-import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
 import com.huynd.skyobserver.models.Airport;
 import com.huynd.skyobserver.models.AvailableMonth;
@@ -19,18 +16,22 @@ import com.huynd.skyobserver.models.ChooseOneDayModel;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenter;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenterImpl;
 import com.huynd.skyobserver.views.ChooseOneDayView;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
+import com.jakewharton.rxbinding2.widget.RxCompoundButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * Created by HuyND on 8/22/2017.
  */
 
-public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayView,
-        View.OnClickListener,
-        AdapterView.OnItemSelectedListener,
-        CompoundButton.OnCheckedChangeListener {
+public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayView {
 
     public static final String TAG = ChooseOneDayFragment.class.getSimpleName();
 
@@ -81,10 +82,53 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
-        mBinding.spinnerMonthOutbound.setOnItemSelectedListener(this);
-        mBinding.spinnerMonthInbound.setOnItemSelectedListener(this);
-        mBinding.btnFindFlights.setOnClickListener(this);
-        mBinding.chkReturnTrip.setOnCheckedChangeListener(this);
+        RxAdapterView.itemSelections(mBinding.spinnerMonthOutbound)
+                .filter(new Predicate<Integer>() {
+                    @Override
+                    public boolean test(@NonNull Integer position) throws Exception {
+                        return position >= 0 && position < mSpinnerOutboundMonthAdapter.getCount();
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer position) throws Exception {
+                        AvailableMonth selectedMonthYear = mSpinnerOutboundMonthAdapter.getItem(position);
+                        int selectedYear = selectedMonthYear.getYear();
+                        int selectedMonth = selectedMonthYear.getMonth();
+                        mPresenter.onOutboundMonthSelected(selectedYear, selectedMonth);
+                    }
+                });
+
+        RxAdapterView.itemSelections(mBinding.spinnerMonthInbound)
+                .filter(new Predicate<Integer>() {
+                    @Override
+                    public boolean test(@NonNull Integer position) throws Exception {
+                        return position >= 0 && position < mSpinnerInboundMonthAdapter.getCount();
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer position) throws Exception {
+                        AvailableMonth selectedMonthYear = mSpinnerInboundMonthAdapter.getItem(position);
+                        int selectedYear = selectedMonthYear.getYear();
+                        int selectedMonth = selectedMonthYear.getMonth();
+                        mPresenter.onInboundMonthSelected(selectedYear, selectedMonth);
+                    }
+                });
+
+        RxView.clicks(mBinding.btnFindFlights).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                onBtnFindFlightsClick();
+            }
+        });
+
+        RxCompoundButton.checkedChanges(mBinding.chkReturnTrip).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean isChecked) throws Exception {
+                onChkReturnTripCheckedChanged(isChecked);
+            }
+        });
 
         // initialize MPV pattern
         mPresenter = new ChooseOneDayPresenterImpl(this);
@@ -95,69 +139,41 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         return mBinding.getRoot();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_find_flights:
-                try {
-                    AvailableMonth availableMonthOutbound = mSpinnerOutboundMonthAdapter.getItem(
-                            mBinding.spinnerMonthOutbound.getSelectedItemPosition());
-                    int yearOutbound = availableMonthOutbound.getYear();
-                    int monthOutbound = availableMonthOutbound.getMonth();
-                    int dayOutbound = mSpinnerOutboundDayAdapter.getItem(
-                            mBinding.spinnerDayOutbound.getSelectedItemPosition());
+    public void onBtnFindFlightsClick() {
+        try {
+            AvailableMonth availableMonthOutbound = mSpinnerOutboundMonthAdapter.getItem(
+                    mBinding.spinnerMonthOutbound.getSelectedItemPosition());
+            int yearOutbound = availableMonthOutbound.getYear();
+            int monthOutbound = availableMonthOutbound.getMonth();
+            int dayOutbound = mSpinnerOutboundDayAdapter.getItem(
+                    mBinding.spinnerDayOutbound.getSelectedItemPosition());
 
-                    Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
-                    Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
+            Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
+            Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
 
-                    Bundle flightInfo = new Bundle();
-                    flightInfo.putInt("yearOutbound", yearOutbound);
-                    flightInfo.putInt("monthOutbound", monthOutbound);
-                    flightInfo.putInt("dayOutbound", dayOutbound);
-                    flightInfo.putString("srcPort", srcPort.getId());
-                    flightInfo.putString("dstPort", dstPort.getId());
-                    flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
-                    if (mBinding.chkReturnTrip.isChecked()) {
-                        AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
-                                mBinding.spinnerMonthInbound.getSelectedItemPosition());
-                        int yearInbound = availableMonthInbound.getYear();
-                        int monthInbound = availableMonthInbound.getMonth();
-                        int dayInbound = mSpinnerInboundDayAdapter.getItem(
-                                mBinding.spinnerDayInbound.getSelectedItemPosition());
-                        flightInfo.putInt("yearInbound", yearInbound);
-                        flightInfo.putInt("monthInbound", monthInbound);
-                        flightInfo.putInt("dayInbound", dayInbound);
-                    }
+            Bundle flightInfo = new Bundle();
+            flightInfo.putInt("yearOutbound", yearOutbound);
+            flightInfo.putInt("monthOutbound", monthOutbound);
+            flightInfo.putInt("dayOutbound", dayOutbound);
+            flightInfo.putString("srcPort", srcPort.getId());
+            flightInfo.putString("dstPort", dstPort.getId());
+            flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
+            if (mBinding.chkReturnTrip.isChecked()) {
+                AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
+                        mBinding.spinnerMonthInbound.getSelectedItemPosition());
+                int yearInbound = availableMonthInbound.getYear();
+                int monthInbound = availableMonthInbound.getMonth();
+                int dayInbound = mSpinnerInboundDayAdapter.getItem(
+                        mBinding.spinnerDayInbound.getSelectedItemPosition());
+                flightInfo.putInt("yearInbound", yearInbound);
+                flightInfo.putInt("monthInbound", monthInbound);
+                flightInfo.putInt("dayInbound", dayInbound);
+            }
 
-                    ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
-                } catch (ClassCastException e) {
-                    Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
-                }
-                break;
+            ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
+        } catch (ClassCastException e) {
+            Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
         }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()) {
-            case R.id.spinner_month_outbound:
-                AvailableMonth selectedMonthYear = mSpinnerOutboundMonthAdapter.getItem(position);
-                int selectedYear = selectedMonthYear.getYear();
-                int selectedMonth = selectedMonthYear.getMonth();
-                mPresenter.onOutboundMonthSelected(selectedYear, selectedMonth);
-                break;
-            case R.id.spinner_month_inbound:
-                selectedMonthYear = mSpinnerInboundMonthAdapter.getItem(position);
-                selectedYear = selectedMonthYear.getYear();
-                selectedMonth = selectedMonthYear.getMonth();
-                mPresenter.onInboundMonthSelected(selectedYear, selectedMonth);
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     @Override
@@ -205,8 +221,7 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mBinding.spinnerDstPort.setSelection(1);
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    public void onChkReturnTripCheckedChanged(boolean isChecked) {
         mBinding.spinnerMonthInbound.setEnabled(isChecked);
         mBinding.spinnerDayInbound.setEnabled(isChecked);
     }

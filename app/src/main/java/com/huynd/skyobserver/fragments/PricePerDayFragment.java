@@ -7,10 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverApp;
 import com.huynd.skyobserver.adapters.GridViewPricePerDayAdapter;
 import com.huynd.skyobserver.databinding.FragmentPricePerDayBinding;
@@ -21,20 +19,23 @@ import com.huynd.skyobserver.presenters.PricePerDayPresenter;
 import com.huynd.skyobserver.presenters.PricePerDayPresenterImpl;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.views.PricePerDayView;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
+
 /**
  * Created by HuyND on 8/6/2017.
  */
 
-public class PricePerDayFragment extends BaseFragment implements PricePerDayView,
-        View.OnClickListener,
-        AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener {
+public class PricePerDayFragment extends BaseFragment implements PricePerDayView {
 
     @Inject
     PricesAPI mPricesAPI;
@@ -73,8 +74,21 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mSpinnerMonthAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Integer>());
         mBinding.spinnerYear.setAdapter(mSpinnerYearAdapter);
-        mBinding.spinnerYear.setOnItemSelectedListener(this);
         mBinding.spinnerMonth.setAdapter(mSpinnerMonthAdapter);
+        RxAdapterView.itemSelections(mBinding.spinnerYear)
+                .filter(new Predicate<Integer>() {
+                    @Override
+                    public boolean test(@NonNull Integer position) throws Exception {
+                        return position >= 0 && position < mSpinnerYearAdapter.getCount();
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer position) throws Exception {
+                        int selectedYear = mSpinnerYearAdapter.getItem(position);
+                        mPresenter.onYearSelected(selectedYear);
+                    }
+                });
 
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
@@ -83,11 +97,50 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
-        mBinding.btnGetPrices.setOnClickListener(this);
+        RxView.clicks(mBinding.btnGetPrices).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                int year = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
+                int month = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
+
+                Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
+                Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
+
+                mPresenter.onBtnGetPricesClick(year, month, srcPort.getId(), dstPort.getId());
+            }
+        });
 
         mGridViewAdapter = new GridViewPricePerDayAdapter(this.getContext());
         mBinding.gridViewPrice.setAdapter(mGridViewAdapter);
-        mBinding.gridViewPrice.setOnItemClickListener(this);
+
+        RxAdapterView.itemClicks(mBinding.gridViewPrice).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer position) throws Exception {
+                PricePerDay price = mGridViewAdapter.getItem(position);
+                if (price != null) {
+                    try {
+                        int yearOutbound = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
+                        int monthOutbound = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
+                        int dayOutbound = price.getDay();
+
+                        Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
+                        Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
+
+                        Bundle flightInfo = new Bundle();
+                        flightInfo.putBoolean("return", false);
+                        flightInfo.putInt("yearOutbound", yearOutbound);
+                        flightInfo.putInt("monthOutbound", monthOutbound);
+                        flightInfo.putInt("dayOutbound", dayOutbound);
+                        flightInfo.putString("srcPort", srcPort.getId());
+                        flightInfo.putString("dstPort", dstPort.getId());
+
+                        ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
+                    } catch (ClassCastException e) {
+                        Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
+                    }
+                }
+            }
+        });
 
         // initialize MPV pattern
         mPresenter = new PricePerDayPresenterImpl(this, mPricesAPI);
@@ -131,67 +184,5 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mGridViewAdapter.clear();
         mGridViewAdapter.addAll(prices);
         mGridViewAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_get_prices:
-                int year = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
-                int month = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
-
-                Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
-                Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
-
-                mPresenter.onBtnGetPricesClick(year, month, srcPort.getId(), dstPort.getId());
-                break;
-        }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()) {
-            case R.id.spinner_year:
-                int selectedYear = mSpinnerYearAdapter.getItem(position);
-                mPresenter.onYearSelected(selectedYear);
-                break;
-        }
-    }
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()) {
-            case R.id.grid_view_price:
-                PricePerDay price = mGridViewAdapter.getItem(position);
-                if (price != null) {
-                    try {
-                        int yearOutbound = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
-                        int monthOutbound = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
-                        int dayOutbound = price.getDay();
-
-                        Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
-                        Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
-
-                        Bundle flightInfo = new Bundle();
-                        flightInfo.putBoolean("return", false);
-                        flightInfo.putInt("yearOutbound", yearOutbound);
-                        flightInfo.putInt("monthOutbound", monthOutbound);
-                        flightInfo.putInt("dayOutbound", dayOutbound);
-                        flightInfo.putString("srcPort", srcPort.getId());
-                        flightInfo.putString("dstPort", dstPort.getId());
-
-                        ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
-                    } catch (ClassCastException e) {
-                        Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
-                    }
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }
