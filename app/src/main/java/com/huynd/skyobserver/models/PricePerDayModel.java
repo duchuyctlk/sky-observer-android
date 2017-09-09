@@ -12,9 +12,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.huynd.skyobserver.utils.DateUtils.getAvailableMonthsByYears;
 import static com.huynd.skyobserver.utils.DateUtils.getAvailableYears;
@@ -91,48 +92,49 @@ public class PricePerDayModel {
                         carrier, strYear, strMonth));
                 headers.put("Request_Carrier", carrier);
 
-                mPricesAPI.getPricePerDay(headers, postData, carrier, srcPort, dstPort)
-                        .enqueue(new Callback<List<PricePerDayResponse>>() {
+                Observable<List<PricePerDayResponse>> observableList = mPricesAPI
+                        .getPricePerDay(headers, postData, carrier, srcPort, dstPort);
+
+                observableList
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<List<PricePerDayResponse>>() {
                             @Override
-                            public void onResponse(Call<List<PricePerDayResponse>> call,
-                                                   Response<List<PricePerDayResponse>> response) {
-                                if (response.isSuccessful()) {
-                                    int minPriceTotal = 1000000000;
-                                    int minPriceBeforeTax = 0;
+                            public void accept(List<PricePerDayResponse> pricePerDayResponses) throws Exception {
+                                int minPriceTotal = 1000000000;
+                                int minPriceBeforeTax = 0;
 
-                                    String minCarrier = "";
+                                String minCarrier = "";
 
-                                    List<PricePerDayResponse> pricePerDayResponses = response.body();
-                                    for (int i = 0; i < pricePerDayResponses.size(); i++) {
-                                        PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
-                                        String carrier = pricePerDayResponse.getProvider();
-                                        List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
-                                        PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
-                                        if (price != null && price.getPriceTotal() < minPriceTotal) {
-                                            minPriceTotal = price.getPriceTotal();
-                                            minPriceBeforeTax = price.getPrice();
-                                            minCarrier = carrier;
-                                        }
+                                for (int i = 0; i < pricePerDayResponses.size(); i++) {
+                                    PricePerDayResponse pricePerDayResponse = pricePerDayResponses.get(i);
+                                    String carrier = pricePerDayResponse.getProvider();
+                                    List<PricePerDay> priceList = pricePerDayResponse.getPriceList();
+                                    PricePerDay price = priceList != null && priceList.size() > 0 ? priceList.get(0) : null;
+                                    if (price != null && price.getPriceTotal() < minPriceTotal) {
+                                        minPriceTotal = price.getPriceTotal();
+                                        minPriceBeforeTax = price.getPrice();
+                                        minCarrier = carrier;
                                     }
+                                }
 
-                                    String departureDate = String.valueOf(pricePerDayResponses.get(0).getDepartureDate());
-                                    int day = Integer.parseInt(departureDate.substring(6));
+                                String departureDate = String.valueOf(pricePerDayResponses.get(0).getDepartureDate());
+                                int day = Integer.parseInt(departureDate.substring(6));
 
-                                    int targetIndex = day - startDay;
-                                    if (mPrices[targetIndex] == null || mPrices[targetIndex].getPriceTotal() > minPriceTotal) {
-                                        PricePerDay minPricePerDay = new PricePerDay();
-                                        minPricePerDay.setDay(day);
-                                        minPricePerDay.setPriceTotal(minPriceTotal);
-                                        minPricePerDay.setPrice(minPriceBeforeTax);
-                                        minPricePerDay.setCarrier(minCarrier);
-                                        mPrices[targetIndex] = minPricePerDay;
-                                    }
+                                int targetIndex = day - startDay;
+                                if (mPrices[targetIndex] == null || mPrices[targetIndex].getPriceTotal() > minPriceTotal) {
+                                    PricePerDay minPricePerDay = new PricePerDay();
+                                    minPricePerDay.setDay(day);
+                                    minPricePerDay.setPriceTotal(minPriceTotal);
+                                    minPricePerDay.setPrice(minPriceBeforeTax);
+                                    minPricePerDay.setCarrier(minCarrier);
+                                    mPrices[targetIndex] = minPricePerDay;
                                 }
                                 returnReceivedPricesWhenFull();
                             }
-
+                        }, new Consumer<Throwable>() {
                             @Override
-                            public void onFailure(Call<List<PricePerDayResponse>> call, Throwable t) {
+                            public void accept(Throwable throwable) throws Exception {
                                 returnReceivedPricesWhenFull();
                             }
                         });

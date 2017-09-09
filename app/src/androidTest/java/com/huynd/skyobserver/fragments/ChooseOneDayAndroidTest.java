@@ -17,8 +17,6 @@ import com.huynd.skyobserver.utils.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,9 +25,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -41,11 +38,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static io.reactivex.Observable.error;
+import static io.reactivex.Observable.just;
 import static junit.framework.Assert.fail;
 import static org.hamcrest.Matchers.anything;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -136,37 +133,30 @@ public class ChooseOneDayAndroidTest {
         }
     }
 
-    private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) {
-        Call<PricePerDayResponse> mockCall = mock(Call.class);
-        doAnswer(new Answer() {
+    private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) throws Exception {
+        Observable<List<PricePerDayResponse>> observableList = null;
 
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                Callback<List<PricePerDayResponse>> callback =
-                        (Callback<List<PricePerDayResponse>>) invocationOnMock.getArguments()[0];
-                if (requestSuccess) {
-                    PricePerDayResponse[] pricePerDayResponses;
-                    Response<List<PricePerDayResponse>> response;
-                    if (responseSuccess) {
-                        pricePerDayResponses = new Gson().fromJson(FileUtils.getStringFromAssets(
+        if (requestSuccess) {
+            PricePerDayResponse[] pricePerDayResponses;
+            Response<List<PricePerDayResponse>> response;
+            if (responseSuccess) {
+                pricePerDayResponses = new Gson().fromJson(FileUtils.getStringFromAssets(
+                        getInstrumentation().getContext().getAssets(),
+                        code_200_ok_response), PricePerDayResponse[].class);
+                observableList = just(Arrays.asList(pricePerDayResponses));
+            } else {
+                response = Response.error(404,
+                        ResponseBody.create(null, FileUtils.getStringFromAssets(
                                 getInstrumentation().getContext().getAssets(),
-                                code_200_ok_response), PricePerDayResponse[].class);
-                        response = Response.success(Arrays.asList(pricePerDayResponses));
-                    } else {
-                        response = Response.error(404,
-                                ResponseBody.create(null, FileUtils.getStringFromAssets(
-                                        getInstrumentation().getContext().getAssets(),
-                                        code_404_not_found)));
-                    }
-                    callback.onResponse(null, response);
-                } else {
-                    callback.onFailure(null, new Exception("Exception"));
-                }
-                return null;
+                                code_404_not_found)));
+
+                observableList = just(response.body());
             }
-        }).when(mockCall).enqueue(any(Callback.class));
+        } else {
+            observableList = error(new Exception("Exception"));
+        }
 
         when(mPricesAPI.getPricePerDay(any(Map.class), any(PricePerDayBody.class), any(String.class),
-                any(String.class), any(String.class))).thenReturn(mockCall);
+                any(String.class), any(String.class))).thenReturn(observableList);
     }
 }
