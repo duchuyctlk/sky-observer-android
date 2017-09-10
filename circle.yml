@@ -1,7 +1,8 @@
 machine:
   environment:
     BUILD_PATH: $HOME/$CIRCLE_PROJECT_REPONAME/app/build
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+    # fix as mentioned in https://circleci.com/docs/1.0/oom/#out-of-memory-errors-in-android-builds
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
     CI_BUILD_NUMBER: $CIRCLE_BUILD_NUM
     CI_BUILD_URL: $CIRCLE_BUILD_URL
