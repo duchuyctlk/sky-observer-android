@@ -118,20 +118,6 @@ public class PricePerDayFragmentAndroidTest {
     }
 
     @Test
-    public void shouldCoverOnNothingSelected() throws Exception {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ((PricePerDayFragment) mActivity.getCurrentFragment()).updateAvailYears(new ArrayList<Integer>());
-                } catch (Exception exception) {
-                    fail("Unexpected behavior happened.");
-                }
-            }
-        });
-    }
-
-    @Test
     public void shouldClassCatchCastException() throws Exception {
         mockApiResponse(true, true);
 
@@ -164,7 +150,7 @@ public class PricePerDayFragmentAndroidTest {
     }
 
     private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) throws Exception {
-        Observable<List<PricePerDayResponse>> observableList = null;
+        Observable<List<PricePerDayResponse>> observableList;
 
         if (requestSuccess) {
             PricePerDayResponse[] pricePerDayResponses;

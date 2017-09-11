@@ -18,7 +18,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -100,21 +99,6 @@ public class ChooseOneDayAndroidTest {
     }
 
     @Test
-    public void shouldCoverOnNothingSelected() throws Exception {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ((ChooseOneDayFragment) mActivity.getCurrentFragment())
-                            .updateAvailOutBoundMonths(new ArrayList<AvailableMonth>());
-                } catch (Exception exception) {
-                    fail("Unexpected behavior happened.");
-                }
-            }
-        });
-    }
-
-    @Test
     public void shouldClassCatchCastException() throws Exception {
         ChooseOneDayFragment fragment = (ChooseOneDayFragment) mActivity.getCurrentFragment();
         ArrayAdapter<AvailableMonth> adapter = spy(fragment.mSpinnerOutboundMonthAdapter);
@@ -134,7 +118,7 @@ public class ChooseOneDayAndroidTest {
     }
 
     private void mockApiResponse(final boolean requestSuccess, final boolean responseSuccess) throws Exception {
-        Observable<List<PricePerDayResponse>> observableList = null;
+        Observable<List<PricePerDayResponse>> observableList;
 
         if (requestSuccess) {
             PricePerDayResponse[] pricePerDayResponses;
