@@ -2,7 +2,8 @@
 <resources>
     <string-array
         name="array_of_navigation_drawer_item_title">
-        <item>Price per day</item>
         <item>Price per month</item>
+        <item>Price per day</item>
+        <item>Cheapest price per day</item>
     </string-array>
 </resources>

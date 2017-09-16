@@ -27,6 +27,8 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 
+import static com.huynd.skyobserver.utils.Constants.BUNDLE_KEY_FLIGHT_WITH_CHEAPEST_PRICE;
+
 /**
  * Created by HuyND on 8/22/2017.
  */
@@ -49,6 +51,8 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
     private ChooseOneDayPresenter mPresenter;
     private ChooseOneDayModel mModel;
 
+    private boolean mFlightWithCheapestPrice = false;
+
     public static Fragment newInstance() {
         return new ChooseOneDayFragment();
     }
@@ -56,6 +60,12 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // get data from intent
+        Bundle args = getArguments();
+        if (args != null) {
+            mFlightWithCheapestPrice = args.getBoolean(BUNDLE_KEY_FLIGHT_WITH_CHEAPEST_PRICE);
+        }
+
         // initialize UI widgets
         mBinding = FragmentChooseOneDayBinding.inflate(inflater, container, false);
 
@@ -77,10 +87,16 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
-        mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Airport>());
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
-        mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
+
+        if (mFlightWithCheapestPrice) {
+            mBinding.layoutDestinationPort.setVisibility(View.GONE);
+        } else {
+            mBinding.layoutDestinationPort.setVisibility(View.VISIBLE);
+            mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
+                    android.R.layout.simple_list_item_1, new ArrayList<Airport>());
+            mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
+        }
 
         RxAdapterView.itemSelections(mBinding.spinnerMonthOutbound)
                 .filter(new Predicate<Integer>() {
@@ -141,39 +157,53 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
     public void onBtnFindFlightsClick() {
         try {
-            AvailableMonth availableMonthOutbound = mSpinnerOutboundMonthAdapter.getItem(
-                    mBinding.spinnerMonthOutbound.getSelectedItemPosition());
-            int yearOutbound = availableMonthOutbound.getYear();
-            int monthOutbound = availableMonthOutbound.getMonth();
-            int dayOutbound = mSpinnerOutboundDayAdapter.getItem(
-                    mBinding.spinnerDayOutbound.getSelectedItemPosition());
+            Bundle flightInfo = getFlightDates();
 
             Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
-            Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
-
-            Bundle flightInfo = new Bundle();
-            flightInfo.putInt("yearOutbound", yearOutbound);
-            flightInfo.putInt("monthOutbound", monthOutbound);
-            flightInfo.putInt("dayOutbound", dayOutbound);
             flightInfo.putString("srcPort", srcPort.getId());
-            flightInfo.putString("dstPort", dstPort.getId());
-            flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
-            if (mBinding.chkReturnTrip.isChecked()) {
-                AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
-                        mBinding.spinnerMonthInbound.getSelectedItemPosition());
-                int yearInbound = availableMonthInbound.getYear();
-                int monthInbound = availableMonthInbound.getMonth();
-                int dayInbound = mSpinnerInboundDayAdapter.getItem(
-                        mBinding.spinnerDayInbound.getSelectedItemPosition());
-                flightInfo.putInt("yearInbound", yearInbound);
-                flightInfo.putInt("monthInbound", monthInbound);
-                flightInfo.putInt("dayInbound", dayInbound);
-            }
 
-            ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
+            if  (mFlightWithCheapestPrice) {
+                ((OnFlightWithCheapestPriceInfoSelectedListener) getActivity()).OnFlightWithCheapestPriceInfoSelected(flightInfo);
+            } else {
+                Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
+                flightInfo.putString("dstPort", dstPort.getId());
+
+                ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
+            }
         } catch (ClassCastException e) {
             Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
         }
+    }
+
+    private Bundle getFlightDates() {
+        Bundle flightInfo = new Bundle();
+
+        // outbound date
+        AvailableMonth availableMonthOutbound = mSpinnerOutboundMonthAdapter.getItem(
+                mBinding.spinnerMonthOutbound.getSelectedItemPosition());
+        int yearOutbound = availableMonthOutbound.getYear();
+        int monthOutbound = availableMonthOutbound.getMonth();
+        int dayOutbound = mSpinnerOutboundDayAdapter.getItem(
+                mBinding.spinnerDayOutbound.getSelectedItemPosition());
+        flightInfo.putInt("yearOutbound", yearOutbound);
+        flightInfo.putInt("monthOutbound", monthOutbound);
+        flightInfo.putInt("dayOutbound", dayOutbound);
+
+        // inbound date
+        flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
+        if (mBinding.chkReturnTrip.isChecked()) {
+            AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
+                    mBinding.spinnerMonthInbound.getSelectedItemPosition());
+            int yearInbound = availableMonthInbound.getYear();
+            int monthInbound = availableMonthInbound.getMonth();
+            int dayInbound = mSpinnerInboundDayAdapter.getItem(
+                    mBinding.spinnerDayInbound.getSelectedItemPosition());
+            flightInfo.putInt("yearInbound", yearInbound);
+            flightInfo.putInt("monthInbound", monthInbound);
+            flightInfo.putInt("dayInbound", dayInbound);
+        }
+
+        return flightInfo;
     }
 
     @Override
@@ -215,10 +245,12 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mSpinnerSrcPortAdapter.notifyDataSetChanged();
         mBinding.spinnerSrcPort.setSelection(0);
 
-        mSpinnerDstPortAdapter.clear();
-        mSpinnerDstPortAdapter.addAll(airports);
-        mSpinnerDstPortAdapter.notifyDataSetChanged();
-        mBinding.spinnerDstPort.setSelection(1);
+        if (!mFlightWithCheapestPrice) {
+            mSpinnerDstPortAdapter.clear();
+            mSpinnerDstPortAdapter.addAll(airports);
+            mSpinnerDstPortAdapter.notifyDataSetChanged();
+            mBinding.spinnerDstPort.setSelection(1);
+        }
     }
 
     public void onChkReturnTripCheckedChanged(boolean isChecked) {

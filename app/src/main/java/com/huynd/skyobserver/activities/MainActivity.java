@@ -14,14 +14,20 @@ import com.huynd.skyobserver.adapters.NavigationDrawerListAdapter;
 import com.huynd.skyobserver.databinding.ActivityMainBinding;
 import com.huynd.skyobserver.fragments.ChooseOneDayFragment;
 import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
+import com.huynd.skyobserver.fragments.OnFlightWithCheapestPriceInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
+import static com.huynd.skyobserver.utils.Constants.BUNDLE_KEY_FLIGHT_WITH_CHEAPEST_PRICE;
+import static com.huynd.skyobserver.utils.Constants.CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITHOUT_DST;
+import static com.huynd.skyobserver.utils.Constants.CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITH_DST;
+
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
-        OnFlightInfoSelectedListener {
+        OnFlightInfoSelectedListener,
+        OnFlightWithCheapestPriceInfoSelectedListener {
 
     ActivityMainBinding binding;
 
@@ -82,7 +88,18 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
                 setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG, true);
                 break;
             case 1:
-                setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG, true);
+                setFragment(ChooseOneDayFragment.newInstance(),
+                        ChooseOneDayFragment.TAG + CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITH_DST, true);
+                break;
+            case 2:
+                Bundle flightInfo = new Bundle();
+                flightInfo.putBoolean(BUNDLE_KEY_FLIGHT_WITH_CHEAPEST_PRICE, true);
+
+                ChooseOneDayFragment fragmentFlightWithCheapestPrice =
+                        (ChooseOneDayFragment) ChooseOneDayFragment.newInstance();
+                fragmentFlightWithCheapestPrice.setArguments(flightInfo);
+                setFragment(fragmentFlightWithCheapestPrice,
+                        ChooseOneDayFragment.TAG + CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITHOUT_DST, true);
                 break;
         }
 
@@ -97,5 +114,10 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
         fragment.setArguments(flightInfo);
         setFragment(fragment, PriceOneDayFragment.TAG, false);
+    }
+
+    @Override
+    public void OnFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
+        // TODO
     }
 }
