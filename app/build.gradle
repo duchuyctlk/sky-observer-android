@@ -17,6 +17,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.huynd.skyobserver.AndroidTestRunner"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "8ea0cedf08c94aeda28932f1e409ac50"]
+
         buildConfigField "String", "API_URL", "\"https://www.atadi.vn/sapi/getprices/\""
         buildConfigField "String", "ICON_URL", "\"https://avia.vn/assets/img/uploaded/airlines/logos/\""
 
@@ -94,6 +96,9 @@ dependencies {
 
     // Glide
     compile 'com.github.bumptech.glide:glide:3.6.1'
+
+    // hockeyapp
+    compile 'net.hockeyapp.android:HockeySDK:5.0.1'
 
     // mockito
     androidTestCompile "org.mockito:mockito-core:2.0.5-beta"

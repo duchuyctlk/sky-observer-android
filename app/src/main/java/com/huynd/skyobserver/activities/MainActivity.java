@@ -24,6 +24,9 @@ import static com.huynd.skyobserver.utils.Constants.BUNDLE_KEY_FLIGHT_WITH_CHEAP
 import static com.huynd.skyobserver.utils.Constants.CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITHOUT_DST;
 import static com.huynd.skyobserver.utils.Constants.CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITH_DST;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
         OnFlightInfoSelectedListener,
@@ -46,6 +49,26 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         setupNavigationDrawer();
 
         mNavigationDrawerPresenter.onItemClick(0);
+
+        checkForUpdates();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkForCrashes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterManagers();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterManagers();
     }
 
     private void setupNavigationDrawer() {
@@ -119,5 +142,17 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     @Override
     public void OnFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
         // TODO
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
+    }
+
+    private void checkForUpdates() {
+        UpdateManager.register(this);
+    }
+
+    private void unregisterManagers() {
+        UpdateManager.unregister();
     }
 }
