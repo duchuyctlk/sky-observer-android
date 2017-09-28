@@ -2,18 +2,33 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
     <dimen name="navigation_drawer_width">275sp</dimen>
     <dimen name="navigation_drawer_item_horizontal_padding">25sp</dimen>
+
     <dimen name="fragment_horizontal_margin">10dp</dimen>
     <dimen name="fragment_vertical_margin">10dp</dimen>
+
     <dimen name="grid_view_price_vertical_spacing">10dp</dimen>
     <dimen name="grid_view_price_horizontal_spacing">10dp</dimen>
-    <dimen name="week_day_title_margin_top">4dp</dimen>
     <dimen name="grid_view_price_per_day_margin">5dp</dimen>
-    <dimen name="image_view_price_per_day_airline_width">50dp</dimen>
+
+    <dimen name="week_day_title_margin_top">4dp</dimen>
+
     <dimen name="price_per_day_spinners_horizontal_margin">10dp</dimen>
+
     <dimen name="list_view_prices_vertical_spacing">5dp</dimen>
     <dimen name="list_view_prices_horizontal_spacing">5dp</dimen>
+
     <dimen name="text_view_flight_direction_padding_top">10dp</dimen>
     <dimen name="text_view_flight_direction_padding_bottom">5dp</dimen>
+
+    <dimen name="image_view_price_per_day_airline_width">50dp</dimen>
+
+    <dimen name="image_view_expand_collapse_width">50dp</dimen>
+
+    <dimen name="image_view_destination_width">150dp</dimen>
+    <dimen name="image_view_destination_height">100dp</dimen>
+
+    <dimen name="list_view_best_price_horizontal_spacing">25dp</dimen>
 </resources>

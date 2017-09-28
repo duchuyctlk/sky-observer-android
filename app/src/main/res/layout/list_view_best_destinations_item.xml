@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/list_view_prices_vertical_spacing"
+    android:paddingEnd="@dimen/list_view_best_price_horizontal_spacing"
+    android:paddingStart="@dimen/list_view_best_price_horizontal_spacing"
+    android:paddingTop="@dimen/list_view_prices_vertical_spacing">
+
+    <ImageView
+        android:id="@+id/image_view_expand_collapse"
+        android:layout_width="@dimen/image_view_expand_collapse_width"
+        android:layout_height="@dimen/image_view_expand_collapse_width"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/image_view_expand_collapse_string_place_holder"
+        android:src="@drawable/icon_down" />
+
+    <TextView
+        android:id="@+id/txt_price_per_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/list_view_best_price_horizontal_spacing"
+        android:layout_toStartOf="@id/image_view_expand_collapse"
+        android:text="@string/price_place_holder"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/txt_price_per_country"
+        android:text="@string/country_place_holder"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -27,4 +27,9 @@
     <string name="inbound_date">Inbound date:</string>
     <string name="find_flights">Find Flights</string>
     <string name="return_trip">Return trip</string>
+    <string name="string_place_holder">String place holder</string>
+    <string name="image_view_expand_collapse_string_place_holder">Expand</string>
+    <string name="country_place_holder">Viet Nam</string>
+    <string name="price_place_holder">from $50</string>
+    <string name="image_view_destination_string_place_holder">Destination</string>
 </resources>
