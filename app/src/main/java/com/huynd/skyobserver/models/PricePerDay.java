@@ -2,6 +2,7 @@ package com.huynd.skyobserver.models;
 
 import com.google.gson.annotations.SerializedName;
 import com.huynd.skyobserver.utils.DateUtils;
+import com.huynd.skyobserver.utils.PriceComparator;
 
 import java.util.Date;
 
@@ -9,7 +10,7 @@ import java.util.Date;
  * Created by HuyND on 8/7/2017.
  */
 
-public class PricePerDay implements Comparable<PricePerDay> {
+public class PricePerDay {
     @SerializedName("priceTotal")
     private int priceTotal;
 
@@ -70,10 +71,5 @@ public class PricePerDay implements Comparable<PricePerDay> {
 
     public void setCarrier(String carrier) {
         this.carrier = carrier;
-    }
-
-    @Override
-    public int compareTo(PricePerDay price) {
-        return getDepartureTime().compareTo(price.getDepartureTime());
     }
 }
