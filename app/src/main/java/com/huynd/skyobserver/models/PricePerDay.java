@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by HuyND on 8/7/2017.
  */
 
-public class PricePerDay implements Comparable<PricePerDay> {
+public class PricePerDay {
     @SerializedName("priceTotal")
     private int priceTotal;
 
@@ -71,12 +71,5 @@ public class PricePerDay implements Comparable<PricePerDay> {
 
     public void setCarrier(String carrier) {
         this.carrier = carrier;
-    }
-
-    @Override
-    public int compareTo(PricePerDay price) {
-        PriceComparator priceComparator = PriceComparator.getInstance();
-        priceComparator.setSortOrder(PriceComparator.SortOrder.DEPART_EARLIEST);
-        return priceComparator.compare(this, price);
     }
 }

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/file"
+        android:id="@+id/menu_item_sort_order"
         android:icon="@drawable/sort_icon"
         android:title="@string/sorting_order"
         app:showAsAction="ifRoom">
