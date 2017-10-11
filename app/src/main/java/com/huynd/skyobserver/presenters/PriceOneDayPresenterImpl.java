@@ -22,16 +22,14 @@ public class PriceOneDayPresenterImpl implements
     public PriceOneDayPresenterImpl(PriceOneDayView view, PricesAPI pricesAPI) {
         mView = view;
         mPricesAPI = pricesAPI;
-    }
 
-    public void setModel(PriceOneDayModel model) {
-        mModel = model;
+        mModel = new PriceOneDayModel();
         mModel.setPriceOneDayModelEventListener(this);
     }
 
     @Override
     public void getPrices(int year, int month, int day, String srcPort, String dstPort, boolean outbound) {
-        if (mView == null || mModel == null) {
+        if (mView == null) {
             return;
         }
 

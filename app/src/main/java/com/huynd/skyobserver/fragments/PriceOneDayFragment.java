@@ -12,7 +12,6 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverApp;
 import com.huynd.skyobserver.adapters.ListViewPriceOneDayAdapter;
 import com.huynd.skyobserver.databinding.FragmentPriceOneDayBinding;
-import com.huynd.skyobserver.models.PriceOneDayModel;
 import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenter;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenterImpl;
@@ -39,7 +38,6 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
     ListViewPriceOneDayAdapter mListViewInboundAdapter;
 
     private PriceOneDayPresenter mPresenter;
-    private PriceOneDayModel mModel;
 
     public static Fragment newInstance() {
         return new PriceOneDayFragment();
@@ -85,8 +83,6 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
 
         // initialize MPV pattern
         mPresenter = new PriceOneDayPresenterImpl(this, mPricesAPI);
-        mModel = new PriceOneDayModel(mPresenter);
-        mPresenter.setModel(mModel);
 
         if (!TextUtils.isEmpty(srcPort) && !TextUtils.isEmpty(dstPort)) {
             mPresenter.getPrices(yearOutbound, monthOutbound, dayOutbound, srcPort, dstPort, true);
