@@ -17,7 +17,8 @@ public class PriceComparator implements Comparator<PricePerDay> {
         TOTAL_PRICE_HIGHEST,
         DEPART_EARLIEST,
         DEPART_LATEST,
-        AIRLINES
+        AIRLINES,
+        UNKNOWN
     }
 
     private static PriceComparator sInstance;
