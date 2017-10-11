@@ -2,6 +2,7 @@ package com.huynd.skyobserver.models;
 
 import com.google.gson.annotations.SerializedName;
 import com.huynd.skyobserver.utils.DateUtils;
+import com.huynd.skyobserver.utils.PriceComparator;
 
 import java.util.Date;
 
@@ -74,6 +75,8 @@ public class PricePerDay implements Comparable<PricePerDay> {
 
     @Override
     public int compareTo(PricePerDay price) {
-        return getDepartureTime().compareTo(price.getDepartureTime());
+        PriceComparator priceComparator = PriceComparator.getInstance();
+        priceComparator.setSortOrder(PriceComparator.SortOrder.DEPART_EARLIEST);
+        return priceComparator.compare(this, price);
     }
 }

@@ -2,6 +2,7 @@ package com.huynd.skyobserver.models;
 
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.Constants;
+import com.huynd.skyobserver.utils.PriceComparator;
 import com.huynd.skyobserver.utils.RequestHelper;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class PriceOneDayModel {
 
     private boolean isOutboundLoadingDone, isInboundLoadingDone, willLoadInbound;
 
+    private PriceComparator.SortOrder mSortOrder = PriceComparator.SortOrder.DEPART_EARLIEST;
+
     public void getPrices(PricesAPI mPricesAPI, int year, int month, int day,
                           String srcPort, String dstPort, final boolean outbound) {
         Calendar cal = Calendar.getInstance();
@@ -58,6 +61,7 @@ public class PriceOneDayModel {
             String strDay = day < 10 ? "0" + String.valueOf(day) : String.valueOf(day);
 
             PricePerDayBody postData = new PricePerDayBody(strYear, strMonth, strDay);
+
             if (outbound) {
                 isOutboundLoadingDone = false;
                 mNoOfReceivedOutboundRequests = 0;
@@ -124,7 +128,9 @@ public class PriceOneDayModel {
             mNoOfReceivedOutboundRequests++;
             if (mNoOfReceivedOutboundRequests == Constants.CARRIERS.length) {
                 isOutboundLoadingDone = true;
-                Collections.sort(mOutboundPrices);
+                PriceComparator priceComparator = PriceComparator.getInstance();
+                priceComparator.setSortOrder(mSortOrder);
+                Collections.sort(mOutboundPrices, priceComparator);
                 if (mListener != null) {
                     mListener.onGetPricesResponse(mOutboundPrices, outbound);
                 }
@@ -133,7 +139,9 @@ public class PriceOneDayModel {
             mNoOfReceivedInboundRequests++;
             if (mNoOfReceivedInboundRequests == Constants.CARRIERS.length) {
                 isInboundLoadingDone = true;
-                Collections.sort(mInboundPrices);
+                PriceComparator priceComparator = PriceComparator.getInstance();
+                priceComparator.setSortOrder(mSortOrder);
+                Collections.sort(mInboundPrices, priceComparator);
                 if (mListener != null) {
                     mListener.onGetPricesResponse(mInboundPrices, outbound);
                 }
@@ -147,6 +155,23 @@ public class PriceOneDayModel {
             return isOutboundLoadingDone && isInboundLoadingDone;
         } else {
             return isOutboundLoadingDone;
+        }
+    }
+
+    public void setSortOrder(PriceComparator.SortOrder sortOrder) {
+        mSortOrder = sortOrder;
+        PriceComparator priceComparator = PriceComparator.getInstance();
+        priceComparator.setSortOrder(mSortOrder);
+
+        if (mListener != null) {
+            if (mOutboundPrices != null && mOutboundPrices.size() > 0) {
+                Collections.sort(mOutboundPrices, priceComparator);
+                mListener.onGetPricesResponse(mOutboundPrices, true);
+            }
+            if (mInboundPrices != null && mInboundPrices.size() > 0) {
+                Collections.sort(mInboundPrices, priceComparator);
+                mListener.onGetPricesResponse(mInboundPrices, false);
+            }
         }
     }
 

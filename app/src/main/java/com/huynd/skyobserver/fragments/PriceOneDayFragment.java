@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +19,7 @@ import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenter;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenterImpl;
 import com.huynd.skyobserver.services.PricesAPI;
+import com.huynd.skyobserver.utils.PriceComparator;
 import com.huynd.skyobserver.views.PriceOneDayView;
 
 import java.util.List;
@@ -41,6 +45,13 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
 
     public static Fragment newInstance() {
         return new PriceOneDayFragment();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -93,6 +104,37 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
         }
 
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_price_one_day, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sorting_order_total_price_lowest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.TOTAL_PRICE_LOWEST);
+                break;
+            case R.id.sorting_order_total_price_highest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.TOTAL_PRICE_HIGHEST);
+                break;
+            case R.id.sorting_order_depart_earliest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.DEPART_EARLIEST);
+                break;
+            case R.id.sorting_order_depart_latest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.DEPART_LATEST);
+                break;
+            case R.id.sorting_order_airlines:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.AIRLINES);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     @Override

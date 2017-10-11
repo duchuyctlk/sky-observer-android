@@ -3,6 +3,7 @@ package com.huynd.skyobserver.presenters;
 import com.huynd.skyobserver.models.PriceOneDayModel;
 import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.services.PricesAPI;
+import com.huynd.skyobserver.utils.PriceComparator;
 import com.huynd.skyobserver.views.PriceOneDayView;
 
 import java.util.List;
@@ -35,6 +36,11 @@ public class PriceOneDayPresenterImpl implements
 
         mView.showLoadingDialog();
         mModel.getPrices(mPricesAPI, year, month, day, srcPort, dstPort, outbound);
+    }
+
+    @Override
+    public void setSortOrder(PriceComparator.SortOrder sortOrder) {
+        mModel.setSortOrder(sortOrder);
     }
 
     @Override
