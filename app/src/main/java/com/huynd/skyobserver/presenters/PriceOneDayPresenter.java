@@ -13,8 +13,4 @@ public interface PriceOneDayPresenter {
     void setModel(PriceOneDayModel model);
 
     void getPrices(int year, int month, int day, String srcPort, String dstPort, boolean outbound);
-
-    void notifyInvalidDate();
-
-    void onGetPricesResponse(List<PricePerDay> prices, boolean outbound);
 }

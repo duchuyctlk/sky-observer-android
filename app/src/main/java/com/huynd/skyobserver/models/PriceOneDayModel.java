@@ -1,6 +1,5 @@
 package com.huynd.skyobserver.models;
 
-import com.huynd.skyobserver.presenters.PriceOneDayPresenter;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.Constants;
 import com.huynd.skyobserver.utils.RequestHelper;
@@ -21,7 +20,14 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class PriceOneDayModel {
-    private PriceOneDayPresenter mPresenter;
+
+    public interface PriceOneDayModelEventListener {
+        void notifyInvalidDate();
+
+        void onGetPricesResponse(List<PricePerDay> prices, boolean outbound);
+    }
+
+    private PriceOneDayModelEventListener mListener;
 
     private List<PricePerDay> mOutboundPrices;
     private int mNoOfReceivedOutboundRequests;
@@ -30,10 +36,6 @@ public class PriceOneDayModel {
     private int mNoOfReceivedInboundRequests;
 
     private boolean isOutboundLoadingDone, isInboundLoadingDone, willLoadInbound;
-
-    public PriceOneDayModel(PriceOneDayPresenter presenter) {
-        mPresenter = presenter;
-    }
 
     public void getPrices(PricesAPI mPricesAPI, int year, int month, int day,
                           String srcPort, String dstPort, final boolean outbound) {
@@ -47,7 +49,9 @@ public class PriceOneDayModel {
                 || (year == thisYear && month == thisMonth && day < today);
 
         if (invalidDate) {
-            mPresenter.notifyInvalidDate();
+            if (mListener != null) {
+                mListener.notifyInvalidDate();
+            }
         } else {
             String strYear = String.valueOf(year);
             String strMonth = month < 10 ? "0" + String.valueOf(month) : String.valueOf(month);
@@ -121,14 +125,18 @@ public class PriceOneDayModel {
             if (mNoOfReceivedOutboundRequests == Constants.CARRIERS.length) {
                 isOutboundLoadingDone = true;
                 Collections.sort(mOutboundPrices);
-                mPresenter.onGetPricesResponse(mOutboundPrices, outbound);
+                if (mListener != null) {
+                    mListener.onGetPricesResponse(mOutboundPrices, outbound);
+                }
             }
         } else {
             mNoOfReceivedInboundRequests++;
             if (mNoOfReceivedInboundRequests == Constants.CARRIERS.length) {
                 isInboundLoadingDone = true;
                 Collections.sort(mInboundPrices);
-                mPresenter.onGetPricesResponse(mInboundPrices, outbound);
+                if (mListener != null) {
+                    mListener.onGetPricesResponse(mInboundPrices, outbound);
+                }
                 willLoadInbound = false;
             }
         }
@@ -140,5 +148,9 @@ public class PriceOneDayModel {
         } else {
             return isOutboundLoadingDone;
         }
+    }
+
+    public void setPriceOneDayModelEventListener(PriceOneDayModelEventListener listener) {
+        mListener = listener;
     }
 }

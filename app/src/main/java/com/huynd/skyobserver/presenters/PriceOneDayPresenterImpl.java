@@ -11,7 +11,10 @@ import java.util.List;
  * Created by HuyND on 8/15/2017.
  */
 
-public class PriceOneDayPresenterImpl implements PriceOneDayPresenter {
+public class PriceOneDayPresenterImpl implements
+        PriceOneDayPresenter,
+        PriceOneDayModel.PriceOneDayModelEventListener {
+
     private PriceOneDayView mView;
     private PriceOneDayModel mModel;
     private PricesAPI mPricesAPI;
@@ -23,6 +26,7 @@ public class PriceOneDayPresenterImpl implements PriceOneDayPresenter {
 
     public void setModel(PriceOneDayModel model) {
         mModel = model;
+        mModel.setPriceOneDayModelEventListener(this);
     }
 
     @Override
