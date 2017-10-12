@@ -32,4 +32,10 @@
     <string name="country_place_holder">Viet Nam</string>
     <string name="price_place_holder">from $50</string>
     <string name="image_view_destination_string_place_holder">Destination</string>
+    <string name="sorting_order">Sorting Order</string>
+    <string name="sorting_order_total_price_lowest">Total Price: Lowest first</string>
+    <string name="sorting_order_total_price_highest">Total Price: Highest first</string>
+    <string name="sorting_order_depart_earliest">Depart: Earliest first</string>
+    <string name="sorting_order_depart_latest">Depart: Latest first</string>
+    <string name="sorting_order_airlines">Airlines</string>
 </resources>
