@@ -1,8 +1,5 @@
 package com.huynd.skyobserver.presenters;
 
-import com.huynd.skyobserver.fragments.PriceOneDayFragment;
-import com.huynd.skyobserver.models.PriceOneDayModel;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,20 +27,9 @@ public class PriceOneDayPresenterTest {
     }
 
     @Test
-    public void onBtnGetPricesClickShouldDoNothingIfModelIsNull() throws Exception {
-        try {
-            mPresenter = new PriceOneDayPresenterImpl((PriceOneDayFragment) PriceOneDayFragment.newInstance(), null);
-            mPresenter.setModel(null);
-            mPresenter.getPrices(2017, 10, 01, "SGN", "HAN", true);
-        } catch (Exception e) {
-            fail("Unexpected behavior happened.");
-        }
-    }
-
-    @Test
     public void onResponseShouldDoNothingIfViewIsNull() throws Exception {
         try {
-            mPresenter.onGetPricesResponse(null, true);
+            ((PriceOneDayPresenterImpl) mPresenter).onGetPricesResponse(null, true);
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }

@@ -16,4 +16,11 @@
     <string name="inbound_date">Ngày về:</string>
     <string name="find_flights">Tìm chuyến bay</string>
     <string name="return_trip">Khứ hồi</string>
+
+    <string name="sorting_order">Thứ tự sắp xếp</string>
+    <string name="sorting_order_total_price_lowest">Giá sau thuế: Thấp đến cao</string>
+    <string name="sorting_order_total_price_highest">Giá sau thuế: Cao đến thấp</string>
+    <string name="sorting_order_depart_earliest">Giờ bay: sớm nhất</string>
+    <string name="sorting_order_depart_latest">Giờ bay: trễ nhất</string>
+    <string name="sorting_order_airlines">Hãng bay</string>
 </resources>
