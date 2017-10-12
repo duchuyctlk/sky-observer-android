@@ -122,7 +122,7 @@ public class PricePerDayFragmentAndroidTest {
         mockApiResponse(true, true);
 
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        onData(anything()).atPosition(2).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 

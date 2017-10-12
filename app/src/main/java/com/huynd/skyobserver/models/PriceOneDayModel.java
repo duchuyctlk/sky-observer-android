@@ -1,8 +1,8 @@
 package com.huynd.skyobserver.models;
 
+import com.huynd.skyobserver.presenters.PriceOneDayPresenter;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.Constants;
-import com.huynd.skyobserver.utils.PriceComparator;
 import com.huynd.skyobserver.utils.RequestHelper;
 
 import java.util.ArrayList;
@@ -21,14 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class PriceOneDayModel {
-
-    public interface PriceOneDayModelEventListener {
-        void notifyInvalidDate();
-
-        void onGetPricesResponse(List<PricePerDay> prices, boolean outbound);
-    }
-
-    private PriceOneDayModelEventListener mListener;
+    private PriceOneDayPresenter mPresenter;
 
     private List<PricePerDay> mOutboundPrices;
     private int mNoOfReceivedOutboundRequests;
@@ -38,7 +31,9 @@ public class PriceOneDayModel {
 
     private boolean isOutboundLoadingDone, isInboundLoadingDone, willLoadInbound;
 
-    private PriceComparator.SortOrder mSortOrder = PriceComparator.SortOrder.DEPART_EARLIEST;
+    public PriceOneDayModel(PriceOneDayPresenter presenter) {
+        mPresenter = presenter;
+    }
 
     public void getPrices(PricesAPI mPricesAPI, int year, int month, int day,
                           String srcPort, String dstPort, final boolean outbound) {
@@ -52,16 +47,13 @@ public class PriceOneDayModel {
                 || (year == thisYear && month == thisMonth && day < today);
 
         if (invalidDate) {
-            if (mListener != null) {
-                mListener.notifyInvalidDate();
-            }
+            mPresenter.notifyInvalidDate();
         } else {
             String strYear = String.valueOf(year);
             String strMonth = month < 10 ? "0" + String.valueOf(month) : String.valueOf(month);
             String strDay = day < 10 ? "0" + String.valueOf(day) : String.valueOf(day);
 
             PricePerDayBody postData = new PricePerDayBody(strYear, strMonth, strDay);
-
             if (outbound) {
                 isOutboundLoadingDone = false;
                 mNoOfReceivedOutboundRequests = 0;
@@ -128,23 +120,15 @@ public class PriceOneDayModel {
             mNoOfReceivedOutboundRequests++;
             if (mNoOfReceivedOutboundRequests == Constants.CARRIERS.length) {
                 isOutboundLoadingDone = true;
-                PriceComparator priceComparator = PriceComparator.getInstance();
-                priceComparator.setSortOrder(mSortOrder);
-                Collections.sort(mOutboundPrices, priceComparator);
-                if (mListener != null) {
-                    mListener.onGetPricesResponse(mOutboundPrices, outbound);
-                }
+                Collections.sort(mOutboundPrices);
+                mPresenter.onGetPricesResponse(mOutboundPrices, outbound);
             }
         } else {
             mNoOfReceivedInboundRequests++;
             if (mNoOfReceivedInboundRequests == Constants.CARRIERS.length) {
                 isInboundLoadingDone = true;
-                PriceComparator priceComparator = PriceComparator.getInstance();
-                priceComparator.setSortOrder(mSortOrder);
-                Collections.sort(mInboundPrices, priceComparator);
-                if (mListener != null) {
-                    mListener.onGetPricesResponse(mInboundPrices, outbound);
-                }
+                Collections.sort(mInboundPrices);
+                mPresenter.onGetPricesResponse(mInboundPrices, outbound);
                 willLoadInbound = false;
             }
         }
@@ -156,26 +140,5 @@ public class PriceOneDayModel {
         } else {
             return isOutboundLoadingDone;
         }
-    }
-
-    public void setSortOrder(PriceComparator.SortOrder sortOrder) {
-        mSortOrder = sortOrder;
-        PriceComparator priceComparator = PriceComparator.getInstance();
-        priceComparator.setSortOrder(mSortOrder);
-
-        if (mListener != null) {
-            if (mOutboundPrices != null && mOutboundPrices.size() > 0) {
-                Collections.sort(mOutboundPrices, priceComparator);
-                mListener.onGetPricesResponse(mOutboundPrices, true);
-            }
-            if (mInboundPrices != null && mInboundPrices.size() > 0) {
-                Collections.sort(mInboundPrices, priceComparator);
-                mListener.onGetPricesResponse(mInboundPrices, false);
-            }
-        }
-    }
-
-    public void setPriceOneDayModelEventListener(PriceOneDayModelEventListener listener) {
-        mListener = listener;
     }
 }

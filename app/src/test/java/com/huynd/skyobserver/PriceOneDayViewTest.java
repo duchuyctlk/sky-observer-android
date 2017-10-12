@@ -2,6 +2,7 @@ package com.huynd.skyobserver;
 
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
+import com.huynd.skyobserver.models.PriceOneDayModel;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenter;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenterImpl;
 
@@ -35,6 +36,7 @@ public class PriceOneDayViewTest {
             PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
             PriceOneDayPresenter presenter =
                     new PriceOneDayPresenterImpl(fragment, null);
+            presenter.setModel(new PriceOneDayModel(presenter));
             mActivity.setFragment(fragment, PriceOneDayFragment.TAG, false);
             presenter.getPrices(2015, 1, 1, "SGN", "HAN", true);
         } catch (Exception e) {

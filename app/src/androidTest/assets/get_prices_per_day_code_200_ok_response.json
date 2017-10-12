@@ -11,18 +11,5 @@
     "arrivalTime": "2017-10-01T10:00:00.000Z",
     "departureTime": "2017-10-01T08:00:00.000Z",
     "provider": "VN"
-  },
-  {
-    "departureDate": 20171001,
-    "flightNumber": "BL123",
-    "priceList": [
-      {
-        "priceTotal": 1500000,
-        "price": 900000
-      }
-    ],
-    "arrivalTime": "2017-10-01T12:00:00.000Z",
-    "departureTime": "2017-10-01T10:00:00.000Z",
-    "provider": "BL"
   }
 ]

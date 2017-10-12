@@ -27,11 +27,4 @@
     <string name="inbound_date">Inbound date:</string>
     <string name="find_flights">Find Flights</string>
     <string name="return_trip">Return trip</string>
-
-    <string name="sorting_order">Sorting Order</string>
-    <string name="sorting_order_total_price_lowest">Total Price: Lowest first</string>
-    <string name="sorting_order_total_price_highest">Total Price: Highest first</string>
-    <string name="sorting_order_depart_earliest">Depart: Earliest first</string>
-    <string name="sorting_order_depart_latest">Depart: Latest first</string>
-    <string name="sorting_order_airlines">Airlines</string>
 </resources>
