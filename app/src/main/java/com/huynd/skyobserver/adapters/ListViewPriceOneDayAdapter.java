@@ -25,6 +25,7 @@ import static com.huynd.skyobserver.utils.Constants.CONVENIENCE_FEE_IN_K;
 
 public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implements View.OnClickListener {
     private LayoutInflater mInflater;
+    private boolean mShouldShowTotalPrice;
 
     public ListViewPriceOneDayAdapter(Context context) {
         super(context, R.layout.list_view_price_one_day_item);
@@ -46,7 +47,6 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
             btnSelect = (Button) view.findViewById(R.id.btn_select_price);
             ViewHolder viewHolder = new ViewHolder(imgvAirline, tvDepart, tvArrive, btnSelect);
             view.setTag(viewHolder);
-
         } else {
             ViewHolder viewHolder = (ViewHolder) view.getTag();
             imgvAirline = viewHolder.getImageViewAirline();
@@ -64,8 +64,10 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
 
             tvDepart.setText(localDateFormat.format(item.getDepartureTime()));
             tvArrive.setText(localDateFormat.format(item.getArrivalTime()));
-            btnSelect.setText(String.valueOf(item.getPriceTotal() / 1000 + CONVENIENCE_FEE_IN_K));
             btnSelect.setOnClickListener(this);
+            int price = mShouldShowTotalPrice ?
+                    item.getPriceTotal() / 1000 + CONVENIENCE_FEE_IN_K : item.getPrice() / 1000;
+            btnSelect.setText(String.valueOf(price));
 
             Glide.with(getContext())
                     .load(RequestHelper.airlinesIconUrlBuilder(item.getCarrier()))
@@ -83,6 +85,10 @@ public class ListViewPriceOneDayAdapter extends ArrayAdapter<PricePerDay> implem
         // TODO
         // implement in another story
         // use BaseActivity.getCurrentFragment() to send message to PriceOneDay fragment
+    }
+
+    public void setShouldShowTotalPrice(boolean shouldShowTotalPrice) {
+        mShouldShowTotalPrice = shouldShowTotalPrice;
     }
 
     public static class ViewHolder {
