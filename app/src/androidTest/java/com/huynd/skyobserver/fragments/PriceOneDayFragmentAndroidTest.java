@@ -158,6 +158,85 @@ public class PriceOneDayFragmentAndroidTest {
         Espresso.unregisterIdlingResources(mPriceOneDayFragmentIdlingResource);
     }
 
+    @Test
+    public void shouldLoadPricesWhenOpenFromChooseOneDayFragment() throws Exception {
+        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
+
+        onView(withId(R.id.spinner_month_outbound)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
+
+        onView(withId(R.id.chk_return_trip)).perform(click());
+        onView(withId(R.id.btn_find_flights)).perform(click());
+        checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
+                R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
+    }
+
+    @Test
+    public void testSortOrder() throws Exception {
+        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
+        onView(withId(R.id.btn_find_flights)).perform(click());
+
+        onView(withId(R.id.menu_item_sort_order)).perform(click());
+        onView(withText(R.string.sorting_order_total_price_lowest)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("1070")));
+
+        onView(withId(R.id.menu_item_sort_order)).perform(click());
+        onView(withText(R.string.sorting_order_total_price_highest)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("1570")));
+
+        onView(withId(R.id.menu_item_sort_order)).perform(click());
+        onView(withText(R.string.sorting_order_depart_earliest)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
+                .onChildView(withId(R.id.text_view_depart_time))
+                .check(matches(withText("15:00")));
+
+        onView(withId(R.id.menu_item_sort_order)).perform(click());
+        onView(withText(R.string.sorting_order_depart_latest)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
+                .onChildView(withId(R.id.text_view_depart_time))
+                .check(matches(withText("17:00")));
+
+        onView(withId(R.id.menu_item_sort_order)).perform(click());
+        onView(withText(R.string.sorting_order_airlines)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("1570")));
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
+                .onChildView(withId(R.id.text_view_depart_time))
+                .check(matches(withText("17:00")));
+    }
+
+    @Test
+    public void shouldDisplayPricesBeforeTax() throws Exception {
+        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
+        onView(withId(R.id.btn_find_flights)).perform(click());
+        onView(withId(R.id.menu_item_sort_order)).perform(click());
+        onView(withText(R.string.sorting_order_total_price_lowest)).perform(click());
+
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(0)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("1070")));
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_inbound)).atPosition(0)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("1070")));
+
+        onView(withId(R.id.chk_show_total_price_outbound)).perform(click());
+        onView(withId(R.id.chk_show_total_price_inbound)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(0)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("500")));
+        onData(anything()).inAdapterView(withId(R.id.lst_prices_inbound)).atPosition(0)
+                .onChildView(withId(R.id.btn_select_price))
+                .check(matches(withText("500")));
+    }
+
     private void checkViewWidgetsIsDisplayed(int... ids) {
         for (int id : ids) {
             onView(withId(id)).check(matches(isDisplayed()));
@@ -195,61 +274,5 @@ public class PriceOneDayFragmentAndroidTest {
 
         when(mPricesAPI.getPricePerDay(any(Map.class), any(PricePerDayBody.class), any(String.class),
                 any(String.class), any(String.class))).thenReturn(observableList);
-    }
-
-    @Test
-    public void shouldLoadPricesWhenOpenFromChooseOneDayFragment() throws Exception {
-        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
-
-        onView(withId(R.id.spinner_month_outbound)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
-
-        onView(withId(R.id.chk_return_trip)).perform(click());
-        onView(withId(R.id.btn_find_flights)).perform(click());
-        checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
-                R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
-    }
-
-    @Test
-    public void testSortOrder() throws Exception {
-        onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
-        onView(withId(R.id.spinner_month_outbound)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
-        onView(withId(R.id.btn_find_flights)).perform(click());
-
-        onView(withId(R.id.menu_item_sort_order)).perform(click());
-        onView(withText(R.string.sorting_order_total_price_lowest)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
-                .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1070")));
-
-        onView(withId(R.id.menu_item_sort_order)).perform(click());
-        onView(withText(R.string.sorting_order_total_price_highest)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
-                .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1570")));
-
-        onView(withId(R.id.menu_item_sort_order)).perform(click());
-        onView(withText(R.string.sorting_order_depart_earliest)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
-                .onChildView(withId(R.id.text_view_depart_time))
-                .check(matches(withText("15:00")));
-
-        onView(withId(R.id.menu_item_sort_order)).perform(click());
-        onView(withText(R.string.sorting_order_depart_latest)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
-                .onChildView(withId(R.id.text_view_depart_time))
-                .check(matches(withText("17:00")));
-
-        onView(withId(R.id.menu_item_sort_order)).perform(click());
-        onView(withText(R.string.sorting_order_airlines)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
-                .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1570")));
-        onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
-                .onChildView(withId(R.id.text_view_depart_time))
-                .check(matches(withText("17:00")));
     }
 }
