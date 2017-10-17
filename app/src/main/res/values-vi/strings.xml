@@ -18,6 +18,8 @@
     <string name="return_trip">Khứ hồi</string>
 
     <string name="sorting_order">Thứ tự sắp xếp</string>
+    <string name="sorting_order_price_only_lowest">Giá trước thuế: Thấp đến cao</string>
+    <string name="sorting_order_price_only_highest">Giá trước thuế: Cao đến thấp</string>
     <string name="sorting_order_total_price_lowest">Giá sau thuế: Thấp đến cao</string>
     <string name="sorting_order_total_price_highest">Giá sau thuế: Cao đến thấp</string>
     <string name="sorting_order_depart_earliest">Giờ bay: sớm nhất</string>

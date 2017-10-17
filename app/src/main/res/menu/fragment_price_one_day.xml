@@ -8,6 +8,12 @@
         app:showAsAction="ifRoom">
         <menu>
             <item
+                android:id="@+id/sorting_order_price_only_lowest"
+                android:title="@string/sorting_order_price_only_lowest" />
+            <item
+                android:id="@+id/sorting_order_price_only_highest"
+                android:title="@string/sorting_order_price_only_highest" />
+            <item
                 android:id="@+id/sorting_order_total_price_lowest"
                 android:title="@string/sorting_order_total_price_lowest" />
             <item

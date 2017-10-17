@@ -123,6 +123,12 @@ public class PriceOneDayFragment extends BaseFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.sorting_order_price_only_lowest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.PRICE_ONLY_LOWEST);
+                break;
+            case R.id.sorting_order_price_only_highest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.PRICE_ONLY_HIGHEST);
+                break;
             case R.id.sorting_order_total_price_lowest:
                 mPresenter.setSortOrder(PriceComparator.SortOrder.TOTAL_PRICE_LOWEST);
                 break;
