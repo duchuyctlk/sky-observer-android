@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverApp;
@@ -30,7 +31,10 @@ import javax.inject.Inject;
  * Created by HuyND on 8/14/2017.
  */
 
-public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView {
+public class PriceOneDayFragment extends BaseFragment implements
+        PriceOneDayView,
+        CompoundButton.OnCheckedChangeListener {
+
     @Inject
     PricesAPI mPricesAPI;
 
@@ -81,16 +85,20 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
         mBinding.txtRoutineOutbound.setText(srcPort + " - " + dstPort);
         mBinding.txtFlightDateOutbound.setText(dayOutbound + "/" + monthOutbound + "/" + yearOutbound);
         mListViewOutboundAdapter = new ListViewPriceOneDayAdapter(this.getContext());
+        mListViewOutboundAdapter.setShouldShowTotalPrice(mBinding.chkShowTotalPriceOutbound.isChecked());
         mBinding.lstPricesOutbound.setAdapter(mListViewOutboundAdapter);
         if (returnTrip) {
             mBinding.layoutInbound.setVisibility(View.VISIBLE);
             mBinding.txtRoutineInbound.setText(dstPort + " - " + srcPort);
             mBinding.txtFlightDateInbound.setText(dayInbound + "/" + monthInbound + "/" + yearInbound);
             mListViewInboundAdapter = new ListViewPriceOneDayAdapter(this.getContext());
+            mListViewInboundAdapter.setShouldShowTotalPrice(mBinding.chkShowTotalPriceInbound.isChecked());
             mBinding.lstPricesInbound.setAdapter(mListViewInboundAdapter);
+            mBinding.chkShowTotalPriceInbound.setOnCheckedChangeListener(this);
         } else {
             mBinding.layoutInbound.setVisibility(View.GONE);
         }
+        mBinding.chkShowTotalPriceOutbound.setOnCheckedChangeListener(this);
 
         // initialize MPV pattern
         mPresenter = new PriceOneDayPresenterImpl(this, mPricesAPI);
@@ -115,6 +123,12 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.sorting_order_price_only_lowest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.PRICE_ONLY_LOWEST);
+                break;
+            case R.id.sorting_order_price_only_highest:
+                mPresenter.setSortOrder(PriceComparator.SortOrder.PRICE_ONLY_HIGHEST);
+                break;
             case R.id.sorting_order_total_price_lowest:
                 mPresenter.setSortOrder(PriceComparator.SortOrder.TOTAL_PRICE_LOWEST);
                 break;
@@ -154,5 +168,19 @@ public class PriceOneDayFragment extends BaseFragment implements PriceOneDayView
     @Override
     public void showInvalidDateDialog() {
         showFailedDialog(getString(R.string.invalid_date_message));
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.chk_show_total_price_outbound:
+                mListViewOutboundAdapter.setShouldShowTotalPrice(mBinding.chkShowTotalPriceOutbound.isChecked());
+                mListViewOutboundAdapter.notifyDataSetChanged();
+                break;
+            case R.id.chk_show_total_price_inbound:
+                mListViewInboundAdapter.setShouldShowTotalPrice(mBinding.chkShowTotalPriceInbound.isChecked());
+                mListViewInboundAdapter.notifyDataSetChanged();
+                break;
+        }
     }
 }

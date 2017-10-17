@@ -29,6 +29,8 @@
     <string name="return_trip">Return trip</string>
 
     <string name="sorting_order">Sorting Order</string>
+    <string name="sorting_order_price_only_lowest">Price Only: Lowest first</string>
+    <string name="sorting_order_price_only_highest">Price Only: Highest first</string>
     <string name="sorting_order_total_price_lowest">Total Price: Lowest first</string>
     <string name="sorting_order_total_price_highest">Total Price: Highest first</string>
     <string name="sorting_order_depart_earliest">Depart: Earliest first</string>

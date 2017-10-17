@@ -13,6 +13,8 @@ import static com.huynd.skyobserver.utils.PriceComparator.SortOrder.DEPART_EARLI
 public class PriceComparator implements Comparator<PricePerDay> {
 
     public enum SortOrder {
+        PRICE_ONLY_LOWEST,
+        PRICE_ONLY_HIGHEST,
         TOTAL_PRICE_LOWEST,
         TOTAL_PRICE_HIGHEST,
         DEPART_EARLIEST,
@@ -47,6 +49,10 @@ public class PriceComparator implements Comparator<PricePerDay> {
         }
 
         switch (mOrder) {
+            case PRICE_ONLY_LOWEST:
+                return price1.getPrice() - price2.getPrice();
+            case PRICE_ONLY_HIGHEST:
+                return price2.getPrice() - price1.getPrice();
             case TOTAL_PRICE_LOWEST:
                 return price1.getPriceTotal() - price2.getPriceTotal();
             case TOTAL_PRICE_HIGHEST:
