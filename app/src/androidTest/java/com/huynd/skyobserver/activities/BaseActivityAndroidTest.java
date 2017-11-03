@@ -5,6 +5,8 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
@@ -14,9 +16,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 import static android.support.test.espresso.Espresso.pressBack;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by HuyND on 8/19/2017.
@@ -76,5 +83,17 @@ public class BaseActivityAndroidTest {
 
         mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG, false);
         assertTrue(mActivity.getCurrentFragment() instanceof PricePerDayFragment);
+    }
+
+    @Test
+    public void shouldHandleOnStartException() throws Exception {
+        AppCompatActivity spyActivity = spy(mActivity);
+        when(spyActivity.getDelegate()).thenThrow(new NullPointerException());
+
+        try {
+            mActivity.onStart();
+        } catch (NullPointerException nullPointerException) {
+            fail("Exception should be caught.");
+        }
     }
 }
