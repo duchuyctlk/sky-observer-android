@@ -20,6 +20,15 @@ public class BaseActivity extends AppCompatActivity {
     String mCurrentFragmentTag;
 
     @Override
+    protected void onStart() {
+        try {
+            super.onStart();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();

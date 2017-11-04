@@ -14,7 +14,7 @@ import static junit.framework.Assert.assertNotNull;
 public class PricePerDayModelTest {
     @Test
     public void shouldInitSpinnersValuesIfNeeded() throws Exception {
-        PricePerDayModel model = new PricePerDayModel(null);
+        PricePerDayModel model = new PricePerDayModel();
         List<Integer> availMonths = model.getAvailMonths(2018);
         assertNotNull(availMonths);
         assertEquals(12, availMonths.size());

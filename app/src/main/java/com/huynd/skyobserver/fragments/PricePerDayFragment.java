@@ -53,7 +53,6 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
     private GridViewPricePerDayAdapter mGridViewAdapter;
 
     private PricePerDayPresenter mPresenter;
-    private PricePerDayModel mModel;
 
     public static Fragment newInstance() {
         return new PricePerDayFragment();
@@ -144,8 +143,6 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
         // initialize MPV pattern
         mPresenter = new PricePerDayPresenterImpl(this, mPricesAPI);
-        mModel = new PricePerDayModel(mPresenter);
-        mPresenter.setModel(mModel);
         mPresenter.initSpinnersValues();
 
         return mBinding.getRoot();
