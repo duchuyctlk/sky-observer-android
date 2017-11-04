@@ -17,6 +17,4 @@ public interface PricePerDayPresenter {
     void initSpinnersValues();
 
     void onYearSelected(int year);
-
-    void onGetPricesResponse(List<PricePerDay> prices);
 }

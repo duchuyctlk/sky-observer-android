@@ -144,7 +144,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
         // initialize MPV pattern
         mPresenter = new PricePerDayPresenterImpl(this, mPricesAPI);
-        mModel = new PricePerDayModel(mPresenter);
+        mModel = new PricePerDayModel();
         mPresenter.setModel(mModel);
         mPresenter.initSpinnersValues();
 

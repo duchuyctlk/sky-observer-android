@@ -25,7 +25,13 @@ import static com.huynd.skyobserver.utils.DateUtils.getAvailableYears;
  */
 
 public class PricePerDayModel {
-    private PricePerDayPresenter mPresenter;
+
+    public interface PricePerDayModelEventListener {
+        void onGetPricesResponse(List<PricePerDay> prices);
+    }
+
+    private PricePerDayModelEventListener mListener;
+
     private Map<Integer, List<Integer>> mSpinnerMonthValues;
     private List<Integer> mSpinnerYearValues;
     private PricePerDay[] mPrices;
@@ -34,10 +40,6 @@ public class PricePerDayModel {
     private int mQueryingYear;
     private int mQueryingMonth;
     private int mQueryingStartDay;
-
-    public PricePerDayModel(PricePerDayPresenter presenter) {
-        mPresenter = presenter;
-    }
 
     public List<Integer> getAvailYears() {
         if (mSpinnerMonthValues == null) {
@@ -155,7 +157,13 @@ public class PricePerDayModel {
                 lstPrices.add(0, null);
             }
 
-            mPresenter.onGetPricesResponse(lstPrices);
+            if (mListener != null) {
+                mListener.onGetPricesResponse(lstPrices);
+            }
         }
+    }
+
+    public void setPricePerDayModelEventListener(PricePerDayModelEventListener listener) {
+        mListener = listener;
     }
 }
