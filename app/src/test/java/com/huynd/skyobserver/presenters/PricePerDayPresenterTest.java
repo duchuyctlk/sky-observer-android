@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.presenters;
 
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
+import com.huynd.skyobserver.models.PricePerDayModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,18 +24,6 @@ public class PricePerDayPresenterTest {
     public void onBtnGetPricesClickShouldDoNothingIfViewIsNull() throws Exception {
         try {
             mPresenter.onBtnGetPricesClick(2017, 10, "SGN", "HAN");
-
-        } catch (Exception e) {
-            fail("Unexpected behavior happened.");
-        }
-    }
-
-    @Test
-    public void onBtnGetPricesClickShouldDoNothingIfModelIsNull() throws Exception {
-        try {
-            mPresenter = new PricePerDayPresenterImpl((PricePerDayFragment) PricePerDayFragment.newInstance(), null);
-            mPresenter.setModel(null);
-            mPresenter.onBtnGetPricesClick(2017, 10, "SGN", "HAN");
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }
@@ -43,7 +32,25 @@ public class PricePerDayPresenterTest {
     @Test
     public void onResponseShouldDoNothingIfViewIsNull() throws Exception {
         try {
-            mPresenter.onGetPricesResponse(null);
+            ((PricePerDayModel.PricePerDayModelEventListener)mPresenter).onGetPricesResponse(null);
+        } catch (Exception e) {
+            fail("Unexpected behavior happened.");
+        }
+    }
+
+    @Test
+    public void initSpinnersValuesShouldDoNothingIfViewIsNull() throws Exception {
+        try {
+            mPresenter.initSpinnersValues();
+        } catch (Exception e) {
+            fail("Unexpected behavior happened.");
+        }
+    }
+
+    @Test
+    public void onYearSelectedShouldDoNothingIfViewIsNull() throws Exception {
+        try {
+            mPresenter.onYearSelected(2020);
         } catch (Exception e) {
             fail("Unexpected behavior happened.");
         }
