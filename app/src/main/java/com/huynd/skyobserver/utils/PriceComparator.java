@@ -12,6 +12,10 @@ import static com.huynd.skyobserver.utils.PriceComparator.SortOrder.DEPART_EARLI
 
 public class PriceComparator implements Comparator<PricePerDay> {
 
+    private static class SingletonHolder {
+        static PriceComparator sInstance = new PriceComparator();
+    }
+
     public enum SortOrder {
         PRICE_ONLY_LOWEST,
         PRICE_ONLY_HIGHEST,
@@ -23,15 +27,12 @@ public class PriceComparator implements Comparator<PricePerDay> {
         UNKNOWN
     }
 
-    private static PriceComparator sInstance;
-
     private SortOrder mOrder = DEPART_EARLIEST;
 
+    private PriceComparator() {}
+
     public static PriceComparator getInstance() {
-        if (sInstance == null) {
-            sInstance = new PriceComparator();
-        }
-        return sInstance;
+        return SingletonHolder.sInstance;
     }
 
     @Override

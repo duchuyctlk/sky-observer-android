@@ -11,14 +11,17 @@ import com.huynd.skyobserver.R;
  */
 
 public class FlowUtils {
-    private static FlowUtils sInstance;
+
+    private static class SingletonHolder {
+        static FlowUtils sInstance = new FlowUtils();
+    }
+
     ProgressDialog mProgressDialog;
 
+    private FlowUtils() {}
+
     public static FlowUtils getInstance() {
-        if (sInstance == null) {
-            sInstance = new FlowUtils();
-        }
-        return sInstance;
+        return SingletonHolder.sInstance;
     }
 
     public void showLoadingDialog(Context context) {
