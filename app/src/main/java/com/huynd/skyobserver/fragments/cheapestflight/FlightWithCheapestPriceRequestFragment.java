@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.fragments;
+package com.huynd.skyobserver.fragments.cheapestflight;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
+import com.huynd.skyobserver.databinding.FragmentFlightWithCheapestPriceRequestBinding;
+import com.huynd.skyobserver.fragments.BaseFragment;
 import com.huynd.skyobserver.models.Airport;
 import com.huynd.skyobserver.models.AvailableMonth;
-import com.huynd.skyobserver.models.ChooseOneDayModel;
-import com.huynd.skyobserver.presenters.ChooseOneDayPresenter;
-import com.huynd.skyobserver.presenters.ChooseOneDayPresenterImpl;
-import com.huynd.skyobserver.views.ChooseOneDayView;
+import com.huynd.skyobserver.models.cheapestflight.FlightWithCheapestPriceModel;
+import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPricePresenter;
+import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPricePresenterImpl;
+import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxAdapterView;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
@@ -28,14 +29,14 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 
 /**
- * Created by HuyND on 8/22/2017.
+ * Created by HuyND on 11/19/2017.
  */
 
-public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayView {
+public class FlightWithCheapestPriceRequestFragment extends BaseFragment implements FlightWithCheapestPriceView {
 
-    public static final String TAG = ChooseOneDayFragment.class.getSimpleName();
+    public static final String TAG = FlightWithCheapestPriceRequestFragment.class.getSimpleName();
 
-    FragmentChooseOneDayBinding mBinding;
+    FragmentFlightWithCheapestPriceRequestBinding mBinding;
 
     ArrayAdapter<AvailableMonth> mSpinnerOutboundMonthAdapter;
     private ArrayAdapter<Integer> mSpinnerOutboundDayAdapter;
@@ -44,20 +45,19 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
     private ArrayAdapter<Integer> mSpinnerInboundDayAdapter;
 
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
-    private ArrayAdapter<Airport> mSpinnerDstPortAdapter;
 
-    private ChooseOneDayPresenter mPresenter;
-    private ChooseOneDayModel mModel;
+    private FlightWithCheapestPricePresenter mPresenter;
+    private FlightWithCheapestPriceModel mModel;
 
     public static Fragment newInstance() {
-        return new ChooseOneDayFragment();
+        return new FlightWithCheapestPriceRequestFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // initialize UI widgets
-        mBinding = FragmentChooseOneDayBinding.inflate(inflater, container, false);
+        mBinding = FragmentFlightWithCheapestPriceRequestBinding.inflate(inflater, container, false);
 
         mSpinnerOutboundMonthAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<AvailableMonth>());
@@ -78,10 +78,6 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
-
-        mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Airport>());
-        mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
         RxAdapterView.itemSelections(mBinding.spinnerMonthOutbound)
                 .filter(new Predicate<Integer>() {
@@ -132,8 +128,8 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         });
 
         // initialize MPV pattern
-        mPresenter = new ChooseOneDayPresenterImpl(this);
-        mModel = new ChooseOneDayModel();
+        mPresenter = new FlightWithCheapestPricePresenterImpl(this);
+        mModel = new FlightWithCheapestPriceModel();
         mPresenter.setModel(mModel);
         mPresenter.initSpinnersValues();
 
@@ -147,10 +143,7 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
             Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
             flightInfo.putString("srcPort", srcPort.getId());
 
-            Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
-            flightInfo.putString("dstPort", dstPort.getId());
-
-            ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
+            ((OnFlightWithCheapestPriceInfoSelectedListener) getActivity()).OnFlightWithCheapestPriceInfoSelected(flightInfo);
         } catch (ClassCastException e) {
             Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
         }
@@ -225,11 +218,6 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mSpinnerSrcPortAdapter.addAll(airports);
         mSpinnerSrcPortAdapter.notifyDataSetChanged();
         mBinding.spinnerSrcPort.setSelection(0);
-
-        mSpinnerDstPortAdapter.clear();
-        mSpinnerDstPortAdapter.addAll(airports);
-        mSpinnerDstPortAdapter.notifyDataSetChanged();
-        mBinding.spinnerDstPort.setSelection(1);
     }
 
     public void onChkReturnTripCheckedChanged(boolean isChecked) {

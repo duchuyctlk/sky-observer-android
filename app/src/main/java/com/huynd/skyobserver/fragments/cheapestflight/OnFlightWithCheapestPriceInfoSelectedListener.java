@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.fragments;
+package com.huynd.skyobserver.fragments.cheapestflight;
 
 import android.os.Bundle;
 
