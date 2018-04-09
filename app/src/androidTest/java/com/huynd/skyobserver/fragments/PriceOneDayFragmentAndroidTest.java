@@ -97,7 +97,7 @@ public class PriceOneDayFragmentAndroidTest {
         onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(3).perform(click());
+        onData(anything()).atPosition(8).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
@@ -142,7 +142,7 @@ public class PriceOneDayFragmentAndroidTest {
         onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(3).perform(click());
+        onData(anything()).atPosition(8).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
