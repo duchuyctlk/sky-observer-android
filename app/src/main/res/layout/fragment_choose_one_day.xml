@@ -62,20 +62,15 @@
 
                 <TextView
                     style="@style/choose_one_day_fragment_month_year_text_views"
-                    android:text="@string/month" />
-
-                <Spinner
-                    android:id="@+id/spinner_month_outbound"
-                    style="@style/choose_one_day_fragment_month_year_spinners" />
-
-                <TextView
-                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/day" />
 
-                <Spinner
-                    android:id="@+id/spinner_day_outbound"
+                <EditText
+                    android:id="@+id/edit_text_date_outbound"
                     style="@style/equally_share_width_within_parent"
-                    android:layout_weight="1.25" />
+                    android:layout_weight="1.25"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
             </LinearLayout>
 
             <CheckBox
@@ -97,20 +92,15 @@
 
                 <TextView
                     style="@style/choose_one_day_fragment_month_year_text_views"
-                    android:text="@string/month" />
-
-                <Spinner
-                    android:id="@+id/spinner_month_inbound"
-                    style="@style/choose_one_day_fragment_month_year_spinners" />
-
-                <TextView
-                    style="@style/choose_one_day_fragment_month_year_text_views"
                     android:text="@string/day" />
 
-                <Spinner
-                    android:id="@+id/spinner_day_inbound"
+                <EditText
+                    android:id="@+id/edit_text_date_inbound"
                     style="@style/equally_share_width_within_parent"
-                    android:layout_weight="1.25" />
+                    android:layout_weight="1.25"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

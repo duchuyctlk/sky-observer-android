@@ -1,60 +1,47 @@
 package com.huynd.skyobserver.models;
 
+import android.text.format.DateFormat;
+
 import com.huynd.skyobserver.utils.AirportUtils;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-
-import static com.huynd.skyobserver.utils.DateUtils.getAvailableMonthsByYears;
-import static com.huynd.skyobserver.utils.DateUtils.getAvailableYears;
-import static com.huynd.skyobserver.utils.DateUtils.getCurrentDayOfMonth;
-import static com.huynd.skyobserver.utils.DateUtils.getNumberOfDaysInMonth;
 
 /**
  * Created by HuyND on 8/22/2017.
  */
 
 public class ChooseOneDayModel {
-    private List<AvailableMonth> mSpinnerMonthValues;
-    private List<Integer> mSpinnerYearValues;
+    private Calendar mCalendar;
 
-    public List<AvailableMonth> getAvailMonths() {
-        if (mSpinnerMonthValues == null) {
-            initSpinnersValues();
-        }
-
-        return mSpinnerMonthValues;
+    public ChooseOneDayModel() {
+        mCalendar = Calendar.getInstance();
     }
 
-    public List<Integer> getAvailDays(int year, int month) {
-        int numberOfDays = getNumberOfDaysInMonth(year, month);
-
-        List<Integer> days = new ArrayList<>();
-        AvailableMonth thisMonth = mSpinnerMonthValues.get(0);
-        int startDay = thisMonth.getYear() == year && thisMonth.getMonth() == month ? getCurrentDayOfMonth() + 1 : 1;
-        for (int day = startDay; day <= numberOfDays; day++) {
-            days.add(day);
-        }
-
-        return days;
+    public int getStartYear() {
+        return mCalendar.get(Calendar.YEAR);
     }
 
-    private void initSpinnersValues() {
-        mSpinnerYearValues = getAvailableYears();
-        Map<Integer, List<Integer>> monthYearMap = getAvailableMonthsByYears(mSpinnerYearValues);
+    public int getStartMonth() {
+        return mCalendar.get(Calendar.MONTH);
+    }
 
-        mSpinnerMonthValues = new ArrayList<>();
-        for (int i = 0; i < mSpinnerYearValues.size(); i++) {
-            int year = mSpinnerYearValues.get(i);
-            List<Integer> months = monthYearMap.get(year);
-            for (int j = 0; j < months.size(); j++) {
-                mSpinnerMonthValues.add(new AvailableMonth(year, months.get(j)));
-            }
-        }
+    public int getStartDayOfMonth() {
+        return mCalendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public String dateToString(int year, int month, int dayOfMonth) {
+        GregorianCalendar date = new GregorianCalendar(year, month, dayOfMonth);
+        String strDate = DateFormat.format("dd/MM/yyyy", date).toString();
+        return strDate;
     }
 
     public List<Airport> getAirports() {
         return AirportUtils.getAirports();
+    }
+
+    public long getMinDate() {
+        return mCalendar.getTimeInMillis();
     }
 }
