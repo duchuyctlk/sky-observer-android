@@ -1,7 +1,9 @@
 package com.huynd.skyobserver.fragments;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
+import android.widget.DatePicker;
 
 import com.google.gson.Gson;
 import com.huynd.skyobserver.R;
@@ -36,6 +38,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -43,6 +46,7 @@ import static com.huynd.skyobserver.matchers.ImageMatcher.noDrawable;
 import static io.reactivex.Observable.error;
 import static io.reactivex.Observable.just;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -162,9 +166,6 @@ public class PriceOneDayFragmentAndroidTest {
     public void shouldLoadPricesWhenOpenFromChooseOneDayFragment() throws Exception {
         onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
         onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
-
-        onView(withId(R.id.spinner_month_outbound)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
 
         onView(withId(R.id.chk_return_trip)).perform(click());
         onView(withId(R.id.btn_find_flights)).perform(click());
