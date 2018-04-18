@@ -1,6 +1,5 @@
 package com.huynd.skyobserver.models;
 
-import com.huynd.skyobserver.presenters.PricePerDayPresenter;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.AirportUtils;
 import com.huynd.skyobserver.utils.Constants;
@@ -17,9 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.huynd.skyobserver.utils.DateUtils.getAvailableMonthsByYears;
-import static com.huynd.skyobserver.utils.DateUtils.getAvailableYears;
-
 /**
  * Created by HuyND on 8/9/2017.
  */
@@ -32,35 +28,12 @@ public class PricePerDayModel {
 
     private PricePerDayModelEventListener mListener;
 
-    private Map<Integer, List<Integer>> mSpinnerMonthValues;
-    private List<Integer> mSpinnerYearValues;
     private PricePerDay[] mPrices;
     private int mNoOfReceivedRequests;
 
     private int mQueryingYear;
     private int mQueryingMonth;
     private int mQueryingStartDay;
-
-    public List<Integer> getAvailYears() {
-        if (mSpinnerMonthValues == null) {
-            initSpinnersValues();
-        }
-
-        return mSpinnerYearValues;
-    }
-
-    public List<Integer> getAvailMonths(int year) {
-        if (mSpinnerMonthValues == null) {
-            initSpinnersValues();
-        }
-
-        return mSpinnerMonthValues.get(year);
-    }
-
-    private void initSpinnersValues() {
-        mSpinnerYearValues = getAvailableYears();
-        mSpinnerMonthValues = getAvailableMonthsByYears(mSpinnerYearValues);
-    }
 
     public List<Airport> getAirports() {
         return AirportUtils.getAirports();

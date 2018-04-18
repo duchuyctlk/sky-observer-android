@@ -1,10 +1,13 @@
 package com.huynd.skyobserver.utils;
 
+import android.text.format.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,5 +107,19 @@ public class DateUtils {
         }
 
         return numberOfDays;
+    }
+
+    public static int getStartYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public static int getStartMonth() {
+        return Calendar.getInstance().get(Calendar.MONTH);
+    }
+
+    public static String dateToString(int year, int month) {
+        GregorianCalendar date = new GregorianCalendar(year, month, 01);
+        String strDate = DateFormat.format("MM/yyyy", date).toString();
+        return strDate;
     }
 }
