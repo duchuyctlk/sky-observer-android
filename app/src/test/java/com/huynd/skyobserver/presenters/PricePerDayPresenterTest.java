@@ -46,13 +46,4 @@ public class PricePerDayPresenterTest {
             fail("Unexpected behavior happened.");
         }
     }
-
-    @Test
-    public void onYearSelectedShouldDoNothingIfViewIsNull() throws Exception {
-        try {
-            mPresenter.onYearSelected(2020);
-        } catch (Exception e) {
-            fail("Unexpected behavior happened.");
-        }
-    }
 }
