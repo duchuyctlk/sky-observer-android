@@ -3,6 +3,7 @@ package com.huynd.skyobserver.dagger.component;
 import com.huynd.skyobserver.dagger.modules.ApiModule;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceResultFragment;
 
 import javax.inject.Singleton;
 
@@ -18,4 +19,6 @@ public interface SkyObserverComponent {
     void inject(PricePerDayFragment fragment);
 
     void inject(PriceOneDayFragment fragment);
+
+    void inject(FlightWithCheapestPriceResultFragment fragment);
 }
