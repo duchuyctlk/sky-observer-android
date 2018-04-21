@@ -1,7 +1,6 @@
 package com.huynd.skyobserver.fragments;
 
 import android.support.test.rule.ActivityTestRule;
-import android.widget.ArrayAdapter;
 
 import com.google.gson.Gson;
 import com.huynd.skyobserver.R;
@@ -13,12 +12,13 @@ import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.FileUtils;
+import com.twinkle94.monthyearpicker.picker.SkyObserverYearMonthPickerDialog;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -135,29 +135,36 @@ public class PricePerDayFragmentAndroidTest {
 
     @Test
     public void shouldClassCatchCastException() throws Exception {
-//        mockApiResponse(true, true);
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.add(Calendar.MONTH, 1);
-//
-//        onView(withId(R.id.edit_text_month_year)).perform(click());
-//        onView(withId(R.id.year_picker))
-//                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
-//        onView(withId(R.id.month_picker))
-//                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
-//
-//        onView(withId(R.id.btn_get_prices)).perform(click());
-//
-//        PricePerDayFragment fragment = (PricePerDayFragment) mActivity.getCurrentFragment();
-//        ArrayAdapter<Integer> adapter = spy(fragment.mSpinnerYearAdapter);
-//        when(adapter.getItem(any(int.class))).thenThrow(new ClassCastException());
-//        fragment.mSpinnerYearAdapter = adapter;
-//
-//        try {
-//            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(5).perform(click());
-//        } catch (Exception exception) {
-//            fail("Unexpected behavior happened.");
-//        }
+        mockApiResponse(true, true);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, 5);
+
+        onView(withId(R.id.edit_text_month_year)).perform(click());
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withId(R.id.btn_get_prices)).perform(click());
+
+        PricePerDayFragment fragment = (PricePerDayFragment) mActivity.getCurrentFragment();
+        Field pickerDialogField = fragment.getClass().getDeclaredField("mYearMonthPickerDialog");
+        pickerDialogField.setAccessible(true);
+        SkyObserverYearMonthPickerDialog pickerDialog =
+                (SkyObserverYearMonthPickerDialog) pickerDialogField.get(fragment);
+        pickerDialog = spy(pickerDialog);
+        when(pickerDialog.getYear()).thenThrow(new ClassCastException());
+        when(pickerDialog.getMonth()).thenThrow(new ClassCastException());
+        pickerDialogField.set(fragment, pickerDialog);
+        pickerDialogField.setAccessible(false);
+
+        try {
+            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(5).perform(click());
+        } catch (Exception exception) {
+            fail("Unexpected behavior happened.");
+        }
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {
