@@ -11,7 +11,5 @@ public interface FlightWithCheapestPricePresenter {
 
     void initSpinnersValues();
 
-    void onOutboundMonthSelected(int selectedYear, int selectedMonth);
-
-    void onInboundMonthSelected(int selectedYear, int selectedMonth);
+    void setDateToEditText(int year, int month, int dayOfMonth, boolean isOutbound);
 }
