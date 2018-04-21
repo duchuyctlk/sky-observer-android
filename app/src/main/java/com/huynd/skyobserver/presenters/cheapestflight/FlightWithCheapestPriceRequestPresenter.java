@@ -4,7 +4,7 @@ package com.huynd.skyobserver.presenters.cheapestflight;
  * Created by HuyND on 11/19/2017.
  */
 
-public interface FlightWithCheapestPricePresenter {
+public interface FlightWithCheapestPriceRequestPresenter {
 
     void initSpinnersValues();
 

@@ -14,9 +14,9 @@ import android.widget.DatePicker;
 import com.huynd.skyobserver.databinding.FragmentFlightWithCheapestPriceRequestBinding;
 import com.huynd.skyobserver.fragments.BaseFragment;
 import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPricePresenter;
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPricePresenterImpl;
-import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceView;
+import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceRequestPresenter;
+import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceRequestPresenterImpl;
+import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceRequestView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
 
@@ -29,20 +29,20 @@ import io.reactivex.functions.Consumer;
  * Created by HuyND on 11/19/2017.
  */
 
-public class FlightWithCheapestPriceRequestFragment extends BaseFragment implements FlightWithCheapestPriceView {
+public class FlightWithCheapestPriceRequestRequestFragment extends BaseFragment implements FlightWithCheapestPriceRequestView {
 
-    public static final String TAG = FlightWithCheapestPriceRequestFragment.class.getSimpleName();
+    public static final String TAG = FlightWithCheapestPriceRequestRequestFragment.class.getSimpleName();
 
     FragmentFlightWithCheapestPriceRequestBinding mBinding;
 
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
 
-    private FlightWithCheapestPricePresenter mPresenter;
+    private FlightWithCheapestPriceRequestPresenter mPresenter;
 
     DatePickerDialog mOutboundDatePickerDialog, mInboundDatePickerDialog;
 
     public static Fragment newInstance() {
-        return new FlightWithCheapestPriceRequestFragment();
+        return new FlightWithCheapestPriceRequestRequestFragment();
     }
 
     @Nullable
@@ -84,7 +84,7 @@ public class FlightWithCheapestPriceRequestFragment extends BaseFragment impleme
         });
 
         // initialize MPV pattern
-        mPresenter = new FlightWithCheapestPricePresenterImpl(this);
+        mPresenter = new FlightWithCheapestPriceRequestPresenterImpl(this);
         mPresenter.initSpinnersValues();
 
         return mBinding.getRoot();

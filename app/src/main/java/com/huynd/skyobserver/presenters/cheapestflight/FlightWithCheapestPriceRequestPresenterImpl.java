@@ -1,22 +1,22 @@
 package com.huynd.skyobserver.presenters.cheapestflight;
 
-import com.huynd.skyobserver.models.cheapestflight.FlightWithCheapestPriceModel;
+import com.huynd.skyobserver.models.cheapestflight.FlightWithCheapestPriceRequestModel;
 import com.huynd.skyobserver.utils.DateUtils;
-import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceView;
+import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceRequestView;
 
 /**
  * Created by HuyND on 11/19/2017.
  */
 
-public class FlightWithCheapestPricePresenterImpl implements FlightWithCheapestPricePresenter {
+public class FlightWithCheapestPriceRequestPresenterImpl implements FlightWithCheapestPriceRequestPresenter {
 
-    private FlightWithCheapestPriceView mView;
-    private FlightWithCheapestPriceModel mModel;
+    private FlightWithCheapestPriceRequestView mView;
+    private FlightWithCheapestPriceRequestModel mModel;
 
-    public FlightWithCheapestPricePresenterImpl(FlightWithCheapestPriceView view) {
+    public FlightWithCheapestPriceRequestPresenterImpl(FlightWithCheapestPriceRequestView view) {
         mView = view;
 
-        mModel = new FlightWithCheapestPriceModel();
+        mModel = new FlightWithCheapestPriceRequestModel();
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.List;
  * Created by HuyND on 11/19/2017.
  */
 
-public interface FlightWithCheapestPriceView extends BaseView {
+public interface FlightWithCheapestPriceRequestView extends BaseView {
 
     void updateAirports(List<Airport> airports);
 
