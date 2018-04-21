@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.google.gson.Gson;
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverAndroidTestApp;
+import com.huynd.skyobserver.actions.NumberPickerActions;
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest;
 import com.huynd.skyobserver.idlingResource.ChangeFragmentIdlingResource;
@@ -20,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -93,11 +95,15 @@ public class PriceOneDayFragmentAndroidTest {
 
     @Test
     public void shouldLoadPricesSuccessfully() throws Exception {
-        onView(withId(R.id.spinner_year)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, 6);
 
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(8).perform(click());
+        onView(withId(R.id.edit_text_month_year)).perform(click());
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+        onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
@@ -116,8 +122,15 @@ public class PriceOneDayFragmentAndroidTest {
         code_200_ok_response = code_200_ok_response_prices_with_no_carrier;
         mockApiResponse(true, true);
 
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+
+        onView(withId(R.id.edit_text_month_year)).perform(click());
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+        onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0)
@@ -126,8 +139,15 @@ public class PriceOneDayFragmentAndroidTest {
 
     @Test
     public void shouldSetTextViewsEmptyWhenNoData() throws Exception {
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+
+        onView(withId(R.id.edit_text_month_year)).perform(click());
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+        onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(1)
@@ -138,11 +158,15 @@ public class PriceOneDayFragmentAndroidTest {
 
     @Test
     public void shouldLoadPricesFailed() throws Exception {
-        onView(withId(R.id.spinner_year)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, 6);
 
-        onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(8).perform(click());
+        onView(withId(R.id.edit_text_month_year)).perform(click());
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+        onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
@@ -162,9 +186,6 @@ public class PriceOneDayFragmentAndroidTest {
     public void shouldLoadPricesWhenOpenFromChooseOneDayFragment() throws Exception {
         onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
         onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
-
-        onView(withId(R.id.spinner_month_outbound)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
 
         onView(withId(R.id.chk_return_trip)).perform(click());
         onView(withId(R.id.btn_find_flights)).perform(click());

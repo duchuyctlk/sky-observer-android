@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,24 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 
 import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
 import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.models.AvailableMonth;
 import com.huynd.skyobserver.models.ChooseOneDayModel;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenter;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenterImpl;
 import com.huynd.skyobserver.views.ChooseOneDayView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.jakewharton.rxbinding2.widget.RxAdapterView;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 /**
  * Created by HuyND on 8/22/2017.
@@ -37,17 +35,13 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
     FragmentChooseOneDayBinding mBinding;
 
-    ArrayAdapter<AvailableMonth> mSpinnerOutboundMonthAdapter;
-    private ArrayAdapter<Integer> mSpinnerOutboundDayAdapter;
-
-    private ArrayAdapter<AvailableMonth> mSpinnerInboundMonthAdapter;
-    private ArrayAdapter<Integer> mSpinnerInboundDayAdapter;
-
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
     private ArrayAdapter<Airport> mSpinnerDstPortAdapter;
 
     private ChooseOneDayPresenter mPresenter;
     private ChooseOneDayModel mModel;
+
+    DatePickerDialog mOutboundDatePickerDialog, mInboundDatePickerDialog;
 
     public static Fragment newInstance() {
         return new ChooseOneDayFragment();
@@ -59,22 +53,6 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         // initialize UI widgets
         mBinding = FragmentChooseOneDayBinding.inflate(inflater, container, false);
 
-        mSpinnerOutboundMonthAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<AvailableMonth>());
-        mSpinnerOutboundDayAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Integer>());
-
-        mSpinnerInboundMonthAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<AvailableMonth>());
-        mSpinnerInboundDayAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Integer>());
-
-        mBinding.spinnerMonthOutbound.setAdapter(mSpinnerOutboundMonthAdapter);
-        mBinding.spinnerDayOutbound.setAdapter(mSpinnerOutboundDayAdapter);
-
-        mBinding.spinnerMonthInbound.setAdapter(mSpinnerInboundMonthAdapter);
-        mBinding.spinnerDayInbound.setAdapter(mSpinnerInboundDayAdapter);
-
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
         mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
@@ -82,39 +60,19 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
-        RxAdapterView.itemSelections(mBinding.spinnerMonthOutbound)
-                .filter(new Predicate<Integer>() {
-                    @Override
-                    public boolean test(@NonNull Integer position) throws Exception {
-                        return position >= 0 && position < mSpinnerOutboundMonthAdapter.getCount();
-                    }
-                })
-                .subscribe(new Consumer<Integer>() {
-                    @Override
-                    public void accept(Integer position) throws Exception {
-                        AvailableMonth selectedMonthYear = mSpinnerOutboundMonthAdapter.getItem(position);
-                        int selectedYear = selectedMonthYear.getYear();
-                        int selectedMonth = selectedMonthYear.getMonth();
-                        mPresenter.onOutboundMonthSelected(selectedYear, selectedMonth);
-                    }
-                });
+        RxView.clicks(mBinding.editTextDateOutbound).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                mOutboundDatePickerDialog.show();
+            }
+        });
 
-        RxAdapterView.itemSelections(mBinding.spinnerMonthInbound)
-                .filter(new Predicate<Integer>() {
-                    @Override
-                    public boolean test(@NonNull Integer position) throws Exception {
-                        return position >= 0 && position < mSpinnerInboundMonthAdapter.getCount();
-                    }
-                })
-                .subscribe(new Consumer<Integer>() {
-                    @Override
-                    public void accept(Integer position) throws Exception {
-                        AvailableMonth selectedMonthYear = mSpinnerInboundMonthAdapter.getItem(position);
-                        int selectedYear = selectedMonthYear.getYear();
-                        int selectedMonth = selectedMonthYear.getMonth();
-                        mPresenter.onInboundMonthSelected(selectedYear, selectedMonth);
-                    }
-                });
+        RxView.clicks(mBinding.editTextDateInbound).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                mInboundDatePickerDialog.show();
+            }
+        });
 
         RxView.clicks(mBinding.btnFindFlights).subscribe(new Consumer<Object>() {
             @Override
@@ -141,12 +99,10 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
     public void onBtnFindFlightsClick() {
         try {
-            AvailableMonth availableMonthOutbound = mSpinnerOutboundMonthAdapter.getItem(
-                    mBinding.spinnerMonthOutbound.getSelectedItemPosition());
-            int yearOutbound = availableMonthOutbound.getYear();
-            int monthOutbound = availableMonthOutbound.getMonth();
-            int dayOutbound = mSpinnerOutboundDayAdapter.getItem(
-                    mBinding.spinnerDayOutbound.getSelectedItemPosition());
+            DatePicker outboundDatePicker = mOutboundDatePickerDialog.getDatePicker();
+            int yearOutbound = outboundDatePicker.getYear();
+            int monthOutbound = outboundDatePicker.getMonth() + 1;
+            int dayOutbound = outboundDatePicker.getDayOfMonth();
 
             Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
             Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
@@ -159,12 +115,10 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
             flightInfo.putString("dstPort", dstPort.getId());
             flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
             if (mBinding.chkReturnTrip.isChecked()) {
-                AvailableMonth availableMonthInbound = mSpinnerInboundMonthAdapter.getItem(
-                        mBinding.spinnerMonthInbound.getSelectedItemPosition());
-                int yearInbound = availableMonthInbound.getYear();
-                int monthInbound = availableMonthInbound.getMonth();
-                int dayInbound = mSpinnerInboundDayAdapter.getItem(
-                        mBinding.spinnerDayInbound.getSelectedItemPosition());
+                DatePicker inboundDatePicker = mInboundDatePickerDialog.getDatePicker();
+                int yearInbound = inboundDatePicker.getYear();
+                int monthInbound = inboundDatePicker.getMonth() + 1;
+                int dayInbound = inboundDatePicker.getDayOfMonth();
                 flightInfo.putInt("yearInbound", yearInbound);
                 flightInfo.putInt("monthInbound", monthInbound);
                 flightInfo.putInt("dayInbound", dayInbound);
@@ -174,38 +128,6 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         } catch (ClassCastException e) {
             Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
         }
-    }
-
-    @Override
-    public void updateAvailOutBoundMonths(List<AvailableMonth> months) {
-        mSpinnerOutboundMonthAdapter.clear();
-        mSpinnerOutboundMonthAdapter.addAll(months);
-        mSpinnerOutboundMonthAdapter.notifyDataSetChanged();
-        mBinding.spinnerMonthOutbound.setSelection(0);
-    }
-
-    @Override
-    public void updateAvailInBoundMonths(List<AvailableMonth> months) {
-        mSpinnerInboundMonthAdapter.clear();
-        mSpinnerInboundMonthAdapter.addAll(months);
-        mSpinnerInboundMonthAdapter.notifyDataSetChanged();
-        mBinding.spinnerMonthInbound.setSelection(0);
-    }
-
-    @Override
-    public void updateAvailOutBoundDays(List<Integer> days) {
-        mSpinnerOutboundDayAdapter.clear();
-        mSpinnerOutboundDayAdapter.addAll(days);
-        mSpinnerOutboundDayAdapter.notifyDataSetChanged();
-        mBinding.spinnerDayOutbound.setSelection(0);
-    }
-
-    @Override
-    public void updateAvailInBoundDays(List<Integer> days) {
-        mSpinnerInboundDayAdapter.clear();
-        mSpinnerInboundDayAdapter.addAll(days);
-        mSpinnerInboundDayAdapter.notifyDataSetChanged();
-        mBinding.spinnerDayInbound.setSelection(0);
     }
 
     @Override
@@ -221,8 +143,39 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
         mBinding.spinnerDstPort.setSelection(1);
     }
 
+    @Override
+    public void updateDatePickers(int startYear, int startMonth, int startDayOfMonth) {
+        mOutboundDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                mPresenter.setDateToEditText(year, month, dayOfMonth, true);
+            }
+        }, startYear, startMonth, startDayOfMonth);
+
+        mInboundDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                mPresenter.setDateToEditText(year, month, dayOfMonth, false);
+            }
+        }, startYear, startMonth, startDayOfMonth);
+    }
+
+    @Override
+    public void updateDateToEditText(String dateAsString, boolean isOutbound) {
+        if (isOutbound) {
+            mBinding.editTextDateOutbound.setText(dateAsString);
+        } else {
+            mBinding.editTextDateInbound.setText(dateAsString);
+        }
+    }
+
     public void onChkReturnTripCheckedChanged(boolean isChecked) {
-        mBinding.spinnerMonthInbound.setEnabled(isChecked);
-        mBinding.spinnerDayInbound.setEnabled(isChecked);
+        mBinding.editTextDateInbound.setEnabled(isChecked);
+    }
+
+    @Override
+    public void setDatePickersMinDate(long minDate) {
+        mOutboundDatePickerDialog.getDatePicker().setMinDate(minDate);
+        mInboundDatePickerDialog.getDatePicker().setMinDate(minDate);
     }
 }
