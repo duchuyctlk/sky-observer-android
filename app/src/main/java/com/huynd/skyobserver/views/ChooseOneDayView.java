@@ -1,7 +1,6 @@
 package com.huynd.skyobserver.views;
 
 import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.models.AvailableMonth;
 
 import java.util.List;
 
@@ -10,13 +9,12 @@ import java.util.List;
  */
 
 public interface ChooseOneDayView extends BaseView {
-    void updateAvailOutBoundMonths(List<AvailableMonth> months);
-
-    void updateAvailInBoundMonths(List<AvailableMonth> months);
-
-    void updateAvailOutBoundDays(List<Integer> days);
-
-    void updateAvailInBoundDays(List<Integer> availDays);
 
     void updateAirports(List<Airport> airports);
+
+    void updateDatePickers(int startYear, int startMonth, int startDayOfMonth);
+
+    void updateDateToEditText(String dateAsString, boolean isOutbound);
+
+    void setDatePickersMinDate(long minDate);
 }

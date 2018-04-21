@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.presenters;
 
 import com.huynd.skyobserver.models.ChooseOneDayModel;
+import com.huynd.skyobserver.utils.DateUtils;
 import com.huynd.skyobserver.views.ChooseOneDayView;
 
 /**
@@ -23,17 +24,19 @@ public class ChooseOneDayPresenterImpl implements ChooseOneDayPresenter {
     @Override
     public void initSpinnersValues() {
         mView.updateAirports(mModel.getAirports());
-        mView.updateAvailOutBoundMonths(mModel.getAvailMonths());
-        mView.updateAvailInBoundMonths(mModel.getAvailMonths());
+
+        int year = DateUtils.getStartYear();
+        int month = DateUtils.getStartMonth();
+        int dayOfMonth = DateUtils.getStartDayOfMonth();
+        String dateAsString = DateUtils.dateToString(year, month, dayOfMonth);
+        mView.updateDatePickers(year, month, dayOfMonth);
+        mView.updateDateToEditText(dateAsString, true);
+        mView.updateDateToEditText(dateAsString, false);
+        mView.setDatePickersMinDate(DateUtils.getMinDate());
     }
 
     @Override
-    public void onOutboundMonthSelected(int year, int month) {
-        mView.updateAvailOutBoundDays(mModel.getAvailDays(year, month));
-    }
-
-    @Override
-    public void onInboundMonthSelected(int year, int month) {
-        mView.updateAvailInBoundDays(mModel.getAvailDays(year, month));
+    public void setDateToEditText(int year, int month, int dayOfMonth, boolean isOutbound) {
+        mView.updateDateToEditText(DateUtils.dateToString(year, month, dayOfMonth), isOutbound);
     }
 }

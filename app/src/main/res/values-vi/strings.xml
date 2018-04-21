@@ -1,6 +1,5 @@
 <resources>
     <string name="month">Tháng:</string>
-    <string name="year">Năm:</string>
 
     <string name="get_prices">Xem giá</string>
     <string name="loading_string">Loading</string>

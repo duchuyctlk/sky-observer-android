@@ -1,14 +1,15 @@
 package com.huynd.skyobserver.fragments;
 
+import android.app.DatePickerDialog;
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
-import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 
 import com.google.gson.Gson;
 import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverAndroidTestApp;
 import com.huynd.skyobserver.activities.MainActivity;
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest;
-import com.huynd.skyobserver.models.AvailableMonth;
 import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
 import com.huynd.skyobserver.services.PricesAPI;
@@ -35,12 +36,14 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static io.reactivex.Observable.error;
 import static io.reactivex.Observable.just;
 import static junit.framework.Assert.fail;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -75,19 +78,22 @@ public class ChooseOneDayAndroidTest {
     @Test
     public void shouldContainViewWidgets() throws Exception {
         checkViewWidgetsIsDisplayed(R.id.spinner_src_port, R.id.spinner_dst_port,
-                R.id.spinner_month_outbound, R.id.spinner_day_outbound, R.id.chk_return_trip,
-                R.id.spinner_month_inbound, R.id.spinner_day_inbound);
+                R.id.edit_text_date_outbound, R.id.chk_return_trip, R.id.edit_text_date_inbound);
     }
 
     @Test
     public void shouldLoadPricesSuccessfully() throws Exception {
         mockApiResponse(true, true);
 
-        onView(withId(R.id.spinner_month_outbound)).perform(click());
-        onData(anything()).atPosition(2).perform(click());
+        onView(withId(R.id.edit_text_date_outbound)).perform(click());
+        onView(withClassName(equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(2018, 10, 01));
+        onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withId(R.id.spinner_month_inbound)).perform(click());
-        onData(anything()).atPosition(3).perform(click());
+        onView(withId(R.id.edit_text_date_inbound)).perform(click());
+        onView(withClassName(equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(2018, 10, 30));
+        onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_find_flights)).perform(click());
 
@@ -101,9 +107,9 @@ public class ChooseOneDayAndroidTest {
     @Test
     public void shouldClassCatchCastException() throws Exception {
         ChooseOneDayFragment fragment = (ChooseOneDayFragment) mActivity.getCurrentFragment();
-        ArrayAdapter<AvailableMonth> adapter = spy(fragment.mSpinnerOutboundMonthAdapter);
-        when(adapter.getItem(any(int.class))).thenThrow(new ClassCastException());
-        fragment.mSpinnerOutboundMonthAdapter = adapter;
+        DatePickerDialog datePickerDialog = spy(fragment.mOutboundDatePickerDialog);
+        when(datePickerDialog.getDatePicker()).thenThrow(new ClassCastException());
+        fragment.mOutboundDatePickerDialog = datePickerDialog;
         try {
             onView(withId(R.id.btn_find_flights)).perform(click());
         } catch (Exception exception) {
