@@ -1,7 +1,8 @@
 package com.huynd.skyobserver.models.cheapestflight;
 
 import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.utils.AirportUtils;
+import com.huynd.skyobserver.models.PricePerDay;
+import com.huynd.skyobserver.utils.CountryAirportUtils;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ import java.util.List;
 public class FlightWithCheapestPriceModel {
 
     public List<Airport> getAirports() {
-        return AirportUtils.getAirports();
+        return CountryAirportUtils.getAirports();
     }
 }

@@ -1,6 +1,6 @@
 package com.huynd.skyobserver.models;
 
-import com.huynd.skyobserver.utils.AirportUtils;
+import com.huynd.skyobserver.utils.CountryAirportUtils;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
 
 public class ChooseOneDayModel {
     public List<Airport> getAirports() {
-        return AirportUtils.getAirports();
+        return CountryAirportUtils.getAirports();
     }
 }

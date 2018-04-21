@@ -11,12 +11,12 @@ import static junit.framework.Assert.fail;
  * Created by HuyND on 8/26/2017.
  */
 
-public class AirportUtilsTest {
+public class CountryAirportUtilsTest {
     @Test
     public void testPrivateConstructor() {
         try {
-            Constructor<AirportUtils> constructor =
-                    AirportUtils.class.getDeclaredConstructor(new Class[0]);
+            Constructor<CountryAirportUtils> constructor =
+                    CountryAirportUtils.class.getDeclaredConstructor(new Class[0]);
             constructor.setAccessible(true);
 
             // should throws AssertionError here

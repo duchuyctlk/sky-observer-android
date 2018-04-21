@@ -1,5 +1,7 @@
 package com.huynd.skyobserver.models.cheapestflight;
 
+import com.huynd.skyobserver.models.Country;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,20 @@ import java.util.List;
  */
 
 public class CountryPriceInfo {
+    private Country mCountry;
     private List<AirportPriceInfo> mAirportPriceInfos;
+
+    public Country getCountry() {
+        return mCountry;
+    }
+
+    public void setCountry(Country country) {
+        mCountry = country;
+    }
+
+    public void setAirportPriceInfos(List<AirportPriceInfo> airportPriceInfos) {
+        mAirportPriceInfos = airportPriceInfos;
+    }
 
     public int getAirportPriceInfoCount() {
         return mAirportPriceInfos != null ? mAirportPriceInfos.size() : 0;
