@@ -14,7 +14,6 @@ import android.widget.DatePicker;
 import com.huynd.skyobserver.databinding.FragmentFlightWithCheapestPriceRequestBinding;
 import com.huynd.skyobserver.fragments.BaseFragment;
 import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.models.cheapestflight.FlightWithCheapestPriceModel;
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPricePresenter;
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPricePresenterImpl;
 import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceView;
@@ -39,7 +38,6 @@ public class FlightWithCheapestPriceRequestFragment extends BaseFragment impleme
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
 
     private FlightWithCheapestPricePresenter mPresenter;
-    private FlightWithCheapestPriceModel mModel;
 
     DatePickerDialog mOutboundDatePickerDialog, mInboundDatePickerDialog;
 
@@ -87,8 +85,6 @@ public class FlightWithCheapestPriceRequestFragment extends BaseFragment impleme
 
         // initialize MPV pattern
         mPresenter = new FlightWithCheapestPricePresenterImpl(this);
-        mModel = new FlightWithCheapestPriceModel();
-        mPresenter.setModel(mModel);
         mPresenter.initSpinnersValues();
 
         return mBinding.getRoot();

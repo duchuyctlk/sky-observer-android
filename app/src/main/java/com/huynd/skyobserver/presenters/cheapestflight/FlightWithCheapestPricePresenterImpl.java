@@ -15,11 +15,8 @@ public class FlightWithCheapestPricePresenterImpl implements FlightWithCheapestP
 
     public FlightWithCheapestPricePresenterImpl(FlightWithCheapestPriceView view) {
         mView = view;
-    }
 
-    @Override
-    public void setModel(FlightWithCheapestPriceModel model) {
-        mModel = model;
+        mModel = new FlightWithCheapestPriceModel();
     }
 
     @Override

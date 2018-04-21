@@ -1,7 +1,6 @@
 package com.huynd.skyobserver.models.cheapestflight;
 
 import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.utils.CountryAirportUtils;
 
 import java.util.List;
