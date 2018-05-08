@@ -24,11 +24,23 @@ public class CountryPriceInfo {
         mAirportPriceInfos = airportPriceInfos;
     }
 
+    public List<AirportPriceInfo> getAirportPriceInfos() {
+        return mAirportPriceInfos;
+    }
+
     public int getAirportPriceInfoCount() {
         return mAirportPriceInfos != null ? mAirportPriceInfos.size() : 0;
     }
 
     public AirportPriceInfo getAirportPriceInfo(int index) {
         return mAirportPriceInfos != null ? mAirportPriceInfos.get(index) : null;
+    }
+
+    public int getBestPriceTotal() {
+        if (mAirportPriceInfos == null || mAirportPriceInfos.size() == 0) {
+            return 0;
+
+        }
+        return mAirportPriceInfos.get(0).getBestPriceTotal();
     }
 }

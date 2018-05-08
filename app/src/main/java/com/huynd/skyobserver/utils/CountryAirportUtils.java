@@ -40,6 +40,10 @@ public class CountryAirportUtils {
         airports.add(new Airport("HUI", "Phú Bài", "vn"));
         airports.add(new Airport("VII", "Vinh", "vn"));
 
+        airports.add(new Airport("KUL", "Kuala Lumpur", "my"));
+        airports.add(new Airport("SIN", "Singapore", "sg"));
+        airports.add(new Airport("BKK", "Bangkok", "th"));
+
         return airports;
     }
 
@@ -47,7 +51,38 @@ public class CountryAirportUtils {
         List<Country> countries = new ArrayList<>();
 
         countries.add(new Country("vn", "Viet Nam"));
+        countries.add(new Country("my", "Malaysia"));
+        countries.add(new Country("sg", "Singapore"));
+        countries.add(new Country("th", "Thailand"));
 
         return countries;
+    }
+
+    public static Country getCountryByCode(String countryCode) {
+        Country result = null;
+
+        List<Country> countries = getCountries();
+        for (Country country : countries) {
+            if (country.getCountryCode().equals(countryCode)) {
+                result = country;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public static Airport getAirportById(String airportId) {
+        Airport result = null;
+
+        List<Airport> airports = getAirports();
+        for (Airport airport : airports) {
+            if (airport.getId().equals(airportId)) {
+                result = airport;
+                break;
+            }
+        }
+
+        return result;
     }
 }

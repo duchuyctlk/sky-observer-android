@@ -12,11 +12,23 @@ public class AirportPriceInfo {
 
     private PricePerDay mPricePerDay;
 
-    public String getDestination() {
+    public String getAirportName() {
         return mAirport != null ? mAirport.toString() : "";
     }
 
-    public int getBestPrice() {
-        return mPricePerDay != null ? mPricePerDay.getPrice() : 0;
+    public String getAirportId() {
+        return mAirport != null ? mAirport.getId() : "";
+    }
+
+    public int getBestPriceTotal() {
+        return mPricePerDay != null ? mPricePerDay.getPriceTotal() : 0;
+    }
+
+    public void setAirport(Airport airport) {
+        mAirport = airport;
+    }
+
+    public void setPricePerDay(PricePerDay pricePerDay) {
+        mPricePerDay = pricePerDay;
     }
 }

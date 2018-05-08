@@ -23,4 +23,8 @@ public class Airport {
     public String toString() {
         return mName;
     }
+
+    public String getCountryCode() {
+        return mCountryCode;
+    }
 }
