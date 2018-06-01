@@ -94,10 +94,10 @@ public class PriceOneDayFragmentAndroidTest {
     @Test
     public void shouldLoadPricesSuccessfully() throws Exception {
         onView(withId(R.id.spinner_year)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        onData(anything()).atPosition(0).perform(click());
 
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(3).perform(click());
+        onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
@@ -139,10 +139,10 @@ public class PriceOneDayFragmentAndroidTest {
     @Test
     public void shouldLoadPricesFailed() throws Exception {
         onView(withId(R.id.spinner_year)).perform(click());
-        onData(anything()).atPosition(1).perform(click());
+        onData(anything()).atPosition(0).perform(click());
 
         onView(withId(R.id.spinner_month)).perform(click());
-        onData(anything()).atPosition(3).perform(click());
+        onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
