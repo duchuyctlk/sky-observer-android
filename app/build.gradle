@@ -8,12 +8,12 @@ def Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.huynd.skyobserver"
-        minSdkVersion 17
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.huynd.skyobserver.AndroidTestRunner"
@@ -67,8 +67,8 @@ jacoco {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:support-v4:27.1.1'
 
     compile 'com.github.twinkle942910:monthyearpicker:0.0.1'
 
@@ -137,7 +137,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'conn
     }
 
     // use hidden configuration, for details look into JacocoPlugin.groovy
-    jacocoClasspath = project.configurations['androidJacocoAnt']
+    //jacocoClasspath = project.configurations['androidJacocoAnt']
 
     // exclude auto-generated classes and tests
     def fileFilter = ['**/R.class',
