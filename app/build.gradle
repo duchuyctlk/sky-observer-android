@@ -117,7 +117,7 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedCheck', 'testDebugUnitTest']) {
+task jacocoTestReport(type: JacocoReport) {
     group = 'Reporting'
     description = 'Generate Jacoco coverage reports after running tests.'
 
