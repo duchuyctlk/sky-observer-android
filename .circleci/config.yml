@@ -211,6 +211,9 @@ jobs:
           name: Generate JaCoCo report
           command: ./gradlew -PciBuild=true :app:jacocoTestReport
       - run:
+          name: Relocate coverage report
+          command: mv app/build/reports/jacoco/jacocoTestReport app/build/reports/jacoco/test
+      - run:
           name: Upload coverage report to coveralls.io
           command: ./gradlew -PciBuild=true coveralls
       - store_artifacts:
