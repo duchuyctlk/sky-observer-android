@@ -56,4 +56,44 @@ public class BaseActivityAndroidTest {
         assertTrue(mActivity.getCurrentFragment() instanceof PricePerDayFragment);
         Espresso.unregisterIdlingResources(mIdlingResource);
     }
+
+    @Test
+    public void shouldPressBackOnPricePerDayProperly() throws Exception {
+        mActivity.setFragment(PricePerDayFragment.newInstance(), PricePerDayFragment.TAG, false);
+
+        try {
+            pressBack();
+        } catch (NoActivityResumedException exception) {
+            exception.printStackTrace();
+            return;
+        }
+        fail("The app is killed. This line should never be reached.");
+    }
+
+    @Test
+    public void shouldShowCorrectFragments() throws Exception {
+        Fragment pricePerDayFragment = PricePerDayFragment.newInstance();
+        mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG, false);
+
+        Fragment priceOneDayFragment = PriceOneDayFragment.newInstance();
+        priceOneDayFragment.setArguments(new Bundle());
+        mActivity.setFragment(priceOneDayFragment, PriceOneDayFragment.TAG, false);
+
+        Espresso.registerIdlingResources(mIdlingResource);
+
+        mActivity.setFragment(pricePerDayFragment, PricePerDayFragment.TAG, false);
+        assertTrue(mActivity.getCurrentFragment() instanceof PricePerDayFragment);
+    }
+
+    @Test
+    public void shouldHandleOnStartException() throws Exception {
+        AppCompatActivity spyActivity = spy(mActivity);
+        when(spyActivity.getDelegate()).thenThrow(new NullPointerException());
+
+        try {
+            mActivity.onStart();
+        } catch (NullPointerException nullPointerException) {
+            fail("Exception should be caught.");
+        }
+    }
 }
