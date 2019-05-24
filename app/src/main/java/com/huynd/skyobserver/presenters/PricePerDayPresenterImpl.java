@@ -3,6 +3,7 @@ package com.huynd.skyobserver.presenters;
 import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.models.PricePerDayModel;
 import com.huynd.skyobserver.services.PricesAPI;
+import com.huynd.skyobserver.utils.DateUtils;
 import com.huynd.skyobserver.views.PricePerDayView;
 
 import java.util.List;
@@ -33,17 +34,12 @@ public class PricePerDayPresenterImpl implements
             return;
         }
 
-        mView.updateAvailYears(mModel.getAvailYears());
         mView.updateAirports(mModel.getAirports());
-    }
 
-    @Override
-    public void onYearSelected(int year) {
-        if (mView == null) {
-            return;
-        }
-
-        mView.updateAvailMonths(mModel.getAvailMonths(year));
+        int year = DateUtils.getStartYear();
+        int month = DateUtils.getStartMonth();
+        String dateAsString = DateUtils.dateToString(year, month);
+        mView.updateDateToEditText(dateAsString);
     }
 
     @Override
