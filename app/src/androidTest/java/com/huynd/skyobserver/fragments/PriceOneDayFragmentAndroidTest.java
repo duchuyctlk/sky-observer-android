@@ -103,7 +103,7 @@ public class PriceOneDayFragmentAndroidTest {
 
         Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
 
-        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(6).perform(click());
 
         checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
                 R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
@@ -150,7 +150,7 @@ public class PriceOneDayFragmentAndroidTest {
 
         Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
 
-        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(6).perform(click());
 
         onView(withId(R.id.lst_prices_outbound)).check(matches(isEnabled()));
         onView(withId(R.id.lst_prices_outbound)).check(matches(not(isDisplayed())));
