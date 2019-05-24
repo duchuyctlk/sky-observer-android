@@ -10,9 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static junit.framework.Assert.fail;
 
 /**
@@ -20,7 +18,6 @@ import static junit.framework.Assert.fail;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = LOLLIPOP)
 public class PriceOneDayViewTest {
     private MainActivity mActivity;
 
