@@ -95,21 +95,17 @@ public class PriceOneDayFragmentAndroidTest {
 
     @Test
     public void shouldLoadPricesSuccessfully() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 6);
+        onView(withId(R.id.spinner_year)).perform(click());
+        onData(anything()).atPosition(0).perform(click());
 
-        onView(withId(R.id.edit_text_month_year)).perform(click());
-        onView(withId(R.id.year_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
-        onView(withId(R.id.month_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
-        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.spinner_month)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
         Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
 
-        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(6).perform(click());
 
         checkViewWidgetsIsDisplayed(R.id.txt_routine_outbound, R.id.txt_flight_date_outbound,
                 R.id.chk_show_total_price_outbound, R.id.lst_prices_outbound);
@@ -158,15 +154,11 @@ public class PriceOneDayFragmentAndroidTest {
 
     @Test
     public void shouldLoadPricesFailed() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 6);
+        onView(withId(R.id.spinner_year)).perform(click());
+        onData(anything()).atPosition(0).perform(click());
 
-        onView(withId(R.id.edit_text_month_year)).perform(click());
-        onView(withId(R.id.year_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
-        onView(withId(R.id.month_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
-        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.spinner_month)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
 
@@ -174,7 +166,7 @@ public class PriceOneDayFragmentAndroidTest {
 
         Espresso.registerIdlingResources(mPriceOneDayFragmentIdlingResource);
 
-        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(6).perform(click());
 
         onView(withId(R.id.lst_prices_outbound)).check(matches(isEnabled()));
         onView(withId(R.id.lst_prices_outbound)).check(matches(not(isDisplayed())));

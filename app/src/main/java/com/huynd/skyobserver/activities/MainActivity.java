@@ -19,8 +19,6 @@ import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
 
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
@@ -44,7 +42,6 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
 
         mNavigationDrawerPresenter.onItemClick(0);
 
-        checkForUpdates();
     }
 
     @Override
@@ -56,13 +53,11 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     @Override
     public void onPause() {
         super.onPause();
-        unregisterManagers();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterManagers();
     }
 
     private void setupNavigationDrawer() {
@@ -123,14 +118,5 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     }
 
     private void checkForCrashes() {
-        CrashManager.register(this);
-    }
-
-    private void checkForUpdates() {
-        UpdateManager.register(this);
-    }
-
-    private void unregisterManagers() {
-        UpdateManager.unregister();
     }
 }

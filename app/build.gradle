@@ -8,12 +8,12 @@ def Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.huynd.skyobserver"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.huynd.skyobserver.AndroidTestRunner"
@@ -22,20 +22,20 @@ android {
         buildConfigField "String", "API_URL", "\"https://www.atadi.vn/sapi/getprices/\""
         buildConfigField "String", "ICON_URL", "\"https://avia.vn/assets/img/uploaded/airlines/logos/\""
 
-        buildConfigField "String", "COOKIES_DATA", properties.getProperty("site.cookies", "")
+        buildConfigField "String", "COOKIES_DATA", properties.getProperty("site.cookies", "\"\"")
 
-        buildConfigField "String", "HEADER_HOST", properties.getProperty("headers.host", "")
-        buildConfigField "String", "HEADER_CONNECTION", properties.getProperty("headers.connection", "")
-        buildConfigField "String", "HEADER_CONTENT_LENGTH", properties.getProperty("headers.contentLength", "")
-        buildConfigField "String", "HEADER_REQUEST_HASH", properties.getProperty("headers.requestHash", "")
-        buildConfigField "String", "HEADER_ORIGIN", properties.getProperty("headers.origin", "")
-        buildConfigField "String", "HEADER_REQUEST_CARRIER", properties.getProperty("headers.requestCarrier", "")
-        buildConfigField "String", "HEADER_USER_AGENT", properties.getProperty("headers.userAgent", "")
-        buildConfigField "String", "HEADER_CONTENT_TYPE", properties.getProperty("headers.contentType", "")
-        buildConfigField "String", "HEADER_ACCEPT", properties.getProperty("headers.accept", "")
-        buildConfigField "String", "HEADER_REFERER", properties.getProperty("headers.referer", "")
-        buildConfigField "String", "HEADER_ACCEPT_ENCODING", properties.getProperty("headers.acceptEncoding", "")
-        buildConfigField "String", "HEADER_ACCEPT_LANGUAGE", properties.getProperty("headers.acceptLanguage", "")
+        buildConfigField "String", "HEADER_HOST", properties.getProperty("headers.host", "\"\"")
+        buildConfigField "String", "HEADER_CONNECTION", properties.getProperty("headers.connection", "\"\"")
+        buildConfigField "String", "HEADER_CONTENT_LENGTH", properties.getProperty("headers.contentLength", "\"\"")
+        buildConfigField "String", "HEADER_REQUEST_HASH", properties.getProperty("headers.requestHash", "\"\"")
+        buildConfigField "String", "HEADER_ORIGIN", properties.getProperty("headers.origin", "\"\"")
+        buildConfigField "String", "HEADER_REQUEST_CARRIER", properties.getProperty("headers.requestCarrier", "\"\"")
+        buildConfigField "String", "HEADER_USER_AGENT", properties.getProperty("headers.userAgent", "\"\"")
+        buildConfigField "String", "HEADER_CONTENT_TYPE", properties.getProperty("headers.contentType", "\"\"")
+        buildConfigField "String", "HEADER_ACCEPT", properties.getProperty("headers.accept", "\"\"")
+        buildConfigField "String", "HEADER_REFERER", properties.getProperty("headers.referer", "\"\"")
+        buildConfigField "String", "HEADER_ACCEPT_ENCODING", properties.getProperty("headers.acceptEncoding", "\"\"")
+        buildConfigField "String", "HEADER_ACCEPT_LANGUAGE", properties.getProperty("headers.acceptLanguage", "\"\"")
     }
 
     dataBinding {
@@ -67,8 +67,8 @@ jacoco {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:support-v4:27.1.1'
 
     compile 'com.github.twinkle942910:monthyearpicker:0.0.1'
 
@@ -108,7 +108,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.1'
 
     // hockeyapp
-    compile 'net.hockeyapp.android:HockeySDK:5.0.1'
+    //compile 'net.hockeyapp.android:HockeySDK:5.0.1'
 
     // mockito
     androidTestCompile "org.mockito:mockito-core:2.0.5-beta"
@@ -127,7 +127,7 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'connectedCheck']) {
+task jacocoTestReport(type: JacocoReport) {
     group = 'Reporting'
     description = 'Generate Jacoco coverage reports after running tests.'
 
