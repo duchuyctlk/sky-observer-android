@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'com.neenbedankt.android-apt'
 
 
 def Properties properties = new Properties()
@@ -121,9 +120,7 @@ dependencies {
     testCompile "org.robolectric:shadows-support-v4:3.1.4"
 
     // dagger
-    apt 'com.google.dagger:dagger-compiler:2.0'
-    testApt "com.google.dagger:dagger-compiler:2.0"
-    androidTestApt "com.google.dagger:dagger-compiler:2.0"
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 
@@ -135,9 +132,6 @@ task jacocoTestReport(type: JacocoReport) {
         xml.enabled = true
         html.enabled = true
     }
-
-    // use hidden configuration, for details look into JacocoPlugin.groovy
-    jacocoClasspath = project.configurations['androidJacocoAnt']
 
     // exclude auto-generated classes and tests
     def fileFilter = ['**/R.class',
