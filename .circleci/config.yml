@@ -54,7 +54,7 @@ references:
   android_config: &android_config
     working_directory: *workspace
     docker:
-      - image: circleci/android:api-27-alpha
+      - image: circleci/android:api-28-alpha
     environment:
       TERM: dumb
       _JAVA_OPTIONS: "-Xmx2048m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
@@ -172,8 +172,8 @@ jobs:
           command: |
             gcloud firebase test android run \
               --type instrumentation \
-              --app app/build/outputs/apk/app-debug.apk \
-              --test app/build/outputs/apk/app-debug-androidTest.apk \
+              --app app/build/outputs/apk/debug/app-debug.apk \
+              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
               --device model=Nexus4,version=22,locale=en_US,orientation=portrait \
               --environment-variables coverage=true,coverageFile=/sdcard/coverage.ec \
               --directories-to-pull /sdcard --timeout 20m
