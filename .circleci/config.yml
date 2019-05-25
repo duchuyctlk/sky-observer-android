@@ -30,11 +30,7 @@ references:
     persist_to_workspace:
       root: *workspace
       paths:
-        - app/build/intermediates
-        - app/build/outputs/androidTest-results
-        - app/build/outputs/apk
-        - app/build/outputs/code-coverage
-        - app/build/test-results
+        - app/build
   persist_release_workspace: &persist_release_workspace
     persist_to_workspace:
       root: *workspace
