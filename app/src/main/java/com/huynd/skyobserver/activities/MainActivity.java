@@ -19,6 +19,7 @@ import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
+
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
         OnFlightInfoSelectedListener {
@@ -40,6 +41,23 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         setupNavigationDrawer();
 
         mNavigationDrawerPresenter.onItemClick(0);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkForCrashes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private void setupNavigationDrawer() {
@@ -97,5 +115,8 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
         fragment.setArguments(flightInfo);
         setFragment(fragment, PriceOneDayFragment.TAG, false);
+    }
+
+    private void checkForCrashes() {
     }
 }

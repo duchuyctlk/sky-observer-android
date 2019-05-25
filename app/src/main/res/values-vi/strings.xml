@@ -1,0 +1,27 @@
+<resources>
+    <string name="month">Tháng:</string>
+
+    <string name="get_prices">Xem giá</string>
+    <string name="loading_string">Loading</string>
+    <string name="error">Lỗi</string>
+    <string name="ok">OK</string>
+    <string name="src_port">Đi:</string>
+    <string name="dst_port">Đến:</string>
+    <string name="show_taxes_and_fees">Giá có thuế và phí</string>
+    <string name="failed_to_get_prices_message">Không thể lấy giá!!!</string>
+    <string name="invalid_date_message">Ngày không hợp lệ!!!</string>
+    <string name="day">Ngày:</string>
+    <string name="outbound_date">Ngày đi:</string>
+    <string name="inbound_date">Ngày về:</string>
+    <string name="find_flights">Tìm chuyến bay</string>
+    <string name="return_trip">Khứ hồi</string>
+
+    <string name="sorting_order">Thứ tự sắp xếp</string>
+    <string name="sorting_order_price_only_lowest">Giá trước thuế: Thấp đến cao</string>
+    <string name="sorting_order_price_only_highest">Giá trước thuế: Cao đến thấp</string>
+    <string name="sorting_order_total_price_lowest">Giá sau thuế: Thấp đến cao</string>
+    <string name="sorting_order_total_price_highest">Giá sau thuế: Cao đến thấp</string>
+    <string name="sorting_order_depart_earliest">Giờ bay: sớm nhất</string>
+    <string name="sorting_order_depart_latest">Giờ bay: trễ nhất</string>
+    <string name="sorting_order_airlines">Hãng bay</string>
+</resources>

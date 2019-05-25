@@ -1,40 +1,43 @@
-apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
-apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'jacoco'
+    id 'com.github.kt3k.coveralls'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
 
 def Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.huynd.skyobserver"
-        minSdkVersion 17
-        targetSdkVersion 25
+        minSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.huynd.skyobserver.AndroidTestRunner"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "8ea0cedf08c94aeda28932f1e409ac50"]
+
         buildConfigField "String", "API_URL", "\"https://www.atadi.vn/sapi/getprices/\""
         buildConfigField "String", "ICON_URL", "\"https://avia.vn/assets/img/uploaded/airlines/logos/\""
 
-        buildConfigField "String", "COOKIES_DATA", properties.getProperty("site.cookies", "")
+        buildConfigField "String", "COOKIES_DATA", properties.getProperty("site.cookies", "\"\"")
 
-        buildConfigField "String", "HEADER_HOST", properties.getProperty("headers.host", "")
-        buildConfigField "String", "HEADER_CONNECTION", properties.getProperty("headers.connection", "")
-        buildConfigField "String", "HEADER_CONTENT_LENGTH", properties.getProperty("headers.contentLength", "")
-        buildConfigField "String", "HEADER_REQUEST_HASH", properties.getProperty("headers.requestHash", "")
-        buildConfigField "String", "HEADER_ORIGIN", properties.getProperty("headers.origin", "")
-        buildConfigField "String", "HEADER_REQUEST_CARRIER", properties.getProperty("headers.requestCarrier", "")
-        buildConfigField "String", "HEADER_USER_AGENT", properties.getProperty("headers.userAgent", "")
-        buildConfigField "String", "HEADER_CONTENT_TYPE", properties.getProperty("headers.contentType", "")
-        buildConfigField "String", "HEADER_ACCEPT", properties.getProperty("headers.accept", "")
-        buildConfigField "String", "HEADER_REFERER", properties.getProperty("headers.referer", "")
-        buildConfigField "String", "HEADER_ACCEPT_ENCODING", properties.getProperty("headers.acceptEncoding", "")
-        buildConfigField "String", "HEADER_ACCEPT_LANGUAGE", properties.getProperty("headers.acceptLanguage", "")
+        buildConfigField "String", "HEADER_HOST", properties.getProperty("headers.host", "\"\"")
+        buildConfigField "String", "HEADER_CONNECTION", properties.getProperty("headers.connection", "\"\"")
+        buildConfigField "String", "HEADER_CONTENT_LENGTH", properties.getProperty("headers.contentLength", "\"\"")
+        buildConfigField "String", "HEADER_REQUEST_HASH", properties.getProperty("headers.requestHash", "\"\"")
+        buildConfigField "String", "HEADER_ORIGIN", properties.getProperty("headers.origin", "\"\"")
+        buildConfigField "String", "HEADER_REQUEST_CARRIER", properties.getProperty("headers.requestCarrier", "\"\"")
+        buildConfigField "String", "HEADER_USER_AGENT", properties.getProperty("headers.userAgent", "\"\"")
+        buildConfigField "String", "HEADER_CONTENT_TYPE", properties.getProperty("headers.contentType", "\"\"")
+        buildConfigField "String", "HEADER_ACCEPT", properties.getProperty("headers.accept", "\"\"")
+        buildConfigField "String", "HEADER_REFERER", properties.getProperty("headers.referer", "\"\"")
+        buildConfigField "String", "HEADER_ACCEPT_ENCODING", properties.getProperty("headers.acceptEncoding", "\"\"")
+        buildConfigField "String", "HEADER_ACCEPT_LANGUAGE", properties.getProperty("headers.acceptLanguage", "\"\"")
     }
 
     dataBinding {
@@ -52,6 +55,9 @@ android {
     }
 
     testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
         unitTests.all {
             jacoco {
                 includeNoLocationClasses = true
@@ -65,84 +71,72 @@ android {
 }
 
 jacoco {
-    toolVersion "0.7.6.201602180812"
+    toolVersion "0.8.1"
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+
+    implementation 'com.github.twinkle942910:monthyearpicker:0.0.1'
 
     // dagger
-    compile 'com.google.dagger:dagger:2.0'
+    implementation 'com.google.dagger:dagger:2.17'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.17'
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude module: 'espresso-core'
+        exclude module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-annotations'
+        exclude module: 'design'
+    }
 
     // Retrofit
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
     // RxAndroid
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.3'
 
     // RxBinding
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
 
     // Glide
-    compile 'com.github.bumptech.glide:glide:3.6.1'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
 
     // kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.4-3"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.31"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.31"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:1.1.4-3"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.1.4-3"
 
     // mockito
-    androidTestCompile "org.mockito:mockito-core:2.0.5-beta"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker:1.4"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:1.4"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:1.4"
+    androidTestImplementation 'org.mockito:mockito-core:2.25.0'
+    testImplementation 'org.mockito:mockito-core:2.25.0'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.25.0'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-
-    testCompile "org.robolectric:shadows-support-v4:3.3.2"
-    testCompile 'org.robolectric:robolectric:3.3.2'
-
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib:1.1.4-3"
-    testCompile "org.jetbrains.kotlin:kotlin-test:1.1.4-3"
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.1.4-3"
-
-    // dagger
-    apt 'com.google.dagger:dagger-compiler:2.0'
-    testApt "com.google.dagger:dagger-compiler:2.0"
-    androidTestApt "com.google.dagger:dagger-compiler:2.0"
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    // unit test
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.2'
+    testImplementation 'org.robolectric:shadows-support-v4:3.4-rc2'
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4-3"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:1.1.4-3"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'connectedCheck']) {
+task jacocoTestReport(type: JacocoReport) {
     group = 'Reporting'
     description = 'Generate Jacoco coverage reports after running tests.'
 
@@ -150,9 +144,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'conn
         xml.enabled = true
         html.enabled = true
     }
-
-    // use hidden configuration, for details look into JacocoPlugin.groovy
-    jacocoClasspath = project.configurations['androidJacocoAnt']
 
     // exclude auto-generated classes and tests
     def fileFilter = ['**/R.class',
@@ -168,7 +159,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'conn
                       '**/*MembersInjector*.*',
                       '**/*DaggerApplicationComponent*.class',
                       'com/huynd/skyobserver/dagger/**/*.*']
-    def debugTree = fileTree(dir: "${project.buildDir}/intermediates/classes/debug", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${project.buildDir}/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories = files([mainSrc])

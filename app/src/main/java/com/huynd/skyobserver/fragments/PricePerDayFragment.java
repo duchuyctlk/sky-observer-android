@@ -14,22 +14,22 @@ import com.huynd.skyobserver.adapters.GridViewPricePerDayAdapter;
 import com.huynd.skyobserver.databinding.FragmentPricePerDayBinding;
 import com.huynd.skyobserver.models.Airport;
 import com.huynd.skyobserver.models.PricePerDay;
-import com.huynd.skyobserver.models.PricePerDayModel;
 import com.huynd.skyobserver.presenters.PricePerDayPresenter;
 import com.huynd.skyobserver.presenters.PricePerDayPresenterImpl;
 import com.huynd.skyobserver.services.PricesAPI;
+import com.huynd.skyobserver.utils.DateUtils;
 import com.huynd.skyobserver.views.PricePerDayView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxAdapterView;
+import com.twinkle94.monthyearpicker.picker.SkyObserverYearMonthPickerDialog;
+import com.twinkle94.monthyearpicker.picker.YearMonthPickerDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 /**
  * Created by HuyND on 8/6/2017.
@@ -44,16 +44,14 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
     FragmentPricePerDayBinding mBinding;
 
-    ArrayAdapter<Integer> mSpinnerYearAdapter;
-    private ArrayAdapter<Integer> mSpinnerMonthAdapter;
-
     private ArrayAdapter<Airport> mSpinnerSrcPortAdapter;
     private ArrayAdapter<Airport> mSpinnerDstPortAdapter;
 
     private GridViewPricePerDayAdapter mGridViewAdapter;
 
     private PricePerDayPresenter mPresenter;
-    private PricePerDayModel mModel;
+
+    private SkyObserverYearMonthPickerDialog mYearMonthPickerDialog;
 
     public static Fragment newInstance() {
         return new PricePerDayFragment();
@@ -69,27 +67,6 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         // initialize UI widgets
         mBinding = FragmentPricePerDayBinding.inflate(inflater, container, false);
 
-        mSpinnerYearAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Integer>());
-        mSpinnerMonthAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Integer>());
-        mBinding.spinnerYear.setAdapter(mSpinnerYearAdapter);
-        mBinding.spinnerMonth.setAdapter(mSpinnerMonthAdapter);
-        RxAdapterView.itemSelections(mBinding.spinnerYear)
-                .filter(new Predicate<Integer>() {
-                    @Override
-                    public boolean test(@NonNull Integer position) throws Exception {
-                        return position >= 0 && position < mSpinnerYearAdapter.getCount();
-                    }
-                })
-                .subscribe(new Consumer<Integer>() {
-                    @Override
-                    public void accept(Integer position) throws Exception {
-                        int selectedYear = mSpinnerYearAdapter.getItem(position);
-                        mPresenter.onYearSelected(selectedYear);
-                    }
-                });
-
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
         mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
@@ -97,11 +74,26 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
+        mYearMonthPickerDialog = new SkyObserverYearMonthPickerDialog(getContext(),
+                new YearMonthPickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onYearMonthSet(int year, int month) {
+                        mBinding.editTextMonthYear.setText(DateUtils.dateToString(year, month));
+                    }
+                });
+
+        RxView.clicks(mBinding.editTextMonthYear).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                mYearMonthPickerDialog.show();
+            }
+        });
+
         RxView.clicks(mBinding.btnGetPrices).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
-                int year = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
-                int month = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
+                int year = mYearMonthPickerDialog.getYear();
+                int month = mYearMonthPickerDialog.getMonth() + 1;
 
                 Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
                 Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
@@ -119,8 +111,8 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
                 PricePerDay price = mGridViewAdapter.getItem(position);
                 if (price != null) {
                     try {
-                        int yearOutbound = mSpinnerYearAdapter.getItem(mBinding.spinnerYear.getSelectedItemPosition());
-                        int monthOutbound = mSpinnerMonthAdapter.getItem(mBinding.spinnerMonth.getSelectedItemPosition());
+                        int yearOutbound = mYearMonthPickerDialog.getYear();
+                        int monthOutbound = mYearMonthPickerDialog.getMonth() + 1;
                         int dayOutbound = price.getDay();
 
                         Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
@@ -144,26 +136,9 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
 
         // initialize MPV pattern
         mPresenter = new PricePerDayPresenterImpl(this, mPricesAPI);
-        mModel = new PricePerDayModel(mPresenter);
-        mPresenter.setModel(mModel);
         mPresenter.initSpinnersValues();
 
         return mBinding.getRoot();
-    }
-
-    @Override
-    public void updateAvailYears(List<Integer> years) {
-        mSpinnerYearAdapter.clear();
-        mSpinnerYearAdapter.addAll(years);
-        mSpinnerYearAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void updateAvailMonths(List<Integer> months) {
-        mSpinnerMonthAdapter.clear();
-        mSpinnerMonthAdapter.addAll(months);
-        mSpinnerMonthAdapter.notifyDataSetChanged();
-        mBinding.spinnerMonth.setSelection(0);
     }
 
     @Override
@@ -184,5 +159,10 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
         mGridViewAdapter.clear();
         mGridViewAdapter.addAll(prices);
         mGridViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateDateToEditText(String dateAsString) {
+        mBinding.editTextMonthYear.setText(dateAsString);
     }
 }

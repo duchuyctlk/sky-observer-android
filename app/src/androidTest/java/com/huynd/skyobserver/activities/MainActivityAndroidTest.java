@@ -44,13 +44,16 @@ public class MainActivityAndroidTest {
 
     @Test
     public void testNavigationDrawer() throws Exception {
+        String[] navigationDrawerItemTitles = mActivity.getResources()
+                .getStringArray(R.array.array_of_navigation_drawer_item_title);
+
         onView(withContentDescription(mActivity.getString(R.string.drawer_open))).perform(click());
         onView(withId(R.id.layout_drawer)).check(matches(isDisplayed()));
         onView(allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class))))
-                .check(matches(withText("Price per day")));
+                .check(matches(withText(navigationDrawerItemTitles[0])));
 
         onData(anything()).inAdapterView(withId(R.id.listview_left_drawer)).atPosition(1).perform(click());
         onView(allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class))))
-                .check(matches(withText("Price per month")));
+                .check(matches(withText(navigationDrawerItemTitles[1])));
     }
 }

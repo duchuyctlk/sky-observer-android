@@ -3,7 +3,6 @@
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
     <string name="month">Month:</string>
-    <string name="year">Year:</string>
 
     <string name="mon">MON</string>
     <string name="tue">TUE</string>
@@ -27,4 +26,13 @@
     <string name="inbound_date">Inbound date:</string>
     <string name="find_flights">Find Flights</string>
     <string name="return_trip">Return trip</string>
+
+    <string name="sorting_order">Sorting Order</string>
+    <string name="sorting_order_price_only_lowest">Price Only: Lowest first</string>
+    <string name="sorting_order_price_only_highest">Price Only: Highest first</string>
+    <string name="sorting_order_total_price_lowest">Total Price: Lowest first</string>
+    <string name="sorting_order_total_price_highest">Total Price: Highest first</string>
+    <string name="sorting_order_depart_earliest">Depart: Earliest first</string>
+    <string name="sorting_order_depart_latest">Depart: Latest first</string>
+    <string name="sorting_order_airlines">Airlines</string>
 </resources>

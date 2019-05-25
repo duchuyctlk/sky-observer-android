@@ -3,6 +3,7 @@ package com.huynd.skyobserver.presenters;
 import com.huynd.skyobserver.models.PricePerDay;
 import com.huynd.skyobserver.models.PricePerDayModel;
 import com.huynd.skyobserver.services.PricesAPI;
+import com.huynd.skyobserver.utils.DateUtils;
 import com.huynd.skyobserver.views.PricePerDayView;
 
 import java.util.List;
@@ -11,7 +12,10 @@ import java.util.List;
  * Created by HuyND on 8/9/2017.
  */
 
-public class PricePerDayPresenterImpl implements PricePerDayPresenter {
+public class PricePerDayPresenterImpl implements
+        PricePerDayPresenter,
+        PricePerDayModel.PricePerDayModelEventListener {
+
     private PricePerDayView mView;
     private PricePerDayModel mModel;
     private PricesAPI mPricesAPI;
@@ -19,26 +23,28 @@ public class PricePerDayPresenterImpl implements PricePerDayPresenter {
     public PricePerDayPresenterImpl(PricePerDayView view, PricesAPI pricesAPI) {
         mView = view;
         mPricesAPI = pricesAPI;
-    }
 
-    public void setModel(PricePerDayModel model) {
-        mModel = model;
+        mModel = new PricePerDayModel();
+        mModel.setPricePerDayModelEventListener(this);
     }
 
     @Override
     public void initSpinnersValues() {
-        mView.updateAvailYears(mModel.getAvailYears());
-        mView.updateAirports(mModel.getAirports());
-    }
+        if (mView == null) {
+            return;
+        }
 
-    @Override
-    public void onYearSelected(int year) {
-        mView.updateAvailMonths(mModel.getAvailMonths(year));
+        mView.updateAirports(mModel.getAirports());
+
+        int year = DateUtils.getStartYear();
+        int month = DateUtils.getStartMonth();
+        String dateAsString = DateUtils.dateToString(year, month);
+        mView.updateDateToEditText(dateAsString);
     }
 
     @Override
     public void onBtnGetPricesClick(int year, int month, String srcPort, String dstPort) {
-        if (mView == null || mModel == null) {
+        if (mView == null) {
             return;
         }
 

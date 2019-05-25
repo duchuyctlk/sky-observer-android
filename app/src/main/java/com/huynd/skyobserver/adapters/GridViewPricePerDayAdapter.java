@@ -60,9 +60,10 @@ public class GridViewPricePerDayAdapter extends ArrayAdapter<PricePerDay> {
                         .load(RequestHelper.airlinesIconUrlBuilder(carrier))
                         .into(imgvAirline);
             } else {
-                imgvAirline.setImageDrawable(null);
+                Glide.with(getContext()).clear(imgvAirline);
             }
         } else {
+            Glide.with(getContext()).clear(imgvAirline);
             textViewDay.setText("");
             textViewPrice.setText("");
         }

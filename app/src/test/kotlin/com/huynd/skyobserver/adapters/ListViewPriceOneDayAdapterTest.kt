@@ -1,14 +1,11 @@
 package com.huynd.skyobserver.adapters
 
-import android.os.Build.VERSION_CODES.LOLLIPOP
-import com.huynd.skyobserver.BuildConfig
 import com.huynd.skyobserver.activities.MainActivity
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 
 /**
@@ -16,9 +13,8 @@ import kotlin.test.assertEquals
  */
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, sdk = intArrayOf(LOLLIPOP))
 class ListViewPriceOneDayAdapterTest {
-    var mActivity: MainActivity? = null
+    private lateinit var mActivity: MainActivity
 
     @Before
     @Throws(Exception::class)
@@ -33,7 +29,9 @@ class ListViewPriceOneDayAdapterTest {
         adapter.add(null)
         val view = adapter.getView(0, null, null)
         val vH = view.tag as ListViewPriceOneDayAdapter.ViewHolder
-        assertEquals("", vH.textViewDepartTime.text.toString())
-        assertEquals("", vH.textViewArriveTime.text.toString())
+        vH.run {
+            assertEquals("", textViewDepartTime.text)
+            assertEquals("", textViewArriveTime.text)
+        }
     }
 }

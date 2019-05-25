@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_sort_order"
+        android:icon="@drawable/sort_icon"
+        android:title="@string/sorting_order"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/sorting_order_price_only_lowest"
+                android:title="@string/sorting_order_price_only_lowest" />
+            <item
+                android:id="@+id/sorting_order_price_only_highest"
+                android:title="@string/sorting_order_price_only_highest" />
+            <item
+                android:id="@+id/sorting_order_total_price_lowest"
+                android:title="@string/sorting_order_total_price_lowest" />
+            <item
+                android:id="@+id/sorting_order_total_price_highest"
+                android:title="@string/sorting_order_total_price_highest" />
+            <item
+                android:id="@+id/sorting_order_depart_earliest"
+                android:title="@string/sorting_order_depart_earliest" />
+            <item
+                android:id="@+id/sorting_order_depart_latest"
+                android:title="@string/sorting_order_depart_latest" />
+            <item
+                android:id="@+id/sorting_order_airlines"
+                android:title="@string/sorting_order_airlines" />
+        </menu>
+    </item>
+</menu>
