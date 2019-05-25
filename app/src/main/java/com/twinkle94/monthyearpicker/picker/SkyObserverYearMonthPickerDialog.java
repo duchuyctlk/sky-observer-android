@@ -17,7 +17,7 @@ public class SkyObserverYearMonthPickerDialog extends YearMonthPickerDialog {
     }
 
     public int getYear() {
-        int year = DateUtils.getStartYear();
+        int year = DateUtils.Companion.getStartYear();
 
         try {
             Field fieldYear = getClass().getSuperclass().getDeclaredField("mYear");
@@ -34,7 +34,7 @@ public class SkyObserverYearMonthPickerDialog extends YearMonthPickerDialog {
     }
 
     public int getMonth() {
-        int month = DateUtils.getStartMonth();
+        int month = DateUtils.Companion.getStartMonth();
 
         try {
             Field fieldMonth = getClass().getSuperclass().getDeclaredField("mMonth");

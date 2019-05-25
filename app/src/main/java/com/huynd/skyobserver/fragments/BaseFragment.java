@@ -14,12 +14,12 @@ import com.huynd.skyobserver.views.BaseView;
 public class BaseFragment extends Fragment implements BaseView {
     @Override
     public void dismissLoadingDialog() {
-        FlowUtils.getInstance().dismissLoadingDialog();
+        FlowUtils.Companion.getInstance().dismissLoadingDialog();
     }
 
     @Override
     public void showLoadingDialog() {
-        FlowUtils.getInstance().showLoadingDialog(this.getContext());
+        FlowUtils.Companion.getInstance().showLoadingDialog(this.getContext());
     }
 
     @Override
@@ -28,6 +28,6 @@ public class BaseFragment extends Fragment implements BaseView {
         if (errorMessage == null) {
             errorMessage = context.getString(R.string.failed_to_get_prices_message);
         }
-        FlowUtils.getInstance().showAlert(context, context.getString(R.string.error), errorMessage);
+        FlowUtils.Companion.getInstance().showAlert(context, context.getString(R.string.error), errorMessage);
     }
 }

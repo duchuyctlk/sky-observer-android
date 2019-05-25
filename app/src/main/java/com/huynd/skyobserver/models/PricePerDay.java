@@ -50,7 +50,7 @@ public class PricePerDay {
     }
 
     public Date getArrivalTime() {
-        return DateUtils.convertStringToDate(arrivalTime);
+        return DateUtils.Companion.convertStringToDate(arrivalTime);
     }
 
     public void setArrivalTime(String arrivalTime) {
@@ -58,7 +58,7 @@ public class PricePerDay {
     }
 
     public Date getDepartureTime() {
-        return DateUtils.convertStringToDate(departureTime);
+        return DateUtils.Companion.convertStringToDate(departureTime);
     }
 
     public void setDepartureTime(String departureTime) {
