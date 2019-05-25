@@ -117,13 +117,11 @@ dependencies {
     //compile 'net.hockeyapp.android:HockeySDK:5.0.1'
 
     // mockito
-    androidTestImplementation 'org.mockito:mockito-core:2.18.3'
-    androidTestImplementation 'com.crittercism.dexmaker:dexmaker:1.4'
-    androidTestImplementation 'com.crittercism.dexmaker:dexmaker-dx:1.4'
-    androidTestImplementation 'com.crittercism.dexmaker:dexmaker-mockito:1.4'
+    androidTestImplementation 'org.mockito:mockito-core:2.25.0'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.25.0'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.18.3'
+    testImplementation 'org.mockito:mockito-core:2.25.0'
     testImplementation 'org.robolectric:robolectric:4.2'
     testImplementation 'org.robolectric:shadows-support-v4:3.4-rc2'
 }
