@@ -2,7 +2,6 @@ package com.huynd.skyobserver.adapters;
 
 import android.view.View;
 
-import com.huynd.skyobserver.BuildConfig;
 import com.huynd.skyobserver.activities.MainActivity;
 
 import org.junit.Before;
@@ -10,9 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -20,7 +17,6 @@ import static junit.framework.Assert.assertEquals;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = LOLLIPOP)
 public class ListViewPriceOneDayAdapterTest {
     private MainActivity mActivity;
 

@@ -2,7 +2,6 @@ package com.huynd.skyobserver.utils;
 
 import android.app.ProgressDialog;
 
-import com.huynd.skyobserver.BuildConfig;
 import com.huynd.skyobserver.activities.MainActivity;
 
 import org.junit.Before;
@@ -10,9 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
@@ -22,7 +19,6 @@ import static org.mockito.Mockito.spy;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = LOLLIPOP)
 public class FlowUtilsTest {
     private MainActivity mMainActivity;
     private FlowUtils mFlowUtils;

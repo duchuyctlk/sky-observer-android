@@ -5,7 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.android.annotations.NonNull;
+import android.support.annotation.NonNull;
 
 /**
  * Created by HuyND on 8/5/2017.
