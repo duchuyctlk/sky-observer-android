@@ -12,7 +12,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.models.PricePerDay
-import com.huynd.skyobserver.utils.Constants.CONVENIENCE_FEE_IN_K
+import com.huynd.skyobserver.utils.Constants.Companion.CONVENIENCE_FEE_IN_K
 import com.huynd.skyobserver.utils.RequestHelper
 import kotlinx.android.synthetic.main.grid_view_price_per_day_item.view.*
 
@@ -41,7 +41,7 @@ class GridViewPricePerDayAdapter(@NonNull context: Context) :
             val item = getItem(position)
             if (item != null) {
                 tvDay.text = item.day.toString()
-                tvPrice.text = (item.priceTotal / 1000 + CONVENIENCE_FEE_IN_K).toString()
+                tvPrice.text = "${(item.priceTotal / 1000 + CONVENIENCE_FEE_IN_K)}"
 
                 val carrier = item.carrier
                 if (!TextUtils.isEmpty(carrier)) {

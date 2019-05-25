@@ -12,7 +12,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.models.PricePerDay
-import com.huynd.skyobserver.utils.Constants.CONVENIENCE_FEE_IN_K
+import com.huynd.skyobserver.utils.Constants.Companion.CONVENIENCE_FEE_IN_K
 import com.huynd.skyobserver.utils.RequestHelper
 import kotlinx.android.synthetic.main.list_view_price_one_day_item.view.*
 import java.text.SimpleDateFormat
