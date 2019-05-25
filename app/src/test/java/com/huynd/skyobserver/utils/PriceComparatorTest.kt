@@ -17,7 +17,7 @@ class PriceComparatorTest {
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        mPriceComparator = PriceComparator.getInstance()
+        mPriceComparator = PriceComparator.instance
         mPricePerDay = PricePerDay()
     }
 
