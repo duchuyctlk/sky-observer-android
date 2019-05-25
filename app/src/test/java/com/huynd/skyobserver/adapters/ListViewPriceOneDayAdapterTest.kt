@@ -30,8 +30,8 @@ class ListViewPriceOneDayAdapterTest {
         val view = adapter.getView(0, null, null)
         val vH = view.tag as ListViewPriceOneDayAdapter.ViewHolder
         vH.run {
-            assertEquals("", textViewDepartTime.text)
-            assertEquals("", textViewArriveTime.text)
+            assertEquals("", tvDepart.text)
+            assertEquals("", tvArrive.text)
         }
     }
 }
