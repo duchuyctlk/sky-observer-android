@@ -23,7 +23,7 @@ class FlowUtilsTest {
     @Before
     fun setUp() {
         mMainActivity = Robolectric.setupActivity(MainActivity::class.java)
-        mFlowUtils = FlowUtils.getInstance()
+        mFlowUtils = FlowUtils.instance
     }
 
     @Test
@@ -32,7 +32,7 @@ class FlowUtilsTest {
             mFlowUtils.showLoadingDialog(mMainActivity)
 
             val progressDialog = spy(mFlowUtils.mProgressDialog)
-            doThrow(IllegalArgumentException()).`when`(progressDialog).dismiss()
+            doThrow(IllegalArgumentException()).`when`(progressDialog)?.dismiss()
             mFlowUtils.mProgressDialog = progressDialog
 
             mFlowUtils.dismissLoadingDialog()

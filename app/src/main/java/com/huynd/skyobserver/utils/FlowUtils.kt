@@ -1,55 +1,52 @@
-package com.huynd.skyobserver.utils;
+package com.huynd.skyobserver.utils
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.support.v7.app.AlertDialog;
+import android.app.ProgressDialog
+import android.content.Context
+import android.support.v7.app.AlertDialog
 
-import com.huynd.skyobserver.R;
+import com.huynd.skyobserver.R
 
 /**
  * Created by HuyND on 8/10/2017.
  */
 
-public class FlowUtils {
-    private static FlowUtils sInstance;
-    ProgressDialog mProgressDialog;
-
-    public static FlowUtils getInstance() {
-        if (sInstance == null) {
-            sInstance = new FlowUtils();
-        }
-        return sInstance;
+class FlowUtils {
+    companion object {
+        val instance = FlowUtils()
     }
 
-    public void showLoadingDialog(Context context) {
+    var mProgressDialog: ProgressDialog? = null
+
+    fun showLoadingDialog(context: Context) {
         if (!isLoadingDialogShowing()) {
-            mProgressDialog = new ProgressDialog(context);
-            mProgressDialog.setMessage(context.getString(R.string.loading_string));
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.show();
-        }
-    }
-
-    public void dismissLoadingDialog() {
-        if (isLoadingDialogShowing()) {
-            try {
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            } catch (IllegalArgumentException ex) {
-                ex.printStackTrace();
+            mProgressDialog = ProgressDialog(context)
+            mProgressDialog?.run {
+                setMessage(context.getString(R.string.loading_string))
+                setCanceledOnTouchOutside(false)
+                show()
             }
         }
     }
 
-    private boolean isLoadingDialogShowing() {
-        return mProgressDialog != null && mProgressDialog.isShowing();
+    fun dismissLoadingDialog() {
+        if (isLoadingDialogShowing()) {
+            try {
+                mProgressDialog?.dismiss()
+                mProgressDialog = null
+            } catch (ex: IllegalArgumentException) {
+                ex.printStackTrace()
+            }
+        }
     }
 
-    public void showAlert(Context context, String title, String message) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(context);
-        bld.setTitle(title);
-        bld.setMessage(message);
-        bld.setNeutralButton(context.getString(R.string.ok), null);
-        bld.create().show();
+    fun showAlert(context: Context, title: String, message: String) {
+        AlertDialog.Builder(context).let {
+            it.setTitle(title)
+            it.setMessage(message)
+            it.setNeutralButton(context.getString(R.string.ok), null)
+            it.create()
+        }.show()
     }
+
+    private fun isLoadingDialogShowing() = mProgressDialog?.isShowing ?: false
 }
