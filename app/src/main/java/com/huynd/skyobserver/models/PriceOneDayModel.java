@@ -75,9 +75,6 @@ public class PriceOneDayModel {
 
             for (String carrier : Constants.CARRIERS) {
                 Map<String, String> headers = RequestHelper.Companion.getDefaultHeaders();
-                headers.put("Request_Hash", RequestHelper.Companion.requestHashBuilder(srcPort, dstPort,
-                        carrier, strYear, strMonth));
-                headers.put("Request_Carrier", carrier);
 
                 Observable<List<PricePerDayResponse>> observableList = mPricesAPI
                         .getPricePerDay(headers, postData, carrier, srcPort, dstPort);
