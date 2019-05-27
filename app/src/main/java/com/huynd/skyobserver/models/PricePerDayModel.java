@@ -62,8 +62,8 @@ public class PricePerDayModel {
             String strDay = day < 10 ? "0" + String.valueOf(day) : String.valueOf(day);
             PricePerDayBody postData = new PricePerDayBody(strYear, strMonth, strDay);
             for (String carrier : Constants.CARRIERS) {
-                Map<String, String> headers = RequestHelper.getDefaultHeaders();
-                headers.put("Request_Hash", RequestHelper.requestHashBuilder(srcPort, dstPort,
+                Map<String, String> headers = RequestHelper.Companion.getDefaultHeaders();
+                headers.put("Request_Hash", RequestHelper.Companion.requestHashBuilder(srcPort, dstPort,
                         carrier, strYear, strMonth));
                 headers.put("Request_Carrier", carrier);
 

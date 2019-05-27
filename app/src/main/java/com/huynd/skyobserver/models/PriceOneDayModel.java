@@ -74,10 +74,7 @@ public class PriceOneDayModel {
             }
 
             for (String carrier : Constants.CARRIERS) {
-                Map<String, String> headers = RequestHelper.getDefaultHeaders();
-                headers.put("Request_Hash", RequestHelper.requestHashBuilder(srcPort, dstPort,
-                        carrier, strYear, strMonth));
-                headers.put("Request_Carrier", carrier);
+                Map<String, String> headers = RequestHelper.Companion.getDefaultHeaders();
 
                 Observable<List<PricePerDayResponse>> observableList = mPricesAPI
                         .getPricePerDay(headers, postData, carrier, srcPort, dstPort);
@@ -128,7 +125,7 @@ public class PriceOneDayModel {
             mNoOfReceivedOutboundRequests++;
             if (mNoOfReceivedOutboundRequests == Constants.CARRIERS.length) {
                 isOutboundLoadingDone = true;
-                PriceComparator priceComparator = PriceComparator.getInstance();
+                PriceComparator priceComparator = PriceComparator.Companion.getInstance();
                 priceComparator.setSortOrder(mSortOrder);
                 Collections.sort(mOutboundPrices, priceComparator);
                 if (mListener != null) {
@@ -139,7 +136,7 @@ public class PriceOneDayModel {
             mNoOfReceivedInboundRequests++;
             if (mNoOfReceivedInboundRequests == Constants.CARRIERS.length) {
                 isInboundLoadingDone = true;
-                PriceComparator priceComparator = PriceComparator.getInstance();
+                PriceComparator priceComparator = PriceComparator.Companion.getInstance();
                 priceComparator.setSortOrder(mSortOrder);
                 Collections.sort(mInboundPrices, priceComparator);
                 if (mListener != null) {
@@ -160,7 +157,7 @@ public class PriceOneDayModel {
 
     public void setSortOrder(PriceComparator.SortOrder sortOrder) {
         mSortOrder = sortOrder;
-        PriceComparator priceComparator = PriceComparator.getInstance();
+        PriceComparator priceComparator = PriceComparator.Companion.getInstance();
         priceComparator.setSortOrder(mSortOrder);
 
         if (mListener != null) {

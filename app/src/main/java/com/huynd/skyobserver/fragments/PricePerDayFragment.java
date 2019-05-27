@@ -78,7 +78,7 @@ public class PricePerDayFragment extends BaseFragment implements PricePerDayView
                 new YearMonthPickerDialog.OnDateSetListener() {
                     @Override
                     public void onYearMonthSet(int year, int month) {
-                        mBinding.editTextMonthYear.setText(DateUtils.dateToString(year, month));
+                        mBinding.editTextMonthYear.setText(DateUtils.Companion.dateToString(year, month));
                     }
                 });
 

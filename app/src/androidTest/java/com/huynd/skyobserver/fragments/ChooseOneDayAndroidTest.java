@@ -87,12 +87,12 @@ public class ChooseOneDayAndroidTest {
 
         onView(withId(R.id.edit_text_date_outbound)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
-                .perform(PickerActions.setDate(2018, 10, 01));
+                .perform(PickerActions.setDate(2019, 12, 01));
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.edit_text_date_inbound)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
-                .perform(PickerActions.setDate(2018, 10, 30));
+                .perform(PickerActions.setDate(2019, 12, 30));
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_find_flights)).perform(click());

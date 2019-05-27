@@ -36,9 +36,9 @@ public class PricePerDayPresenterImpl implements
 
         mView.updateAirports(mModel.getAirports());
 
-        int year = DateUtils.getStartYear();
-        int month = DateUtils.getStartMonth();
-        String dateAsString = DateUtils.dateToString(year, month);
+        int year = DateUtils.Companion.getStartYear();
+        int month = DateUtils.Companion.getStartMonth();
+        String dateAsString = DateUtils.Companion.dateToString(year, month);
         mView.updateDateToEditText(dateAsString);
     }
 

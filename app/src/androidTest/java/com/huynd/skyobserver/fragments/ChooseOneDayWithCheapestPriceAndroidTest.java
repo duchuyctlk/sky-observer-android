@@ -12,12 +12,12 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.not;
 
 /**
  * Created by HuyND on 8/26/2017.
@@ -39,11 +39,14 @@ public class ChooseOneDayWithCheapestPriceAndroidTest {
 
     @Test
     public void shouldContainViewWidgets() throws Exception {
-        checkViewWidgetsIsDisplayed(R.id.spinner_src_port,
-                R.id.spinner_month_outbound, R.id.spinner_day_outbound, R.id.chk_return_trip,
-                R.id.spinner_month_inbound, R.id.spinner_day_inbound);
+        checkViewWidgetsIsDisplayed(
+                R.id.spinner_src_port,
+                R.id.edit_text_date_outbound,
+                R.id.chk_return_trip,
+                R.id.edit_text_date_inbound
+        );
 
-        onView(withId(R.id.spinner_dst_port)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.spinner_dst_port)).check(doesNotExist());
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {

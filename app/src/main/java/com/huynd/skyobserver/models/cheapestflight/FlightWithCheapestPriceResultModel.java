@@ -100,7 +100,7 @@ public class FlightWithCheapestPriceResultModel {
             String strDay = day < 10 ? "0" + String.valueOf(day) : String.valueOf(day);
 
             PricePerDayBody postData = new PricePerDayBody(strYear, strMonth, strDay);
-            Map<String, String> headers = RequestHelper.getDefaultHeaders();
+            Map<String, String> headers = RequestHelper.Companion.getDefaultHeaders();
 
             for (final Airport airport : mAirports) {
                 if (originPort.equals(airport.getId())) {
@@ -111,7 +111,7 @@ public class FlightWithCheapestPriceResultModel {
                     String srcPort = isOutbound ? originPort : airport.getId();
                     String dstPort = isOutbound ? airport.getId() : originPort;
 
-                    headers.put("Request_Hash", RequestHelper.requestHashBuilder(srcPort, dstPort,
+                    headers.put("Request_Hash", RequestHelper.Companion.requestHashBuilder(srcPort, dstPort,
                             carrier, strYear, strMonth));
 
                     headers.put("Request_Carrier", carrier);

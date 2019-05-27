@@ -25,18 +25,18 @@ public class ChooseOneDayPresenterImpl implements ChooseOneDayPresenter {
     public void initSpinnersValues() {
         mView.updateAirports(mModel.getAirports());
 
-        int year = DateUtils.getStartYear();
-        int month = DateUtils.getStartMonth();
-        int dayOfMonth = DateUtils.getStartDayOfMonth();
-        String dateAsString = DateUtils.dateToString(year, month, dayOfMonth);
+        int year = DateUtils.Companion.getStartYear();
+        int month = DateUtils.Companion.getStartMonth();
+        int dayOfMonth = DateUtils.Companion.getStartDayOfMonth();
+        String dateAsString = DateUtils.Companion.dateToString(year, month, dayOfMonth);
         mView.updateDatePickers(year, month, dayOfMonth);
         mView.updateDateToEditText(dateAsString, true);
         mView.updateDateToEditText(dateAsString, false);
-        mView.setDatePickersMinDate(DateUtils.getMinDate());
+        mView.setDatePickersMinDate(DateUtils.Companion.getMinDate());
     }
 
     @Override
     public void setDateToEditText(int year, int month, int dayOfMonth, boolean isOutbound) {
-        mView.updateDateToEditText(DateUtils.dateToString(year, month, dayOfMonth), isOutbound);
+        mView.updateDateToEditText(DateUtils.Companion.dateToString(year, month, dayOfMonth), isOutbound);
     }
 }

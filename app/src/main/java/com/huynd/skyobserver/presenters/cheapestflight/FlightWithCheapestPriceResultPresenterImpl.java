@@ -1,8 +1,11 @@
 package com.huynd.skyobserver.presenters.cheapestflight;
 
+import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo;
 import com.huynd.skyobserver.models.cheapestflight.FlightWithCheapestPriceResultModel;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView;
+
+import java.util.List;
 
 /**
  * Created by HuyND on 4/21/2018.
@@ -23,5 +26,15 @@ public class FlightWithCheapestPriceResultPresenterImpl implements
 
         mModel = new FlightWithCheapestPriceResultModel();
         mModel.setEventListener(this);
+    }
+
+    @Override
+    public void notifyInvalidDate() {
+        // TODO
+    }
+
+    @Override
+    public void onGetPricesResponse(List<CountryPriceInfo> countryPriceInfos) {
+        // TODO
     }
 }

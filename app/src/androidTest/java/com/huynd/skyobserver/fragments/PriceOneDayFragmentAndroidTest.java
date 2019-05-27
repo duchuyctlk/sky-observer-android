@@ -96,7 +96,7 @@ public class PriceOneDayFragmentAndroidTest {
     @Test
     public void shouldLoadPricesSuccessfully() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 6);
+        calendar.set(Calendar.MONTH, 11);
 
         onView(withId(R.id.edit_text_month_year)).perform(click());
         onView(withId(R.id.year_picker))
@@ -159,7 +159,7 @@ public class PriceOneDayFragmentAndroidTest {
     @Test
     public void shouldLoadPricesFailed() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 6);
+        calendar.set(Calendar.MONTH, 11);
 
         onView(withId(R.id.edit_text_month_year)).perform(click());
         onView(withId(R.id.year_picker))
