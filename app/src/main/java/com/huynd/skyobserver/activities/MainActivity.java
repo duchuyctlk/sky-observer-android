@@ -106,8 +106,8 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
                 setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG, true);
                 break;
             case 2:
-                setFragment(FlightWithCheapestPriceRequestRequestFragment.newInstance(),
-                        FlightWithCheapestPriceRequestRequestFragment.TAG, true);
+                setFragment(FlightWithCheapestPriceRequestRequestFragment.Companion.newInstance(),
+                        FlightWithCheapestPriceRequestRequestFragment.Companion.getTAG(), true);
                 break;
         }
 
@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     }
 
     @Override
-    public void OnFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
+    public void onFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
         // TODO
     }
 
