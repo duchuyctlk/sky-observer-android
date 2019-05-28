@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
+import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenter
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
@@ -42,6 +43,32 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
 
         // initialize MPV pattern
         mPresenter = FlightWithCheapestPriceResultPresenterImpl(this, mPricesAPI)
+
+        // get data from intent
+        arguments?.run {
+            val yearOutbound = getInt("yearOutbound")
+            val monthOutbound = getInt("monthOutbound")
+            val dayOutbound = getInt("dayOutbound")
+            val srcPort = getString("srcPort", "")
+            val returnTrip = getBoolean("returnTrip")
+            var yearInbound = 0
+            var monthInbound = 0
+            var dayInbound = 0
+            if (returnTrip) {
+                yearInbound = getInt("yearInbound")
+                monthInbound = getInt("monthInbound")
+                dayInbound = getInt("dayInbound")
+            }
+
+            mPresenter.getPrices(
+                    yearOutbound, monthOutbound, dayOutbound,
+                    yearInbound, monthInbound, dayInbound,
+                    srcPort, returnTrip)
+        }
+    }
+
+    override fun updateListViewInboundPrices(listCountryPriceInfo: List<CountryPriceInfo>) {
+        // TODO
     }
 
     override fun showInvalidDateDialog() {

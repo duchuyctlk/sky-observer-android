@@ -17,6 +17,7 @@ import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceRequestRequestFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceResultFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.OnFlightWithCheapestPriceInfoSelectedListener;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
@@ -126,7 +127,10 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
 
     @Override
     public void onFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
-        // TODO
+        FlightWithCheapestPriceResultFragment fragment =
+                FlightWithCheapestPriceResultFragment.Companion.newInstance();
+        fragment.setArguments(flightInfo);
+        setFragment(fragment, FlightWithCheapestPriceResultFragment.Companion.getTAG(), false);
     }
 
     private void checkForCrashes() {

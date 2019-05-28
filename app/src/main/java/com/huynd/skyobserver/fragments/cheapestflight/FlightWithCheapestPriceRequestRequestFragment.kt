@@ -68,7 +68,7 @@ class FlightWithCheapestPriceRequestRequestFragment : BaseFragment(), FlightWith
             srcPort?.run {
                 flightInfo.putString("srcPort", id)
                 (activity as OnFlightWithCheapestPriceInfoSelectedListener)
-                        .OnFlightWithCheapestPriceInfoSelected(flightInfo)
+                        .onFlightWithCheapestPriceInfoSelected(flightInfo)
             }
         } catch (e: ClassCastException) {
             Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.")

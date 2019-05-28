@@ -33,7 +33,10 @@ class FlightWithCheapestPriceResultPresenterImpl(
         mView.showInvalidDateDialog()
     }
 
-    override fun onGetPricesResponse(countryPriceInfos: List<CountryPriceInfo>) {
-        // TODO
+    override fun onGetPricesResponse(listCountryPriceInfo: List<CountryPriceInfo>) {
+        mView.run {
+            updateListViewInboundPrices(listCountryPriceInfo)
+            dismissLoadingDialog()
+        }
     }
 }
