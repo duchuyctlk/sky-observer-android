@@ -19,7 +19,7 @@ import retrofit2.http.Path;
  */
 
 public interface PricesAPI {
-    @POST("sapi/getprices/{carrier}/{srcPort}/{dstPort}")
+    @POST("{carrier}/{srcPort}/{dstPort}")
     Observable<List<PricePerDayResponse>> getPricePerDay(@HeaderMap Map<String, String> headers,
                                                          @Body PricePerDayBody body,
                                                          @Path("carrier") String carrier,
