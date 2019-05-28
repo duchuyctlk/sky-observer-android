@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
+import com.huynd.skyobserver.adapters.ListViewCheapestPriceResultAdapter
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenter
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView
+import kotlinx.android.synthetic.main.fragment_flight_with_cheapest_price_result.*
 import javax.inject.Inject
 
 /**
@@ -30,6 +32,8 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
 
     private lateinit var mPresenter: FlightWithCheapestPriceResultPresenter
 
+    private lateinit var mAdapter: ListViewCheapestPriceResultAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context)
@@ -40,6 +44,10 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
         super.onActivityCreated(savedInstanceState)
         // inject
         (activity!!.application as SkyObserverApp).skyObserverComponent.inject(this)
+
+        // UI
+        mAdapter = ListViewCheapestPriceResultAdapter(context!!)
+        lst_best_destinations.setAdapter(mAdapter)
 
         // initialize MPV pattern
         mPresenter = FlightWithCheapestPriceResultPresenterImpl(this, mPricesAPI)
@@ -68,7 +76,9 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
     }
 
     override fun updateListViewInboundPrices(listCountryPriceInfo: List<CountryPriceInfo>) {
-        // TODO
+        mAdapter.clear()
+        mAdapter.addAll(listCountryPriceInfo)
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun showInvalidDateDialog() {
