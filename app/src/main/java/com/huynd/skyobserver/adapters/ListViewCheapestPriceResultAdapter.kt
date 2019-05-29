@@ -9,6 +9,7 @@ import android.widget.BaseExpandableListAdapter
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.utils.formatNumber
 import kotlinx.android.synthetic.main.list_view_best_destinations_item.view.*
 import kotlinx.android.synthetic.main.list_view_best_destinations_sub_item.view.*
 
@@ -52,7 +53,9 @@ class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) 
             txt_country.text = countryPriceInfo.country.countryName
             if (getChildrenCount(groupPosition) > 0) {
                 val airportPriceInfo = getChild(groupPosition, 0) as AirportPriceInfo
-                txt_price_per_country.text = "${airportPriceInfo.getBestPriceTotal()}"
+                val bestPriceTotalStr = formatNumber(airportPriceInfo.getBestPriceTotal())
+                txt_price_per_country.text =
+                        context.resources.getString(R.string.best_price_from, bestPriceTotalStr)
             }
         }
 
@@ -69,7 +72,8 @@ class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) 
             convertView
         }
         view.apply {
-            txt_price.text = "${airportPriceInfo.getBestPriceTotal()}"
+            val bestPriceTotalStr = formatNumber(airportPriceInfo.getBestPriceTotal())
+            txt_price.text = context.resources.getString(R.string.best_price_from, bestPriceTotalStr)
             txt_destination.text = airportPriceInfo.getAirportName()
         }
 

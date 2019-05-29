@@ -30,5 +30,9 @@
     <dimen name="image_view_destination_width">150dp</dimen>
     <dimen name="image_view_destination_height">100dp</dimen>
 
+    <dimen name="list_view_best_price_vertical_spacing">30dp</dimen>
     <dimen name="list_view_best_price_horizontal_spacing">25dp</dimen>
+    <dimen name="list_view_best_price_item_corner_radius">5dp</dimen>
+    <dimen name="list_view_best_price_item_corner_elevation">5dp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
 </resources>

@@ -24,4 +24,5 @@
     <string name="sorting_order_depart_earliest">Giờ bay: sớm nhất</string>
     <string name="sorting_order_depart_latest">Giờ bay: trễ nhất</string>
     <string name="sorting_order_airlines">Hãng bay</string>
+    <string name="best_price_from">Giá từ %s đ</string>
 </resources>

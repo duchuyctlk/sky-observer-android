@@ -7,4 +7,7 @@
 
     <color name="price_per_day_day_color">#CC0000</color>
     <color name="price_per_day_price_color">#22CC11</color>
+
+    <color name="list_view_best_price_item_divider_gray">#aaaaaa</color>
+    <color name="list_view_best_price_background">#f3f2f5</color>
 </resources>

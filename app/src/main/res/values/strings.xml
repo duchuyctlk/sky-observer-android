@@ -39,4 +39,5 @@
     <string name="sorting_order_depart_earliest">Depart: Earliest first</string>
     <string name="sorting_order_depart_latest">Depart: Latest first</string>
     <string name="sorting_order_airlines">Airlines</string>
+    <string name="best_price_from">From %s VND</string>
 </resources>

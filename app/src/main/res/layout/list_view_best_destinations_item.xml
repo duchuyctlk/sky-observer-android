@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/list_view_prices_vertical_spacing"
-    android:paddingEnd="@dimen/list_view_best_price_horizontal_spacing"
-    android:paddingStart="@dimen/list_view_best_price_horizontal_spacing"
-    android:paddingTop="@dimen/list_view_prices_vertical_spacing">
+    android:layout_marginBottom="@dimen/fragment_horizontal_margin"
+    android:background="@color/list_view_best_price_background"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="@dimen/list_view_best_price_item_corner_radius"
+    app:cardElevation="@dimen/list_view_best_price_item_corner_elevation">
 
-    <ImageView
-        android:id="@+id/image_view_expand_collapse"
-        android:layout_width="@dimen/image_view_expand_collapse_width"
-        android:layout_height="@dimen/image_view_expand_collapse_width"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/image_view_expand_collapse_string_place_holder"
-        android:src="@drawable/icon_down" />
-
-    <TextView
-        android:id="@+id/txt_price_per_country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/list_view_best_price_horizontal_spacing"
-        android:layout_toStartOf="@id/image_view_expand_collapse"
-        android:text="@string/price_place_holder"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txt_country"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@id/txt_price_per_country"
-        android:text="@string/country_place_holder"
-        android:textStyle="bold" />
+        android:layout_marginTop="@dimen/list_view_best_price_vertical_spacing"
+        android:layout_marginBottom="@dimen/list_view_best_price_vertical_spacing"
+        android:paddingStart="@dimen/list_view_best_price_horizontal_spacing"
+        android:paddingEnd="@dimen/grid_view_price_horizontal_spacing">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/txt_price_per_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/list_view_best_price_horizontal_spacing"
+            android:text="@string/price_place_holder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <TextView
+            android:id="@+id/txt_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/list_view_best_price_horizontal_spacing"
+            android:layout_toStartOf="@id/txt_price_per_country"
+            android:text="@string/country_place_holder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
