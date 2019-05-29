@@ -100,6 +100,10 @@ class FlightWithCheapestPriceResultModel {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({ pricePerDayResponses ->
                                 pricePerDayResponses.forEach { pricePerDayResponse ->
+                                    if (pricePerDayResponse.provider == null) {
+                                        return@forEach
+                                    }
+
                                     // determine destination port
                                     val destinationPort = if (isOutbound)
                                         pricePerDayResponse.destinationCode else
@@ -195,10 +199,21 @@ class FlightWithCheapestPriceResultModel {
     private fun sortCountryPriceInfosAndReturnResponse() {
         mListener?.run {
             mCountryPriceInfos.forEach { countryPriceInfo ->
-                countryPriceInfo.airportPriceInfos.sortWith(AirportPriceInfoComparator.getInstance())
+                countryPriceInfo.airportPriceInfos =
+                        countryPriceInfo.airportPriceInfos.filter { airportPriceInfo ->
+                            airportPriceInfo.getOutboundCarrier() != null
+                                    && airportPriceInfo.getInboundCarrier() != null
+                        }.toMutableList().apply {
+                            sortWith(AirportPriceInfoComparator.getInstance())
+                        }
             }
-            mCountryPriceInfos.sortWith(CountryPriceInfoComparator.getInstance())
-            onGetPricesResponse(mCountryPriceInfos)
+            onGetPricesResponse(
+                    mCountryPriceInfos.filter { countryPriceInfo ->
+                        countryPriceInfo.airportPriceInfoCount > 0
+                    }.toMutableList().apply {
+                        sortWith(CountryPriceInfoComparator.getInstance())
+                    }
+            )
         }
     }
 

@@ -16,12 +16,15 @@ class AirportPriceInfo {
 
     fun getAirportId() = mAirport?.id ?: ""
 
-
     fun getBestPriceOutbound() = mPricePerDayOutbound?.priceTotal ?: 0
 
     fun getBestPriceInbound() = mPricePerDayInbound?.priceTotal ?: 0
 
     fun getBestPriceTotal() = getBestPriceOutbound() + getBestPriceInbound()
+
+    fun getOutboundCarrier() = mPricePerDayOutbound?.carrier
+
+    fun getInboundCarrier() = mPricePerDayInbound?.carrier
 
     fun setAirport(airport: Airport) {
         mAirport = airport
