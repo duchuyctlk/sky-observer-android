@@ -83,18 +83,14 @@ class FlightWithCheapestPriceResultModel {
             val postData = PricePerDayBody(strYear, strMonth, strDay)
             val headers = RequestHelper.getDefaultHeaders()
 
-            for (airport in mAirports) {
+            mAirports.forEach { airport ->
                 if (originPort == airport.id) {
-                    continue
+                    return@forEach
                 }
 
-                for (carrier in Constants.CARRIERS) {
+                Constants.CARRIERS.forEach { carrier ->
                     val srcPort = if (isOutbound) originPort else airport.id
                     val dstPort = if (isOutbound) airport.id else originPort
-
-//                    headers.put("Request_Hash", RequestHelper.requestHashBuilder(srcPort, dstPort,
-//                            carrier, strYear, strMonth))
-//                    headers.put("Request_Carrier", carrier)
 
                     val observableList: Observable<List<PricePerDayResponse>> = pricesAPI
                             .getPricePerDay(headers, postData, carrier, srcPort, dstPort)
@@ -103,55 +99,43 @@ class FlightWithCheapestPriceResultModel {
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({ pricePerDayResponses ->
-                                for (pricePerDayResponse in pricePerDayResponses) {
+                                pricePerDayResponses.forEach { pricePerDayResponse ->
                                     // determine destination port
                                     val destinationPort = if (isOutbound)
                                         pricePerDayResponse.destinationCode else
                                         pricePerDayResponse.originCode
 
-                                    val country = getCountryByCode(
-                                            getAirportById(destinationPort).countryCode
-                                    )
+                                    val country = getCountryByCode(getAirportById(destinationPort).countryCode)
 
                                     // get AirportPriceInfo for destination port
                                     var dstAirportPriceInfo: AirportPriceInfo? = null
-                                    var airportPriceInfos: MutableList<AirportPriceInfo>? = null
-                                    var dstCountryPriceInfo: CountryPriceInfo? = null
+                                    var listAirportPriceInfo: MutableList<AirportPriceInfo>? = null
+                                    val dstCountryPriceInfo = mCountryPriceInfos.firstOrNull { countryPriceInfo ->
+                                        countryPriceInfo.country.countryCode == country.countryCode
+                                    }
 
-                                    for (countryPriceInfo in mCountryPriceInfos) {
-                                        if (country.countryCode == countryPriceInfo.country.countryCode) {
-                                            dstCountryPriceInfo = countryPriceInfo
-                                            airportPriceInfos = countryPriceInfo.airportPriceInfos
-
-                                            if (airportPriceInfos != null) {
-                                                for (airportPriceInfo in airportPriceInfos) {
-                                                    if (destinationPort == airportPriceInfo.airportId) {
-                                                        dstAirportPriceInfo = airportPriceInfo
-                                                        break
-                                                    }
-                                                }
-                                            }
-
-                                            if (dstAirportPriceInfo != null) {
-                                                break
-                                            }
+                                    dstCountryPriceInfo?.run {
+                                        listAirportPriceInfo = this.airportPriceInfos
+                                        dstAirportPriceInfo = listAirportPriceInfo?.firstOrNull { info ->
+                                            info.getAirportId() == destinationPort
                                         }
                                     }
 
                                     // add new entry for destination (country & airport)
                                     if (dstAirportPriceInfo == null) {
-                                        val airportPriceInfo = AirportPriceInfo()
-                                        airportPriceInfo.setAirport(airport)
-
-                                        if (airportPriceInfos == null) {
-                                            airportPriceInfos = mutableListOf()
+                                        val airportPriceInfo = AirportPriceInfo().apply {
+                                            setAirport(airport)
                                         }
-                                        airportPriceInfos.add(airportPriceInfo)
+
+                                        if (listAirportPriceInfo == null) {
+                                            listAirportPriceInfo = mutableListOf()
+                                        }
+                                        listAirportPriceInfo!!.add(airportPriceInfo)
 
                                         if (dstCountryPriceInfo == null) {
                                             mCountryPriceInfos.add(CountryPriceInfo()
                                                     .apply {
-                                                        this.airportPriceInfos = airportPriceInfos
+                                                        this.airportPriceInfos = listAirportPriceInfo
                                                         this.country = country
                                                     })
                                         }
@@ -159,17 +143,21 @@ class FlightWithCheapestPriceResultModel {
                                         dstAirportPriceInfo = airportPriceInfo
                                     }
 
-                                    val priceList = pricePerDayResponse.priceList
-                                    val price = if (priceList != null && priceList.size > 0)
-                                        priceList[0] else null
-                                    price?.apply {
+                                    pricePerDayResponse.priceList?.firstOrNull()?.apply {
                                         setCarrier(pricePerDayResponse.provider)
                                         setArrivalTime(pricePerDayResponse.arrivalTime)
                                         setDepartureTime(pricePerDayResponse.arrivalTime)
 
-                                        val minPriceTotal = dstAirportPriceInfo.bestPriceTotal
-                                        if (minPriceTotal == 0 || priceTotal < minPriceTotal) {
-                                            dstAirportPriceInfo.setPricePerDay(this)
+                                        if (isOutbound) {
+                                            val minPrice = dstAirportPriceInfo!!.getBestPriceOutbound()
+                                            if (minPrice == 0 || priceTotal < minPrice) {
+                                                dstAirportPriceInfo!!.setPricePerDayOutbound(this)
+                                            }
+                                        } else {
+                                            val minPrice = dstAirportPriceInfo!!.getBestPriceInbound()
+                                            if (minPrice == 0 || priceTotal < minPrice) {
+                                                dstAirportPriceInfo!!.setPricePerDayInbound(this)
+                                            }
                                         }
                                     }
                                 }
@@ -195,28 +183,22 @@ class FlightWithCheapestPriceResultModel {
 
         if (willLoadInbound) {
             if (isOutboundLoadingDone && isInboundLoadingDone) {
-                mListener?.run {
-                    for (countryPriceInfo in mCountryPriceInfos) {
-                        Collections.sort(countryPriceInfo.airportPriceInfos,
-                                AirportPriceInfoComparator.getInstance())
-                    }
-                    Collections.sort(mCountryPriceInfos,
-                            CountryPriceInfoComparator.getInstance())
-                    onGetPricesResponse(mCountryPriceInfos)
-                }
+                sortCountryPriceInfosAndReturnResponse()
             }
         } else {
             if (isOutboundLoadingDone) {
-                mListener?.run {
-                    for (countryPriceInfo in mCountryPriceInfos) {
-                        Collections.sort(countryPriceInfo.airportPriceInfos,
-                                AirportPriceInfoComparator.getInstance())
-                    }
-                    Collections.sort(mCountryPriceInfos,
-                            CountryPriceInfoComparator.getInstance())
-                    onGetPricesResponse(mCountryPriceInfos)
-                }
+                sortCountryPriceInfosAndReturnResponse()
             }
+        }
+    }
+
+    private fun sortCountryPriceInfosAndReturnResponse() {
+        mListener?.run {
+            mCountryPriceInfos.forEach { countryPriceInfo ->
+                countryPriceInfo.airportPriceInfos.sortWith(AirportPriceInfoComparator.getInstance())
+            }
+            mCountryPriceInfos.sortWith(CountryPriceInfoComparator.getInstance())
+            onGetPricesResponse(mCountryPriceInfos)
         }
     }
 

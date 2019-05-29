@@ -52,7 +52,7 @@ class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) 
             txt_country.text = countryPriceInfo.country.countryName
             if (getChildrenCount(groupPosition) > 0) {
                 val airportPriceInfo = getChild(groupPosition, 0) as AirportPriceInfo
-                txt_price_per_country.text = "${airportPriceInfo.bestPriceTotal}"
+                txt_price_per_country.text = "${airportPriceInfo.getBestPriceTotal()}"
             }
         }
 
@@ -69,8 +69,8 @@ class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) 
             convertView
         }
         view.apply {
-            txt_price.text = "${airportPriceInfo.bestPriceTotal}"
-            txt_destination.text = airportPriceInfo.airportName
+            txt_price.text = "${airportPriceInfo.getBestPriceTotal()}"
+            txt_destination.text = airportPriceInfo.getAirportName()
         }
 
         return view
