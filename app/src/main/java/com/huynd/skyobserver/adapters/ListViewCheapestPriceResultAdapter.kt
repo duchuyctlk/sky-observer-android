@@ -72,9 +72,14 @@ class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) 
             convertView
         }
         view.apply {
+            txt_destination.text = airportPriceInfo.getAirportName()
+            txt_outbound_flight.text = context.resources.getString(R.string.best_price_outbound_flight,
+                    airportPriceInfo.getOutboundCarrier(), airportPriceInfo.getAirportName()
+            )
+            txt_inbound_flight.text = context.resources.getString(R.string.best_price_inbound_flight,
+                    airportPriceInfo.getInboundCarrier(), airportPriceInfo.getAirportName())
             val bestPriceTotalStr = formatNumber(airportPriceInfo.getBestPriceTotal())
             txt_price.text = context.resources.getString(R.string.best_price_from, bestPriceTotalStr)
-            txt_destination.text = airportPriceInfo.getAirportName()
         }
 
         return view
