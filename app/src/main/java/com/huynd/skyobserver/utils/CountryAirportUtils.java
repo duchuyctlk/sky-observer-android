@@ -39,10 +39,23 @@ public class CountryAirportUtils {
         airports.add(new Airport("THD", "Thọ Xuân", "vn"));
         airports.add(new Airport("HUI", "Phú Bài", "vn"));
         airports.add(new Airport("VII", "Vinh", "vn"));
+        airports.add(new Airport("VDO", "Vân Đồn", "vn"));
 
         airports.add(new Airport("KUL", "Kuala Lumpur", "my"));
+
         airports.add(new Airport("SIN", "Singapore", "sg"));
+
         airports.add(new Airport("BKK", "Bangkok", "th"));
+        airports.add(new Airport("CNX", "Chiang Mai", "th"));
+        airports.add(new Airport("HKT", "Phuket", "th"));
+
+        airports.add(new Airport("TPE", "Đài Bắc", "tw"));
+        airports.add(new Airport("RMQ", "Đài Trung", "tw"));
+        airports.add(new Airport("TNN", "Đài Nam", "tw"));
+        airports.add(new Airport("KHH", "Cao Hùng", "tw"));
+
+        airports.add(new Airport("VTE", "Vientiane", "la"));
+        airports.add(new Airport("MNL", "Manila", "ph"));
 
         return airports;
     }
@@ -50,10 +63,13 @@ public class CountryAirportUtils {
     public static List<Country> getCountries() {
         List<Country> countries = new ArrayList<>();
 
-        countries.add(new Country("vn", "Viet Nam"));
+        countries.add(new Country("vn", "Việt Nam"));
         countries.add(new Country("my", "Malaysia"));
         countries.add(new Country("sg", "Singapore"));
         countries.add(new Country("th", "Thailand"));
+        countries.add(new Country("tw", "Đài Loan"));
+        countries.add(new Country("la", "Lào"));
+        countries.add(new Country("ph", "Philippines"));
 
         return countries;
     }
