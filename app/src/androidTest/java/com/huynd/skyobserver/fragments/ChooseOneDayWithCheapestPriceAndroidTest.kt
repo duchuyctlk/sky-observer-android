@@ -10,7 +10,6 @@ import android.support.test.espresso.contrib.PickerActions
 import android.support.test.espresso.matcher.BoundedMatcher
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
-import android.view.View
 import android.widget.DatePicker
 import com.google.gson.Gson
 import com.huynd.skyobserver.R
