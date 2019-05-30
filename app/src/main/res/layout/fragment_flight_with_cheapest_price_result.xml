@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/list_view_best_price_background"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ExpandableListView
+        android:id="@+id/lst_best_destinations"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/list_view_best_price_background"
-        android:orientation="vertical">
-
-        <ExpandableListView
-            android:id="@+id/lst_best_destinations"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/list_view_best_price_background"
-            android:divider="@android:color/white"
-            android:dividerHeight="@dimen/grid_view_price_vertical_spacing"
-            android:layout_marginEnd="@dimen/grid_view_price_horizontal_spacing"
-            android:layout_marginStart="@dimen/grid_view_price_horizontal_spacing"
-            android:layout_marginTop="@dimen/list_view_prices_vertical_spacing" />
-    </LinearLayout>
-</layout>
+        android:divider="@android:color/white"
+        android:dividerHeight="@dimen/grid_view_price_vertical_spacing"
+        android:layout_marginEnd="@dimen/grid_view_price_horizontal_spacing"
+        android:layout_marginStart="@dimen/grid_view_price_horizontal_spacing"
+        android:layout_marginTop="@dimen/list_view_prices_vertical_spacing" />
+</LinearLayout>
