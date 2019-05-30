@@ -26,7 +26,11 @@
     <string name="inbound_date">Inbound date:</string>
     <string name="find_flights">Find Flights</string>
     <string name="return_trip">Return trip</string>
-
+    <string name="string_place_holder">String place holder</string>
+    <string name="image_view_expand_collapse_string_place_holder">Expand</string>
+    <string name="country_place_holder">Viet Nam</string>
+    <string name="price_place_holder">from $50</string>
+    <string name="image_view_destination_string_place_holder">Destination</string>
     <string name="sorting_order">Sorting Order</string>
     <string name="sorting_order_price_only_lowest">Price Only: Lowest first</string>
     <string name="sorting_order_price_only_highest">Price Only: Highest first</string>
@@ -35,4 +39,7 @@
     <string name="sorting_order_depart_earliest">Depart: Earliest first</string>
     <string name="sorting_order_depart_latest">Depart: Latest first</string>
     <string name="sorting_order_airlines">Airlines</string>
+    <string name="best_price_from">From %s VND</string>
+    <string name="best_price_outbound_flight">%1$s: -> %2$s</string>
+    <string name="best_price_inbound_flight">%1$s: %2$s -></string>
 </resources>

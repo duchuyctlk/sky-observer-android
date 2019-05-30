@@ -7,10 +7,12 @@ package com.huynd.skyobserver.models;
 public class Airport {
     private String mId;
     private String mName;
+    private String mCountryCode;
 
-    public Airport(String id, String name) {
+    public Airport(String id, String name, String countryCode) {
         mId = id;
         mName = name;
+        mCountryCode = countryCode;
     }
 
     public String getId() {
@@ -20,5 +22,9 @@ public class Airport {
     @Override
     public String toString() {
         return mName;
+    }
+
+    public String getCountryCode() {
+        return mCountryCode;
     }
 }

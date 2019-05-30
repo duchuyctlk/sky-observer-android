@@ -8,11 +8,11 @@ import org.junit.Test
  * Created by HuyND on 5/25/2019.
  */
 
-class AirportUtilsTest {
+class CountryAirportUtilsTest {
     @Test
     fun testPrivateConstructor() {
         try {
-            val constructor = AirportUtils::class.java.getDeclaredConstructor()
+            val constructor = CountryAirportUtils::class.java.getDeclaredConstructor()
             constructor.isAccessible = true
 
             // should throws AssertionError here

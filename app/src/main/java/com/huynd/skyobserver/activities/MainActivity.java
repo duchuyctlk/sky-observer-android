@@ -16,13 +16,17 @@ import com.huynd.skyobserver.fragments.ChooseOneDayFragment;
 import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceRequestRequestFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceResultFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.OnFlightWithCheapestPriceInfoSelectedListener;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
 
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
-        OnFlightInfoSelectedListener {
+        OnFlightInfoSelectedListener,
+        OnFlightWithCheapestPriceInfoSelectedListener {
 
     ActivityMainBinding binding;
 
@@ -102,6 +106,10 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
             case 1:
                 setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG, true);
                 break;
+            case 2:
+                setFragment(FlightWithCheapestPriceRequestRequestFragment.Companion.newInstance(),
+                        FlightWithCheapestPriceRequestRequestFragment.Companion.getTAG(), true);
+                break;
         }
 
         // Highlight the selected item, update the title, and close the drawer
@@ -115,6 +123,14 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
         PriceOneDayFragment fragment = (PriceOneDayFragment) PriceOneDayFragment.newInstance();
         fragment.setArguments(flightInfo);
         setFragment(fragment, PriceOneDayFragment.TAG, false);
+    }
+
+    @Override
+    public void onFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
+        FlightWithCheapestPriceResultFragment fragment =
+                FlightWithCheapestPriceResultFragment.Companion.newInstance();
+        fragment.setArguments(flightInfo);
+        setFragment(fragment, FlightWithCheapestPriceResultFragment.Companion.getTAG(), false);
     }
 
     private void checkForCrashes() {

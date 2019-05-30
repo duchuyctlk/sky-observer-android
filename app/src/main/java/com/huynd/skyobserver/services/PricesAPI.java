@@ -2,6 +2,8 @@ package com.huynd.skyobserver.services;
 
 import com.huynd.skyobserver.models.PricePerDayBody;
 import com.huynd.skyobserver.models.PricePerDayResponse;
+import com.huynd.skyobserver.models.cheapestflight.CheapestPricePerMonthBody;
+import com.huynd.skyobserver.models.cheapestflight.CheapestPricePerMonthResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -23,4 +25,9 @@ public interface PricesAPI {
                                                          @Path("carrier") String carrier,
                                                          @Path("srcPort") String srcPort,
                                                          @Path("dstPort") String dstPort);
+
+    @POST("addon/prodash/getlist")
+    Observable<List<CheapestPricePerMonthResponse>> getCheapestPricePerMonth(
+            @HeaderMap Map<String, String> headers,
+            @Body CheapestPricePerMonthBody body);
 }

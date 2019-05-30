@@ -27,6 +27,12 @@ public class PricePerDayResponse {
     @SerializedName("provider")
     private String provider;
 
+    @SerializedName("originCode")
+    private String originCode;
+
+    @SerializedName("destinationCode")
+    private String destinationCode;
+
     public PricePerDayResponse() {
     }
 
@@ -48,5 +54,13 @@ public class PricePerDayResponse {
 
     public String getProvider() {
         return provider;
+    }
+
+    public String getOriginCode() {
+        return originCode;
+    }
+
+    public String getDestinationCode() {
+        return destinationCode;
     }
 }

@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.models;
 
 import com.huynd.skyobserver.services.PricesAPI;
-import com.huynd.skyobserver.utils.AirportUtils;
+import com.huynd.skyobserver.utils.CountryAirportUtils;
 import com.huynd.skyobserver.utils.Constants;
 import com.huynd.skyobserver.utils.RequestHelper;
 
@@ -36,7 +36,7 @@ public class PricePerDayModel {
     private int mQueryingStartDay;
 
     public List<Airport> getAirports() {
-        return AirportUtils.getAirports();
+        return CountryAirportUtils.getAirports();
     }
 
     public void getPrices(PricesAPI mPricesAPI, int year, int month, String srcPort, String dstPort) {

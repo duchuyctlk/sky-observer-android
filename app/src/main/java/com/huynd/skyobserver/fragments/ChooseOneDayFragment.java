@@ -55,9 +55,10 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
         mSpinnerSrcPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
+        mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
+
         mSpinnerDstPortAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Airport>());
-        mBinding.spinnerSrcPort.setAdapter(mSpinnerSrcPortAdapter);
         mBinding.spinnerDstPort.setAdapter(mSpinnerDstPortAdapter);
 
         RxView.clicks(mBinding.editTextDateOutbound).subscribe(new Consumer<Object>() {
@@ -99,35 +100,45 @@ public class ChooseOneDayFragment extends BaseFragment implements ChooseOneDayVi
 
     public void onBtnFindFlightsClick() {
         try {
-            DatePicker outboundDatePicker = mOutboundDatePickerDialog.getDatePicker();
-            int yearOutbound = outboundDatePicker.getYear();
-            int monthOutbound = outboundDatePicker.getMonth() + 1;
-            int dayOutbound = outboundDatePicker.getDayOfMonth();
+            Bundle flightInfo = getFlightDates();
 
             Airport srcPort = mSpinnerSrcPortAdapter.getItem(mBinding.spinnerSrcPort.getSelectedItemPosition());
-            Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
-
-            Bundle flightInfo = new Bundle();
-            flightInfo.putInt("yearOutbound", yearOutbound);
-            flightInfo.putInt("monthOutbound", monthOutbound);
-            flightInfo.putInt("dayOutbound", dayOutbound);
             flightInfo.putString("srcPort", srcPort.getId());
+
+            Airport dstPort = mSpinnerDstPortAdapter.getItem(mBinding.spinnerDstPort.getSelectedItemPosition());
             flightInfo.putString("dstPort", dstPort.getId());
-            flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
-            if (mBinding.chkReturnTrip.isChecked()) {
-                DatePicker inboundDatePicker = mInboundDatePickerDialog.getDatePicker();
-                int yearInbound = inboundDatePicker.getYear();
-                int monthInbound = inboundDatePicker.getMonth() + 1;
-                int dayInbound = inboundDatePicker.getDayOfMonth();
-                flightInfo.putInt("yearInbound", yearInbound);
-                flightInfo.putInt("monthInbound", monthInbound);
-                flightInfo.putInt("dayInbound", dayInbound);
-            }
 
             ((OnFlightInfoSelectedListener) getActivity()).OnFlightInfoSelected(flightInfo);
         } catch (ClassCastException e) {
             Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.");
         }
+    }
+
+    private Bundle getFlightDates() {
+        Bundle flightInfo = new Bundle();
+
+        // outbound date
+        DatePicker outboundDatePicker = mOutboundDatePickerDialog.getDatePicker();
+        int yearOutbound = outboundDatePicker.getYear();
+        int monthOutbound = outboundDatePicker.getMonth() + 1;
+        int dayOutbound = outboundDatePicker.getDayOfMonth();
+        flightInfo.putInt("yearOutbound", yearOutbound);
+        flightInfo.putInt("monthOutbound", monthOutbound);
+        flightInfo.putInt("dayOutbound", dayOutbound);
+
+        // inbound date
+        flightInfo.putBoolean("returnTrip", mBinding.chkReturnTrip.isChecked());
+        if (mBinding.chkReturnTrip.isChecked()) {
+            DatePicker inboundDatePicker = mInboundDatePickerDialog.getDatePicker();
+            int yearInbound = inboundDatePicker.getYear();
+            int monthInbound = inboundDatePicker.getMonth() + 1;
+            int dayInbound = inboundDatePicker.getDayOfMonth();
+            flightInfo.putInt("yearInbound", yearInbound);
+            flightInfo.putInt("monthInbound", monthInbound);
+            flightInfo.putInt("dayInbound", dayInbound);
+        }
+
+        return flightInfo;
     }
 
     @Override
