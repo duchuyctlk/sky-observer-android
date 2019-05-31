@@ -138,9 +138,9 @@ public class PriceOneDayFragmentAndroidTest {
     }
 
     @Test
-    public void shouldSetTextViewsEmptyWhenNoData() throws Exception {
+    public void shouldSetTextViewsEmptyWhenNoData() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.MONTH, 10);
 
         onView(withId(R.id.edit_text_month_year)).perform(click());
         onView(withId(R.id.year_picker))
@@ -150,9 +150,9 @@ public class PriceOneDayFragmentAndroidTest {
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(1)
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0)
                 .onChildView(withId(R.id.text_view_day)).check(matches(withText("")));
-        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(1)
+        onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0)
                 .onChildView(withId(R.id.text_view_price)).check(matches(withText("")));
     }
 

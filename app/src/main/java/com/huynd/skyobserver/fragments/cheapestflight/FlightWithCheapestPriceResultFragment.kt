@@ -12,6 +12,8 @@ import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenter
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
+import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
+import com.huynd.skyobserver.utils.DateUtils.Companion.dateToString
 import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView
 import kotlinx.android.synthetic.main.fragment_flight_with_cheapest_price_result.*
 import javax.inject.Inject
@@ -59,14 +61,18 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
             val dayOutbound = getInt("dayOutbound")
             val srcPort = getString("srcPort", "")
             val returnTrip = getBoolean("returnTrip")
-            var yearInbound = 0
-            var monthInbound = 0
-            var dayInbound = 0
+            var yearInbound = yearOutbound
+            var monthInbound = monthOutbound
+            var dayInbound = dayOutbound
             if (returnTrip) {
                 yearInbound = getInt("yearInbound")
                 monthInbound = getInt("monthInbound")
                 dayInbound = getInt("dayInbound")
             }
+
+            txt_source_port_value.text = getAirportById(srcPort).toString()
+            txt_date_outbound_value.text = dateToString(yearOutbound, monthOutbound - 1, dayOutbound)
+            txt_date_inbound_value.text = dateToString(yearInbound, monthInbound - 1, dayInbound)
 
             mPresenter.getPrices(
                     yearOutbound, monthOutbound, dayOutbound,
