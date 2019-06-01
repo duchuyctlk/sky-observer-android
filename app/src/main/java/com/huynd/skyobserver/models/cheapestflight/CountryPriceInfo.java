@@ -33,7 +33,8 @@ public class CountryPriceInfo {
     }
 
     public AirportPriceInfo getAirportPriceInfo(int index) {
-        return mAirportPriceInfos != null ? mAirportPriceInfos.get(index) : null;
+        return mAirportPriceInfos != null && index >= 0 && index < mAirportPriceInfos.size()
+                ? mAirportPriceInfos.get(index) : null;
     }
 
     public int getBestPriceTotal() {

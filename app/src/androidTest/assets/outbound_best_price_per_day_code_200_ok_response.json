@@ -1,7 +1,7 @@
 [
   {
     "departureDate": 20191201,
-    "flightNumber": "VJ805",
+    "flightNumber": "VN805",
     "priceList": [
       {
         "priceTotal": 1000000,
@@ -26,7 +26,22 @@
     "arrivalTime": "2019-12-01T12:00:00.000Z",
     "departureTime": "2019-12-01T10:00:00.000Z",
     "provider": "BL",
-    "destinationCode": "HAN",
+    "destinationCode": "DAD",
+    "originCode": "SGN"
+  },
+  {
+    "departureDate": 20191201,
+    "flightNumber": "VJ123",
+    "priceList": [
+      {
+        "priceTotal": 2500000,
+        "price": 1900000
+      }
+    ],
+    "arrivalTime": "2019-12-01T12:00:00.000Z",
+    "departureTime": "2019-12-01T10:00:00.000Z",
+    "provider": "VJ",
+    "destinationCode": "BKK",
     "originCode": "SGN"
   }
 ]

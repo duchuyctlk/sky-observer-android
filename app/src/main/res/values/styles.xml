@@ -79,4 +79,17 @@
     <style name="choose_one_day_fragment_month_year_spinners" parent="month_year_spinners">
         <item name="android:layout_weight">2</item>
     </style>
+
+    <style name="flight_with_best_price_label_text_views">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/grid_view_price_vertical_spacing</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+    </style>
+
+    <style name="flight_with_best_price_value_text_views" parent="flight_with_best_price_label_text_views">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">@dimen/list_view_prices_horizontal_spacing</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
 </resources>

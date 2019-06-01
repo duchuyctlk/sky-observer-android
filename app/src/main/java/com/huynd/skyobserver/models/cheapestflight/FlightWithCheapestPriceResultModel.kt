@@ -53,17 +53,17 @@ class FlightWithCheapestPriceResultModel {
         willLoadInbound = isReturnTrip
 
         // get outbound prices
-        getPrices(pricesAPI, yearOutbound, monthOutbound, dayOutbound, port, true)
+        val outboundSent = getPrices(pricesAPI, yearOutbound, monthOutbound, dayOutbound, port, true)
 
         // get inbound prices
-        if (isReturnTrip) {
+        if (outboundSent == 0 && isReturnTrip) {
             getPrices(pricesAPI, yearInbound, monthInbound, dayInbound, port, false)
         }
     }
 
     @SuppressLint("CheckResult")
     private fun getPrices(pricesAPI: PricesAPI, year: Int, month: Int, day: Int,
-                          originPort: String, isOutbound: Boolean) {
+                          originPort: String, isOutbound: Boolean): Int {
         val cal = Calendar.getInstance()
         val thisYear = cal.get(Calendar.YEAR)
         val thisMonth = cal.get(Calendar.MONTH) + 1
@@ -75,6 +75,7 @@ class FlightWithCheapestPriceResultModel {
 
         if (invalidDate) {
             mListener?.notifyInvalidDate()
+            return -1
         } else {
             val strYear = "$year"
             val strMonth = if (month < 10) "0$month" else "$month"
@@ -172,6 +173,7 @@ class FlightWithCheapestPriceResultModel {
                             })
                 }
             }
+            return 0
         }
     }
 

@@ -1,19 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/list_view_best_price_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="@dimen/grid_view_price_horizontal_spacing"
+    android:paddingEnd="@dimen/grid_view_price_horizontal_spacing">
+
+    <TextView
+        android:id="@+id/txt_source_port"
+        style="@style/flight_with_best_price_label_text_views"
+        android:layout_width="wrap_content"
+        android:text="@string/src_port"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_source_port_value"
+        style="@style/flight_with_best_price_value_text_views"
+        app:layout_constraintEnd_toEndOf="@id/txt_date_outbound_value"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_source_port"
+        tools:text="@string/src_port" />
+
+    <TextView
+        android:id="@+id/txt_date_outbound"
+        style="@style/flight_with_best_price_label_text_views"
+        android:text="@string/outbound_date"
+        app:layout_constraintEnd_toStartOf="@id/txt_date_inbound"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_source_port_value" />
+
+    <TextView
+        android:id="@+id/txt_date_outbound_value"
+        style="@style/flight_with_best_price_value_text_views"
+        app:layout_constraintEnd_toStartOf="@id/txt_date_inbound_value"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_date_outbound"
+        tools:text="@string/outbound_date" />
+
+    <TextView
+        android:id="@+id/txt_date_inbound"
+        style="@style/flight_with_best_price_label_text_views"
+        android:layout_marginStart="@dimen/grid_view_price_vertical_spacing"
+        android:text="@string/inbound_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/txt_date_outbound"
+        app:layout_constraintTop_toBottomOf="@id/txt_source_port_value" />
+
+    <TextView
+        android:id="@+id/txt_date_inbound_value"
+        style="@style/flight_with_best_price_value_text_views"
+        android:layout_marginStart="@dimen/grid_view_price_vertical_spacing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/txt_date_outbound_value"
+        app:layout_constraintTop_toBottomOf="@id/txt_date_inbound"
+        tools:text="@string/inbound_date" />
 
     <ExpandableListView
         android:id="@+id/lst_best_destinations"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/list_view_best_price_background"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/grid_view_price_vertical_spacing"
         android:divider="@android:color/white"
         android:dividerHeight="@dimen/grid_view_price_vertical_spacing"
-        android:layout_marginEnd="@dimen/grid_view_price_horizontal_spacing"
-        android:layout_marginStart="@dimen/grid_view_price_horizontal_spacing"
-        android:layout_marginTop="@dimen/list_view_prices_vertical_spacing" />
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_date_inbound_value" />
+
+</android.support.constraint.ConstraintLayout>
