@@ -16,6 +16,7 @@ import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
 import com.huynd.skyobserver.utils.DateUtils.Companion.dateToString
 import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView
 import kotlinx.android.synthetic.main.fragment_flight_with_cheapest_price_result.*
+import lombok.Generated
 import javax.inject.Inject
 
 /**
@@ -29,8 +30,9 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
         fun newInstance() = FlightWithCheapestPriceResultFragment()
     }
 
-    @Inject
+    @Generated
     lateinit var mPricesAPI: PricesAPI
+        @Inject set
 
     private lateinit var mPresenter: FlightWithCheapestPriceResultPresenter
 
