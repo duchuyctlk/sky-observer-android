@@ -139,14 +139,11 @@ public class PriceOneDayFragmentAndroidTest {
 
     @Test
     public void shouldSetTextViewsEmptyWhenNoData() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 10);
-
         onView(withId(R.id.edit_text_month_year)).perform(click());
         onView(withId(R.id.year_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+                .perform(NumberPickerActions.setNumber(2020));
         onView(withId(R.id.month_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+                .perform(NumberPickerActions.setNumber(11));
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
