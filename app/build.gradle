@@ -21,7 +21,7 @@ android {
         testInstrumentationRunner "com.huynd.skyobserver.AndroidTestRunner"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "8ea0cedf08c94aeda28932f1e409ac50"]
 
-        buildConfigField "String", "API_URL", "\"https://www.atadi.vn/sapi/getprices/\""
+        buildConfigField "String", "API_URL", "\"https://www.atadi.vn/\""
         buildConfigField "String", "ICON_URL", "\"https://www.atadi.vn/img/providers/\""
         buildConfigField "String", "HEADER_CONTENT_TYPE", properties.getProperty("headers.contentType", "\"\"")
     }
