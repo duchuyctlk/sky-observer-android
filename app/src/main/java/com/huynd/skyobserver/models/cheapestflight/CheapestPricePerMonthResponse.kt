@@ -7,11 +7,11 @@ import com.google.gson.annotations.SerializedName
  */
 data class CheapestPricePerMonthResponse(
         @SerializedName("_id")
-        private val id: ResponseId = ResponseId(),
+        val id: ResponseId = ResponseId(),
         @SerializedName("c")
         val cheapestPrice: Int = 0,
         @SerializedName("p")
-        private val carrier: String = ""
+        val carrier: String = ""
 )
 
 data class ResponseId(
