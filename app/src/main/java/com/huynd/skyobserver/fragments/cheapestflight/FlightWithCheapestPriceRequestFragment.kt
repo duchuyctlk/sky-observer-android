@@ -9,24 +9,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.huynd.skyobserver.R
+import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.Airport
+import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceRequestPresenter
 import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceRequestPresenterImpl
+import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceRequestView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxCompoundButton
 import kotlinx.android.synthetic.main.fragment_flight_with_cheapest_price_request.*
+import lombok.Generated
+import javax.inject.Inject
 
 /**
  * Created by HuyND on 11/19/2017.
  */
 
-class FlightWithCheapestPriceRequestRequestFragment : BaseFragment(), FlightWithCheapestPriceRequestView {
+class FlightWithCheapestPriceRequestFragment : BaseFragment(), FlightWithCheapestPriceRequestView {
     companion object {
-        val TAG: String = FlightWithCheapestPriceRequestRequestFragment::class.java.simpleName
-        fun newInstance() = FlightWithCheapestPriceRequestRequestFragment()
+        val TAG: String = FlightWithCheapestPriceRequestFragment::class.java.simpleName
+        fun newInstance() = FlightWithCheapestPriceRequestFragment()
     }
+
+    @Generated
+    lateinit var mPricesAPI: PricesAPI
+        @Inject set
 
     private lateinit var mSpinnerSrcPortAdapter: ArrayAdapter<Airport>
     private lateinit var mPresenter: FlightWithCheapestPriceRequestPresenter
@@ -43,6 +52,10 @@ class FlightWithCheapestPriceRequestRequestFragment : BaseFragment(), FlightWith
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        // inject
+        (activity!!.application as SkyObserverApp).skyObserverComponent.inject(this)
+
         // initialize UI widgets
         mSpinnerSrcPortAdapter = ArrayAdapter(context!!,
                 android.R.layout.simple_list_item_1, arrayListOf())
@@ -56,7 +69,7 @@ class FlightWithCheapestPriceRequestRequestFragment : BaseFragment(), FlightWith
         }
 
         // initialize MPV pattern
-        mPresenter = FlightWithCheapestPriceRequestPresenterImpl(this)
+        mPresenter = FlightWithCheapestPriceRequestPresenterImpl(this, mPricesAPI)
         mPresenter.initSpinnersValues()
     }
 
@@ -66,9 +79,24 @@ class FlightWithCheapestPriceRequestRequestFragment : BaseFragment(), FlightWith
 
             val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
             srcPort?.run {
-                flightInfo.putString("srcPort", id)
-                (activity as OnFlightWithCheapestPriceInfoSelectedListener)
-                        .onFlightWithCheapestPriceInfoSelected(flightInfo)
+                flightInfo.run {
+                    val yearOutbound = getInt("yearOutbound")
+                    val monthOutbound = getInt("monthOutbound")
+                    val dayOutbound = getInt("dayOutbound")
+                    val returnTrip = getBoolean("returnTrip")
+                    var yearInbound = yearOutbound
+                    var monthInbound = monthOutbound
+                    var dayInbound = dayOutbound
+                    if (returnTrip) {
+                        yearInbound = getInt("yearInbound")
+                        monthInbound = getInt("monthInbound")
+                        dayInbound = getInt("dayInbound")
+                    }
+                    mPresenter.getPrices(
+                            yearOutbound, monthOutbound, dayOutbound,
+                            yearInbound, monthInbound, dayInbound,
+                            srcPort.id, returnTrip)
+                }
             }
         } catch (e: ClassCastException) {
             Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.")
@@ -133,5 +161,21 @@ class FlightWithCheapestPriceRequestRequestFragment : BaseFragment(), FlightWith
     override fun setDatePickersMinDate(minDate: Long) {
         mOutboundDatePickerDialog.datePicker.minDate = minDate
         mInboundDatePickerDialog.datePicker.minDate = minDate
+    }
+
+    override fun showInvalidDateDialog() {
+        showFailedDialog(getString(R.string.invalid_date_message))
+    }
+
+    override fun updateListViewInboundPrices(listCountryPriceInfo: List<CountryPriceInfo>) {
+        val flightInfo = getFlightDates().apply {
+            putParcelableArray("listCountryPriceInfo", listCountryPriceInfo.toTypedArray())
+        }
+        val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
+        srcPort?.run {
+            flightInfo.putString("srcPort", id)
+        }
+        (activity as OnFlightWithCheapestPriceInfoSelectedListener)
+                .onFlightWithCheapestPriceInfoSelected(flightInfo)
     }
 }

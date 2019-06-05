@@ -44,6 +44,7 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
                 .inflate(R.layout.fragment_flight_with_cheapest_price_result, container, false)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // inject
@@ -58,6 +59,11 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
 
         // get data from intent
         arguments?.run {
+            val listCountryPriceInfo = getParcelableArray("listCountryPriceInfo")?.toList()
+                    ?: listOf<CountryPriceInfo>()
+
+            updateListViewInboundPrices(listCountryPriceInfo as List<CountryPriceInfo>)
+
             val yearOutbound = getInt("yearOutbound")
             val monthOutbound = getInt("monthOutbound")
             val dayOutbound = getInt("dayOutbound")
@@ -75,11 +81,6 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
             txt_source_port_value.text = getAirportById(srcPort).toString()
             txt_date_outbound_value.text = dateToString(yearOutbound, monthOutbound - 1, dayOutbound)
             txt_date_inbound_value.text = dateToString(yearInbound, monthInbound - 1, dayInbound)
-
-            mPresenter.getPrices(
-                    yearOutbound, monthOutbound, dayOutbound,
-                    yearInbound, monthInbound, dayInbound,
-                    srcPort, returnTrip)
         }
     }
 

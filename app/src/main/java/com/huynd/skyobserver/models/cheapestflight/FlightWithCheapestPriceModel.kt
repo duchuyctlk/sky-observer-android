@@ -7,7 +7,9 @@ import com.huynd.skyobserver.models.PricePerDayResponse
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.AirportPriceInfoComparator
 import com.huynd.skyobserver.utils.Constants
-import com.huynd.skyobserver.utils.CountryAirportUtils.*
+import com.huynd.skyobserver.utils.CountryAirportUtils
+import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
+import com.huynd.skyobserver.utils.CountryAirportUtils.getCountryByCode
 import com.huynd.skyobserver.utils.CountryPriceInfoComparator
 import com.huynd.skyobserver.utils.RequestHelper
 import io.reactivex.Observable
@@ -16,11 +18,11 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 /**
- * Created by HuyND on 4/22/2018.
+ * Created by HuyND on 11/19/2017.
  */
 
-class FlightWithCheapestPriceResultModel {
-    private var mAirports: List<Airport> = getAirports()
+class FlightWithCheapestPriceModel {
+    private var mAirports: List<Airport> = CountryAirportUtils.getAirports()
     private var mCountryPriceInfos: MutableList<CountryPriceInfo> = mutableListOf()
 
     private var mNoOfReceivedOutboundRequests: Int = 0
@@ -222,4 +224,6 @@ class FlightWithCheapestPriceResultModel {
     fun setEventListener(listener: EventListener) {
         mListener = listener
     }
+
+    fun getAirports(): List<Airport> = mAirports
 }

@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.views.cheapestflight
 
 import com.huynd.skyobserver.models.Airport
+import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.views.BaseView
 
 /**
@@ -16,4 +17,8 @@ interface FlightWithCheapestPriceRequestView : BaseView {
     fun updateDateToEditText(dateAsString: String, isOutbound: Boolean)
 
     fun setDatePickersMinDate(minDate: Long)
+
+    fun showInvalidDateDialog()
+
+    fun updateListViewInboundPrices(listCountryPriceInfo: List<CountryPriceInfo>)
 }
