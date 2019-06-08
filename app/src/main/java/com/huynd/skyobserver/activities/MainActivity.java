@@ -16,9 +16,9 @@ import com.huynd.skyobserver.fragments.ChooseOneDayFragment;
 import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
-import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceRequestFragment;
-import com.huynd.skyobserver.fragments.cheapestflight.FlightWithCheapestPriceResultFragment;
-import com.huynd.skyobserver.fragments.cheapestflight.OnFlightWithCheapestPriceInfoSelectedListener;
+import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestRequestFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestResultFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestListener;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
@@ -26,7 +26,7 @@ import com.huynd.skyobserver.views.NavigationDrawerView;
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
         OnFlightInfoSelectedListener,
-        OnFlightWithCheapestPriceInfoSelectedListener {
+        DateCheapestListener {
 
     ActivityMainBinding binding;
 
@@ -107,8 +107,8 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
                 setFragment(ChooseOneDayFragment.newInstance(), ChooseOneDayFragment.TAG, true);
                 break;
             case 2:
-                setFragment(FlightWithCheapestPriceRequestFragment.Companion.newInstance(),
-                        FlightWithCheapestPriceRequestFragment.Companion.getTAG(), true);
+                setFragment(DateCheapestRequestFragment.Companion.newInstance(),
+                        DateCheapestRequestFragment.Companion.getTAG(), true);
                 break;
         }
 
@@ -126,11 +126,11 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     }
 
     @Override
-    public void onFlightWithCheapestPriceInfoSelected(Bundle flightInfo) {
-        FlightWithCheapestPriceResultFragment fragment =
-                FlightWithCheapestPriceResultFragment.Companion.newInstance();
-        fragment.setArguments(flightInfo);
-        setFragment(fragment, FlightWithCheapestPriceResultFragment.Companion.getTAG(), false);
+    public void showPriceInfo(Bundle priceInfo) {
+        DateCheapestResultFragment fragment =
+                DateCheapestResultFragment.Companion.newInstance();
+        fragment.setArguments(priceInfo);
+        setFragment(fragment, DateCheapestResultFragment.Companion.getTAG(), false);
     }
 
     private void checkForCrashes() {

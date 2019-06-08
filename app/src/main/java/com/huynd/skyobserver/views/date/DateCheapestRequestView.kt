@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.views.cheapestflight
+package com.huynd.skyobserver.views.date
 
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
@@ -8,7 +8,7 @@ import com.huynd.skyobserver.views.BaseView
  * Created by HuyND on 11/19/2017.
  */
 
-interface FlightWithCheapestPriceRequestView : BaseView {
+interface DateCheapestRequestView : BaseView {
 
     fun updateAirports(airports: List<Airport>)
 

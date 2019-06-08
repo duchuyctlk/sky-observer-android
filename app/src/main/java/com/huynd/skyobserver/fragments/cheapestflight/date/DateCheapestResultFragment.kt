@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.fragments.cheapestflight
+package com.huynd.skyobserver.fragments.cheapestflight.date
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,13 +9,13 @@ import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.adapters.ListViewCheapestPriceResultAdapter
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenter
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenterImpl
+import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenter
+import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
 import com.huynd.skyobserver.utils.DateUtils.Companion.dateToString
-import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView
-import kotlinx.android.synthetic.main.fragment_flight_with_cheapest_price_result.*
+import com.huynd.skyobserver.views.date.DateCheapestResultView
+import kotlinx.android.synthetic.main.fragment_date_cheapest_result.*
 import lombok.Generated
 import javax.inject.Inject
 
@@ -23,25 +23,25 @@ import javax.inject.Inject
  * Created by HuyND on 4/21/2018.
  */
 
-class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapestPriceResultView {
+class DateCheapestResultFragment : BaseFragment(), DateCheapestResultView {
 
     companion object {
-        val TAG: String = FlightWithCheapestPriceResultFragment::class.java.simpleName
-        fun newInstance() = FlightWithCheapestPriceResultFragment()
+        val TAG: String = DateCheapestResultFragment::class.java.simpleName
+        fun newInstance() = DateCheapestResultFragment()
     }
 
     @Generated
     lateinit var mPricesAPI: PricesAPI
         @Inject set
 
-    private lateinit var mPresenter: FlightWithCheapestPriceResultPresenter
+    private lateinit var mPresenter: DateCheapestResultPresenter
 
     private lateinit var mAdapter: ListViewCheapestPriceResultAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context)
-                .inflate(R.layout.fragment_flight_with_cheapest_price_result, container, false)
+                .inflate(R.layout.fragment_date_cheapest_result, container, false)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -55,7 +55,7 @@ class FlightWithCheapestPriceResultFragment : BaseFragment(), FlightWithCheapest
         lst_best_destinations.setAdapter(mAdapter)
 
         // initialize MPV pattern
-        mPresenter = FlightWithCheapestPriceResultPresenterImpl(this, mPricesAPI)
+        mPresenter = DateCheapestResultPresenterImpl(this, mPricesAPI)
 
         // get data from intent
         arguments?.run {

@@ -1,9 +1,11 @@
-package com.huynd.skyobserver.models.cheapestflight
+package com.huynd.skyobserver.models.cheapestflight.date
 
 import android.annotation.SuppressLint
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.PricePerDayBody
 import com.huynd.skyobserver.models.PricePerDayResponse
+import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.AirportPriceInfoComparator
 import com.huynd.skyobserver.utils.Constants
@@ -21,7 +23,7 @@ import java.util.*
  * Created by HuyND on 11/19/2017.
  */
 
-class FlightWithCheapestPriceModel {
+class DateCheapestModel {
     private var mAirports: List<Airport> = CountryAirportUtils.getAirports()
     private var mCountryPriceInfos: MutableList<CountryPriceInfo> = mutableListOf()
 

@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.views.cheapestflight;
+package com.huynd.skyobserver.views.date;
 
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.views.BaseView;
@@ -7,7 +7,7 @@ import com.huynd.skyobserver.views.BaseView;
  * Created by HuyND on 4/21/2018.
  */
 
-interface FlightWithCheapestPriceResultView : BaseView {
+interface DateCheapestResultView : BaseView {
     fun updateListViewInboundPrices(listCountryPriceInfo: List<CountryPriceInfo>)
 
     fun showInvalidDateDialog()

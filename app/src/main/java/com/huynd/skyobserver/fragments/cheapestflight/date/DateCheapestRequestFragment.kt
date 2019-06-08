@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.fragments.cheapestflight
+package com.huynd.skyobserver.fragments.cheapestflight.date
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -13,13 +13,13 @@ import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceRequestPresenter
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceRequestPresenterImpl
+import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestRequestPresenter
+import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestRequestPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
-import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceRequestView
+import com.huynd.skyobserver.views.date.DateCheapestRequestView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxCompoundButton
-import kotlinx.android.synthetic.main.fragment_flight_with_cheapest_price_request.*
+import kotlinx.android.synthetic.main.fragment_date_cheapest_request.*
 import lombok.Generated
 import javax.inject.Inject
 
@@ -27,10 +27,10 @@ import javax.inject.Inject
  * Created by HuyND on 11/19/2017.
  */
 
-class FlightWithCheapestPriceRequestFragment : BaseFragment(), FlightWithCheapestPriceRequestView {
+class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     companion object {
-        val TAG: String = FlightWithCheapestPriceRequestFragment::class.java.simpleName
-        fun newInstance() = FlightWithCheapestPriceRequestFragment()
+        val TAG: String = DateCheapestRequestFragment::class.java.simpleName
+        fun newInstance() = DateCheapestRequestFragment()
     }
 
     @Generated
@@ -38,7 +38,7 @@ class FlightWithCheapestPriceRequestFragment : BaseFragment(), FlightWithCheapes
         @Inject set
 
     private lateinit var mSpinnerSrcPortAdapter: ArrayAdapter<Airport>
-    private lateinit var mPresenter: FlightWithCheapestPriceRequestPresenter
+    private lateinit var mPresenter: DateCheapestRequestPresenter
 
     private lateinit var mOutboundDatePickerDialog: DatePickerDialog
     private lateinit var mInboundDatePickerDialog: DatePickerDialog
@@ -46,7 +46,7 @@ class FlightWithCheapestPriceRequestFragment : BaseFragment(), FlightWithCheapes
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context)
-                .inflate(R.layout.fragment_flight_with_cheapest_price_request, container, false)
+                .inflate(R.layout.fragment_date_cheapest_request, container, false)
     }
 
     @SuppressLint("CheckResult")
@@ -69,7 +69,7 @@ class FlightWithCheapestPriceRequestFragment : BaseFragment(), FlightWithCheapes
         }
 
         // initialize MPV pattern
-        mPresenter = FlightWithCheapestPriceRequestPresenterImpl(this, mPricesAPI)
+        mPresenter = DateCheapestRequestPresenterImpl(this, mPricesAPI)
         mPresenter.initSpinnersValues()
     }
 
@@ -168,14 +168,14 @@ class FlightWithCheapestPriceRequestFragment : BaseFragment(), FlightWithCheapes
     }
 
     override fun updateListViewInboundPrices(listCountryPriceInfo: List<CountryPriceInfo>) {
-        val flightInfo = getFlightDates().apply {
+        val priceInfo = getFlightDates().apply {
             putParcelableArray("listCountryPriceInfo", listCountryPriceInfo.toTypedArray())
         }
         val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
         srcPort?.run {
-            flightInfo.putString("srcPort", id)
+            priceInfo.putString("srcPort", id)
         }
-        (activity as OnFlightWithCheapestPriceInfoSelectedListener)
-                .onFlightWithCheapestPriceInfoSelected(flightInfo)
+        (activity as DateCheapestListener)
+                .showPriceInfo(priceInfo)
     }
 }

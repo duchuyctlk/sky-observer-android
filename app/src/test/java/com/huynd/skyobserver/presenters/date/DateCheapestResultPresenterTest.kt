@@ -1,9 +1,9 @@
-package com.huynd.skyobserver.presenters
+package com.huynd.skyobserver.presenters.date
 
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenter
-import com.huynd.skyobserver.presenters.cheapestflight.FlightWithCheapestPriceResultPresenterImpl
+import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenter
+import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
-import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView
+import com.huynd.skyobserver.views.date.DateCheapestResultView
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -18,14 +18,14 @@ import java.util.Calendar.YEAR
 /**
  * Created by HuyND on 6/1/2019.
  */
-class FlightWithCheapestPriceResultPresenterTest {
-    private lateinit var mPresenter: FlightWithCheapestPriceResultPresenter
-    private lateinit var mView: FlightWithCheapestPriceResultView
+class DateCheapestResultPresenterTest {
+    private lateinit var mPresenter: DateCheapestResultPresenter
+    private lateinit var mView: DateCheapestResultView
 
     @Before
     fun setUp() {
-        mView = mock(FlightWithCheapestPriceResultView::class.java)
-        mPresenter = FlightWithCheapestPriceResultPresenterImpl(mView, mock(PricesAPI::class.java))
+        mView = mock(DateCheapestResultView::class.java)
+        mPresenter = DateCheapestResultPresenterImpl(mView, mock(PricesAPI::class.java))
     }
 
     @Test

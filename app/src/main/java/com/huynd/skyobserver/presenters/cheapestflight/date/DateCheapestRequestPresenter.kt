@@ -1,10 +1,10 @@
-package com.huynd.skyobserver.presenters.cheapestflight
+package com.huynd.skyobserver.presenters.cheapestflight.date
 
 /**
  * Created by HuyND on 11/19/2017.
  */
 
-interface FlightWithCheapestPriceRequestPresenter {
+interface DateCheapestRequestPresenter {
 
     fun initSpinnersValues()
 
