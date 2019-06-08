@@ -24,9 +24,7 @@ public class SkyObserverYearMonthPickerDialog extends YearMonthPickerDialog {
             fieldYear.setAccessible(true);
             year = fieldYear.getInt(this);
             fieldYear.setAccessible(false);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -41,9 +39,7 @@ public class SkyObserverYearMonthPickerDialog extends YearMonthPickerDialog {
             fieldMonth.setAccessible(true);
             month = fieldMonth.getInt(this);
             fieldMonth.setAccessible(false);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
