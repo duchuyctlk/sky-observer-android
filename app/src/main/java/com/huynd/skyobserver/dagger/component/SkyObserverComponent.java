@@ -5,6 +5,8 @@ import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestResultFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.month.MonthCheapestRequestFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.month.MonthCheapestResultFragment;
 
 import javax.inject.Singleton;
 
@@ -24,4 +26,8 @@ public interface SkyObserverComponent {
     void inject(DateCheapestResultFragment fragment);
 
     void inject(DateCheapestRequestFragment fragment);
+
+    void inject(MonthCheapestRequestFragment fragment);
+
+    void inject(MonthCheapestResultFragment fragment);
 }

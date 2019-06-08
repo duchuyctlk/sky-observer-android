@@ -18,7 +18,9 @@ import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestResultFragment;
-import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestListener;
+import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener;
+import com.huynd.skyobserver.fragments.cheapestflight.month.MonthCheapestRequestFragment;
+import com.huynd.skyobserver.fragments.cheapestflight.month.MonthCheapestResultFragment;
 import com.huynd.skyobserver.presenters.NavigationDrawerPresenter;
 import com.huynd.skyobserver.views.NavigationDrawerView;
 
@@ -26,7 +28,7 @@ import com.huynd.skyobserver.views.NavigationDrawerView;
 public class MainActivity extends BaseActivity implements ListView.OnItemClickListener,
         NavigationDrawerView,
         OnFlightInfoSelectedListener,
-        DateCheapestListener {
+        CheapestFlightListener {
 
     ActivityMainBinding binding;
 
@@ -110,6 +112,10 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
                 setFragment(DateCheapestRequestFragment.Companion.newInstance(),
                         DateCheapestRequestFragment.Companion.getTAG(), true);
                 break;
+            case 3:
+                setFragment(MonthCheapestRequestFragment.Companion.newInstance(),
+                        MonthCheapestRequestFragment.Companion.getTAG(), true);
+                break;
         }
 
         // Highlight the selected item, update the title, and close the drawer
@@ -126,11 +132,19 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
     }
 
     @Override
-    public void showPriceInfo(Bundle priceInfo) {
+    public void showDateInfo(Bundle priceInfo) {
         DateCheapestResultFragment fragment =
                 DateCheapestResultFragment.Companion.newInstance();
         fragment.setArguments(priceInfo);
         setFragment(fragment, DateCheapestResultFragment.Companion.getTAG(), false);
+    }
+
+    @Override
+    public void showMonthInfo(Bundle priceInfo) {
+        MonthCheapestResultFragment fragment =
+                MonthCheapestResultFragment.Companion.newInstance();
+        fragment.setArguments(priceInfo);
+        setFragment(fragment, MonthCheapestResultFragment.Companion.getTAG(), false);
     }
 
     private void checkForCrashes() {

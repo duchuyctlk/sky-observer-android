@@ -1,13 +1,15 @@
-package com.huynd.skyobserver.models.cheapestflight
+package com.huynd.skyobserver.models.cheapestflight.month
 
 import android.annotation.SuppressLint
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.PricePerDayBody
 import com.huynd.skyobserver.models.PricePerDayResponse
+import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.AirportPriceInfoComparator
+import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
-import com.huynd.skyobserver.utils.CountryAirportUtils.getAirports
 import com.huynd.skyobserver.utils.CountryAirportUtils.getCountryByCode
 import com.huynd.skyobserver.utils.CountryPriceInfoComparator
 import com.huynd.skyobserver.utils.RequestHelper
@@ -20,8 +22,8 @@ import java.util.*
  * Created by HuyND on 6/04/2019.
  */
 
-class CheapestPricePerMonthModel {
-    private var mAirports: List<Airport> = getAirports()
+class MonthCheapestModel {
+    private var mAirports: List<Airport> = CountryAirportUtils.getAirports()
     private var mListCountryPriceInfo: MutableList<CountryPriceInfo> = mutableListOf()
 
     private var mNoOfReceivedOutboundRequests: Int = 0
@@ -41,6 +43,8 @@ class CheapestPricePerMonthModel {
 
         fun onGetPricesResponse(listCountryPriceInfo: List<CountryPriceInfo>)
     }
+
+    fun getAirports() = mAirports
 
     fun getPrices(pricesAPI: PricesAPI,
                   yearOutbound: Int, monthOutbound: Int,
@@ -85,7 +89,7 @@ class CheapestPricePerMonthModel {
             val strDay = formatDayMonthWithZero(today)
 
             val headers = RequestHelper.getDefaultHeaders()
-            val postData = CheapestPricePerMonthBody(strYear, strMonth, strDay).apply {
+            val postData = MonthCheapestBody(strYear, strMonth, strDay).apply {
                 setRoutes(mAirports
                         .filter { it.id != originPort }
                         .map { if (isOutbound) "$originPort${it.id}" else "${it.id}$originPort" }

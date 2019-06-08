@@ -5,5 +5,6 @@
         <item>Price per month</item>
         <item>Price per day</item>
         <item>Cheapest price per day</item>
+        <item>Cheapest price per month</item>
     </string-array>
 </resources>

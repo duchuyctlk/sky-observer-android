@@ -1,7 +1,6 @@
-package com.huynd.skyobserver.fragments.cheapestflight.date
+package com.huynd.skyobserver.fragments.cheapestflight.month
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,24 +13,26 @@ import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
-import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestRequestPresenter
-import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestRequestPresenterImpl
+import com.huynd.skyobserver.presenters.cheapestflight.month.MonthCheapestRequestPresenter
+import com.huynd.skyobserver.presenters.cheapestflight.month.MonthCheapestRequestPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.views.date.DateCheapestRequestView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxCompoundButton
+import com.twinkle94.monthyearpicker.picker.SkyObserverYearMonthPickerDialog
+import com.twinkle94.monthyearpicker.picker.YearMonthPickerDialog
 import kotlinx.android.synthetic.main.fragment_date_cheapest_request.*
 import lombok.Generated
 import javax.inject.Inject
 
 /**
- * Created by HuyND on 11/19/2017.
+ * Created by HuyND on 06/08/2019
  */
 
-class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
+class MonthCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     companion object {
-        val TAG: String = DateCheapestRequestFragment::class.java.simpleName
-        fun newInstance() = DateCheapestRequestFragment()
+        val TAG: String = MonthCheapestRequestFragment::class.java.simpleName
+        fun newInstance() = MonthCheapestRequestFragment()
     }
 
     @Generated
@@ -39,15 +40,15 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
         @Inject set
 
     private lateinit var mSpinnerSrcPortAdapter: ArrayAdapter<Airport>
-    private lateinit var mPresenter: DateCheapestRequestPresenter
+    private lateinit var mPresenter: MonthCheapestRequestPresenter
 
-    private lateinit var mOutboundDatePickerDialog: DatePickerDialog
-    private lateinit var mInboundDatePickerDialog: DatePickerDialog
+    private lateinit var mOutboundYearMonthPickerDialog: SkyObserverYearMonthPickerDialog
+    private lateinit var mInboundYearMonthPickerDialog: SkyObserverYearMonthPickerDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return LayoutInflater.from(context)
-                .inflate(R.layout.fragment_date_cheapest_request, container, false)
+                .inflate(R.layout.fragment_month_cheapest_request, container, false)
     }
 
     @SuppressLint("CheckResult")
@@ -62,15 +63,15 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
                 android.R.layout.simple_list_item_1, arrayListOf())
         spinner_src_port.adapter = mSpinnerSrcPortAdapter
 
-        RxView.clicks(edit_text_date_outbound).subscribe { mOutboundDatePickerDialog.show() }
-        RxView.clicks(edit_text_date_inbound).subscribe { mInboundDatePickerDialog.show() }
+        RxView.clicks(edit_text_date_outbound).subscribe { mOutboundYearMonthPickerDialog.show() }
+        RxView.clicks(edit_text_date_inbound).subscribe { mInboundYearMonthPickerDialog.show() }
         RxView.clicks(btn_find_flights).subscribe { onBtnFindFlightsClick() }
         RxCompoundButton.checkedChanges(chk_return_trip).subscribe { isChecked ->
             onChkReturnTripCheckedChanged(isChecked)
         }
 
         // initialize MPV pattern
-        mPresenter = DateCheapestRequestPresenterImpl(this, mPricesAPI)
+        mPresenter = MonthCheapestRequestPresenterImpl(this, mPricesAPI)
         mPresenter.initSpinnersValues()
     }
 
@@ -83,19 +84,16 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
                 flightInfo.run {
                     val yearOutbound = getInt("yearOutbound")
                     val monthOutbound = getInt("monthOutbound")
-                    val dayOutbound = getInt("dayOutbound")
                     val returnTrip = getBoolean("returnTrip")
                     var yearInbound = yearOutbound
                     var monthInbound = monthOutbound
-                    var dayInbound = dayOutbound
                     if (returnTrip) {
                         yearInbound = getInt("yearInbound")
                         monthInbound = getInt("monthInbound")
-                        dayInbound = getInt("dayInbound")
                     }
                     mPresenter.getPrices(
-                            yearOutbound, monthOutbound, dayOutbound,
-                            yearInbound, monthInbound, dayInbound,
+                            yearOutbound, monthOutbound,
+                            yearInbound, monthInbound,
                             srcPort.id, returnTrip)
                 }
             }
@@ -107,19 +105,17 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     private fun getFlightDates(): Bundle {
         return Bundle().let {
             // outbound date
-            mOutboundDatePickerDialog.datePicker.run {
+            mOutboundYearMonthPickerDialog.run {
                 it.putInt("yearOutbound", year)
                 it.putInt("monthOutbound", month + 1)
-                it.putInt("dayOutbound", dayOfMonth)
             }
 
             // inbound date
             it.putBoolean("returnTrip", chk_return_trip.isChecked)
             if (chk_return_trip.isChecked) {
-                mInboundDatePickerDialog.datePicker.run {
+                mInboundYearMonthPickerDialog.run {
                     it.putInt("yearInbound", year)
                     it.putInt("monthInbound", month + 1)
-                    it.putInt("dayInbound", dayOfMonth)
                 }
             }
             it
@@ -140,15 +136,14 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     }
 
     override fun updateDatePickers(startYear: Int, startMonth: Int, startDayOfMonth: Int) {
-        mOutboundDatePickerDialog = DatePickerDialog(context!!,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    mPresenter.setDateToEditText(year, month, dayOfMonth, true)
-                }, startYear, startMonth, startDayOfMonth)
-
-        mInboundDatePickerDialog = DatePickerDialog(context!!,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    mPresenter.setDateToEditText(year, month, dayOfMonth, false)
-                }, startYear, startMonth, startDayOfMonth)
+        mOutboundYearMonthPickerDialog = SkyObserverYearMonthPickerDialog(context,
+                YearMonthPickerDialog.OnDateSetListener { year, month ->
+                    mPresenter.setDateToEditText(year, month, true)
+                })
+        mInboundYearMonthPickerDialog = SkyObserverYearMonthPickerDialog(context,
+                YearMonthPickerDialog.OnDateSetListener { year, month ->
+                    mPresenter.setDateToEditText(year, month, false)
+                })
     }
 
     override fun updateDateToEditText(dateAsString: String, isOutbound: Boolean) {
@@ -160,8 +155,9 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     }
 
     override fun setDatePickersMinDate(minDate: Long) {
-        mOutboundDatePickerDialog.datePicker.minDate = minDate
-        mInboundDatePickerDialog.datePicker.minDate = minDate
+//        mOutboundDatePickerDialog.datePicker.minDate = minDate
+//        mInboundDatePickerDialog.datePicker.minDate = minDate
+        // TODO
     }
 
     override fun showInvalidDateDialog() {
@@ -177,6 +173,6 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
             priceInfo.putString("srcPort", id)
         }
         (activity as CheapestFlightListener)
-                .showDateInfo(priceInfo)
+                .showMonthInfo(priceInfo)
     }
 }

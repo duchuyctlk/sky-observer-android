@@ -1,11 +1,11 @@
-package com.huynd.skyobserver.models.cheapestflight
+package com.huynd.skyobserver.models.cheapestflight.month
 
 import com.huynd.skyobserver.utils.Constants.Companion.CARRIERS
 
 /**
  * Created by HuyND on 11/18/2017.
  */
-class CheapestPricePerMonthBody(strYear: String, strMonth: String, strDay: String) {
+class MonthCheapestBody(strYear: String, strMonth: String, strDay: String) {
     var startDate: String = ""
     var endDate: String = ""
     val minPrice = 0

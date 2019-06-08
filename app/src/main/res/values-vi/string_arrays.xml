@@ -4,6 +4,7 @@
         name="array_of_navigation_drawer_item_title">
         <item>Xem giá cả tháng</item>
         <item>Xem giá một ngày</item>
-        <item>Đi đâu cũng được :3</item>
+        <item>Giá rẻ trong ngày</item>
+        <item>Giá rẻ trong tháng</item>
     </string-array>
 </resources>
