@@ -6,6 +6,8 @@ import android.os.Bundle
  * Created by HuyND on 9/16/2017.
  */
 
-interface OnFlightWithCheapestPriceInfoSelectedListener {
-    fun onFlightWithCheapestPriceInfoSelected(flightInfo: Bundle?)
+interface CheapestFlightListener {
+    fun showDateInfo(priceInfo: Bundle?)
+
+    fun showMonthInfo(priceInfo: Bundle?)
 }

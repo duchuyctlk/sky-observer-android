@@ -44,7 +44,7 @@ import javax.inject.Inject
  * Created by HuyND on 8/26/2017.
  */
 
-class ChooseOneDayWithCheapestPriceAndroidTest {
+class DateCheapestFragmentAndroidTest {
 
     private val outbound_response = "outbound_best_price_per_day_code_200_ok_response.json"
     private val inbound_response = "inbound_best_price_per_day_code_200_ok_response.json"

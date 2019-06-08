@@ -1,19 +1,19 @@
-package com.huynd.skyobserver.presenters.cheapestflight
+package com.huynd.skyobserver.presenters.cheapestflight.date
 
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
-import com.huynd.skyobserver.models.cheapestflight.FlightWithCheapestPriceResultModel
+import com.huynd.skyobserver.models.cheapestflight.date.DateCheapestModel
 import com.huynd.skyobserver.services.PricesAPI
-import com.huynd.skyobserver.views.cheapestflight.FlightWithCheapestPriceResultView
+import com.huynd.skyobserver.views.date.DateCheapestResultView
 
 /**
  * Created by HuyND on 4/21/2018.
  */
 
-class FlightWithCheapestPriceResultPresenterImpl(
-        private val mView: FlightWithCheapestPriceResultView,
-        private val mPricesAPI: PricesAPI) : FlightWithCheapestPriceResultPresenter,
-        FlightWithCheapestPriceResultModel.EventListener {
-    private val mModel = FlightWithCheapestPriceResultModel()
+class DateCheapestResultPresenterImpl(
+        private val mView: DateCheapestResultView,
+        private val mPricesAPI: PricesAPI) : DateCheapestResultPresenter,
+        DateCheapestModel.EventListener {
+    private val mModel = DateCheapestModel()
 
     init {
         mModel.setEventListener(this)
