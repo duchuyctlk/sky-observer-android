@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
-import com.huynd.skyobserver.adapters.ListViewCheapestPriceResultAdapter
+import com.huynd.skyobserver.adapters.MonthCheapestResultAdapter
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenter
@@ -35,7 +35,7 @@ class MonthCheapestResultFragment : BaseFragment(), DateCheapestResultView {
 
     private lateinit var mPresenter: DateCheapestResultPresenter
 
-    private lateinit var mAdapter: ListViewCheapestPriceResultAdapter
+    private lateinit var mAdapter: MonthCheapestResultAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -50,7 +50,7 @@ class MonthCheapestResultFragment : BaseFragment(), DateCheapestResultView {
         (activity!!.application as SkyObserverApp).skyObserverComponent.inject(this)
 
         // UI
-        mAdapter = ListViewCheapestPriceResultAdapter(context!!)
+        mAdapter = MonthCheapestResultAdapter(context!!)
         lst_best_destinations.setAdapter(mAdapter)
 
         // initialize MPV pattern

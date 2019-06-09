@@ -2,6 +2,7 @@ package com.huynd.skyobserver.models.cheapestflight
 
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.PricePerDay
+import java.util.Date
 
 /**
  * Created by HuyND on 9/28/2017.
@@ -25,6 +26,10 @@ class AirportPriceInfo {
     fun getOutboundCarrier() = mPricePerDayOutbound?.carrier
 
     fun getInboundCarrier() = mPricePerDayInbound?.carrier
+
+    fun getOutboundDepartureTime(): Date = mPricePerDayOutbound?.departureTime ?: Date()
+
+    fun getInboundDepartureTime(): Date = mPricePerDayInbound?.departureTime ?: Date()
 
     fun setAirport(airport: Airport) {
         mAirport = airport

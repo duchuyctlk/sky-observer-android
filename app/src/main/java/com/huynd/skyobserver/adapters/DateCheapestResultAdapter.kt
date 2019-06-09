@@ -11,14 +11,14 @@ import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.utils.formatNumber
 import kotlinx.android.synthetic.main.list_view_best_destinations_item.view.*
-import kotlinx.android.synthetic.main.list_view_best_destinations_sub_item.view.*
+import kotlinx.android.synthetic.main.list_view_date_cheapest_sub_item.view.*
 
 
 /**
  * Created by HuyND on 9/28/2017.
  */
 
-class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) :
+open class DateCheapestResultAdapter(@NonNull private val context: Context) :
         BaseExpandableListAdapter() {
     private var mCountryPriceInfo = mutableListOf<CountryPriceInfo>()
 
@@ -67,16 +67,16 @@ class ListViewCheapestPriceResultAdapter(@NonNull private val context: Context) 
         val airportPriceInfo = getChild(groupPosition, childPosition) as AirportPriceInfo
         val view: View = if (convertView == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.list_view_best_destinations_sub_item, null)
+            inflater.inflate(R.layout.list_view_date_cheapest_sub_item, null)
         } else {
             convertView
         }
         view.apply {
             txt_destination.text = airportPriceInfo.getAirportName()
-            txt_outbound_flight.text = context.resources.getString(R.string.best_price_outbound_flight,
+            txt_outbound_flight.text = context.resources.getString(R.string.date_cheapest_outbound_flight,
                     airportPriceInfo.getOutboundCarrier(), airportPriceInfo.getAirportName()
             )
-            txt_inbound_flight.text = context.resources.getString(R.string.best_price_inbound_flight,
+            txt_inbound_flight.text = context.resources.getString(R.string.date_cheapest_inbound_flight,
                     airportPriceInfo.getInboundCarrier(), airportPriceInfo.getAirportName())
             val bestPriceTotalStr = formatNumber(airportPriceInfo.getBestPriceTotal())
             txt_price.text = context.resources.getString(R.string.best_price_from, bestPriceTotalStr)

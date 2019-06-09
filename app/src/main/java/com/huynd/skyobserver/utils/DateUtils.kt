@@ -66,5 +66,8 @@ class DateUtils {
                 GregorianCalendar(year, month, dayOfMonth).let {
                     DateFormat.format("dd/MM/yyyy", it).toString()
                 }
+
+        fun dateToString(date: Date, pattern: String): String =
+                    DateFormat.format(pattern, date).toString()
     }
 }
