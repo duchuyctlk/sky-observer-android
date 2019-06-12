@@ -62,4 +62,11 @@ class DateCheapestResultPresenterTest {
         )
         verify(mView, times(1)).showInvalidDateDialog()
     }
+
+    @Test
+    fun mViewShouldUpdateListViewInboundPrices() {
+        (mPresenter as DateCheapestResultPresenterImpl).onGetPricesResponse(listOf())
+        verify(mView, times(1)).updateListViewInboundPrices(listOf())
+        verify(mView, times(1)).dismissLoadingDialog()
+    }
 }

@@ -7,3 +7,14 @@ import java.text.NumberFormat
  */
 
 fun formatNumber(number: Int): String = NumberFormat.getNumberInstance().format(number)
+
+
+class StringUtils {
+    init {
+        throw AssertionError()
+    }
+
+    companion object {
+        fun formatDayMonthWithZero(x: Int) = if (x < 10) "0$x" else "$x"
+    }
+}

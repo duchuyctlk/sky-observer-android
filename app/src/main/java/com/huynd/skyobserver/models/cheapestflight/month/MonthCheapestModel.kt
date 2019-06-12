@@ -13,6 +13,7 @@ import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
 import com.huynd.skyobserver.utils.CountryAirportUtils.getCountryByCode
 import com.huynd.skyobserver.utils.CountryPriceInfoComparator
 import com.huynd.skyobserver.utils.RequestHelper
+import com.huynd.skyobserver.utils.StringUtils.Companion.formatDayMonthWithZero
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -173,11 +174,13 @@ class MonthCheapestModel {
                                                 if (isOutbound) {
                                                     val minPrice = dstAirportPriceInfo!!.getBestPriceOutbound()
                                                     if (minPrice == 0 || priceTotal < minPrice) {
+                                                        this.day = dayWithCheapestPrice.id.dayInMonth
                                                         dstAirportPriceInfo!!.setPricePerDayOutbound(this)
                                                     }
                                                 } else {
                                                     val minPrice = dstAirportPriceInfo!!.getBestPriceInbound()
                                                     if (minPrice == 0 || priceTotal < minPrice) {
+                                                        this.day = dayWithCheapestPrice.id.dayInMonth
                                                         dstAirportPriceInfo!!.setPricePerDayInbound(this)
                                                     }
                                                 }
@@ -236,8 +239,6 @@ class MonthCheapestModel {
             )
         }
     }
-
-    private fun formatDayMonthWithZero(x: Int) = if (x < 10) "0$x" else "$x"
 
     fun setEventListener(listener: EventListener) {
         mListener = listener
