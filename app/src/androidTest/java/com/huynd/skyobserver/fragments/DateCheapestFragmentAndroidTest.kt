@@ -8,7 +8,12 @@ import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.PickerActions
 import android.support.test.espresso.matcher.BoundedMatcher
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.RootMatchers
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withClassName
+import android.support.test.espresso.matcher.ViewMatchers.withContentDescription
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.widget.DatePicker
 import com.google.gson.Gson
@@ -27,7 +32,11 @@ import io.reactivex.Observable.just
 import okhttp3.ResponseBody
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.anything
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -84,6 +93,20 @@ class DateCheapestFragmentAndroidTest {
     }
 
     @Test
+    fun shouldShowInvalidDateDialog() {
+        onView(withId(R.id.edit_text_date_outbound)).perform(click())
+        onView(withClassName(equalTo<String>(DatePicker::class.java.name)))
+                .perform(PickerActions.setDate(Calendar.getInstance().get(YEAR), 1, 1))
+        onView(withId(android.R.id.button1)).perform(click())
+
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        onView(withText(R.string.invalid_date_message)).inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click())
+    }
+
+    @Test
     fun shouldSendRequestAndDisplayResponse() {
         mockApiResponse(true, true, "SGN")
 
@@ -119,7 +142,7 @@ class DateCheapestFragmentAndroidTest {
 
     private fun withCountryCode(code: String): Matcher<Any> {
         val codeMather = equalTo(code)
-        return object: BoundedMatcher<Any, CountryPriceInfo>(CountryPriceInfo::class.java) {
+        return object : BoundedMatcher<Any, CountryPriceInfo>(CountryPriceInfo::class.java) {
             override fun describeTo(description: Description?) {
                 codeMather.describeTo(description)
             }

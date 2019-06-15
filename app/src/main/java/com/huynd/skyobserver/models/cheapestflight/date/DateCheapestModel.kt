@@ -191,14 +191,11 @@ class DateCheapestModel {
             isInboundLoadingDone = mNoOfReceivedInboundRequests == numOfOneWayRequests
         }
 
-        if (willLoadInbound) {
-            if (isOutboundLoadingDone && isInboundLoadingDone) {
-                sortCountryPriceInfosAndReturnResponse()
-            }
-        } else {
-            if (isOutboundLoadingDone) {
-                sortCountryPriceInfosAndReturnResponse()
-            }
+        val isLoadingDone =
+                if (willLoadInbound) isOutboundLoadingDone && isInboundLoadingDone else isOutboundLoadingDone
+
+        if (isLoadingDone) {
+            sortCountryPriceInfosAndReturnResponse()
         }
     }
 
