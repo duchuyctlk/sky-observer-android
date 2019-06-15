@@ -7,7 +7,11 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.BoundedMatcher
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.RootMatchers.isDialog
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withContentDescription
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import com.google.gson.Gson
 import com.huynd.skyobserver.R
@@ -28,7 +32,11 @@ import io.reactivex.Observable.just
 import okhttp3.ResponseBody
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.anything
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -85,7 +93,23 @@ class MonthCheapestFragmentAndroidTest {
     }
 
     @Test
-    fun shouldSendRequestAndDisplayResponse() {
+    fun shouldShowInvalidDateDialog() {
+        onView(withId(R.id.edit_text_date_outbound)).perform(click())
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(Calendar.getInstance().get(YEAR)))
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(0))
+        onView(withId(android.R.id.button1)).perform(click())
+
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        onView(withText(R.string.invalid_date_message)).inRoot(isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click())
+    }
+
+    @Test
+    fun shouldSendReturnRequestAndDisplayResponse() {
         mockApiResponse(true, true, "SGN")
 
         // select dates
@@ -116,6 +140,40 @@ class MonthCheapestFragmentAndroidTest {
                 .inAdapterView(withId(R.id.lst_best_destinations)).atPosition(0).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun shouldSendOneWayRequestAndDisplayResponse() {
+        mockApiResponse(true, true, "SGN")
+
+        // select dates
+        val currentYear = Calendar.getInstance().get(YEAR)
+        onView(withId(R.id.edit_text_date_outbound)).perform(click())
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(currentYear))
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(11))
+        onView(withId(android.R.id.button1)).perform(click())
+
+        onView(withId(R.id.edit_text_date_inbound)).perform(click())
+        onView(withId(R.id.year_picker))
+                .perform(NumberPickerActions.setNumber(currentYear))
+        onView(withId(R.id.month_picker))
+                .perform(NumberPickerActions.setNumber(11))
+        onView(withId(android.R.id.button1)).perform(click())
+
+        onView(withId(R.id.chk_return_trip)).perform(click())
+
+        // find flight
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        // check on result fragment
+        checkViewWidgetsIsDisplayed(R.id.lst_best_destinations)
+
+        onData(anything()).inAdapterView(withId(R.id.lst_best_destinations)).atPosition(0).perform(click())
+
+        onData(allOf(`is`(instanceOf<CountryPriceInfo>(CountryPriceInfo::class.java)), withCountryCode("vn")))
+                .inAdapterView(withId(R.id.lst_best_destinations)).atPosition(0).check(matches(isDisplayed()))
+    }
+
     private fun checkViewWidgetsIsDisplayed(vararg ids: Int) {
         ids.forEach { id ->
             onView(withId(id)).check(matches(isDisplayed()))
@@ -124,7 +182,7 @@ class MonthCheapestFragmentAndroidTest {
 
     private fun withCountryCode(code: String): Matcher<Any> {
         val codeMather = equalTo(code)
-        return object: BoundedMatcher<Any, CountryPriceInfo>(CountryPriceInfo::class.java) {
+        return object : BoundedMatcher<Any, CountryPriceInfo>(CountryPriceInfo::class.java) {
             override fun describeTo(description: Description?) {
                 codeMather.describeTo(description)
             }
@@ -139,7 +197,7 @@ class MonthCheapestFragmentAndroidTest {
     private fun mockApiResponse(requestSuccess: Boolean, responseSuccess: Boolean, srcPort: String) {
         val outboundDay: Observable<List<PricePerDayResponse>>
         val inboundODay: Observable<List<PricePerDayResponse>>
-        val monthObservableList:  Observable<List<CheapestPricePerMonthResponse>>
+        val monthObservableList: Observable<List<CheapestPricePerMonthResponse>>
 
         if (requestSuccess) {
             val gson = Gson()

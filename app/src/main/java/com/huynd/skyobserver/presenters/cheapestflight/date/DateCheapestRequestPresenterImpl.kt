@@ -51,7 +51,10 @@ class DateCheapestRequestPresenterImpl(
     }
 
     override fun notifyInvalidDate() {
-        mView.showInvalidDateDialog()
+        mView.run {
+            dismissLoadingDialog()
+            showInvalidDateDialog()
+        }
     }
 
     override fun onGetPricesResponse(listCountryPriceInfo: List<CountryPriceInfo>) {
