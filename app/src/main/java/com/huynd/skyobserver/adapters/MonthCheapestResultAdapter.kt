@@ -33,12 +33,18 @@ class MonthCheapestResultAdapter(@NonNull private val context: Context) : DateCh
                     airportPriceInfo.getOutboundCarrier(),
                     airportPriceInfo.getAirportName()
             )
-            txt_inbound_flight.text = context.resources.getString(
-                    R.string.month_cheapest_inbound_flight,
-                    dateToString(airportPriceInfo.getInboundDepartureTime(), "dd/MM"),
-                    airportPriceInfo.getInboundCarrier(),
-                    airportPriceInfo.getAirportName()
-            )
+
+            if (airportPriceInfo.getInboundCarrier() == null) {
+                txt_inbound_flight.visibility = View.INVISIBLE
+            } else {
+                txt_inbound_flight.visibility = View.VISIBLE
+                txt_inbound_flight.text = context.resources.getString(
+                        R.string.month_cheapest_inbound_flight,
+                        dateToString(airportPriceInfo.getInboundDepartureTime(), "dd/MM"),
+                        airportPriceInfo.getInboundCarrier(),
+                        airportPriceInfo.getAirportName()
+                )
+            }
             val bestPriceTotalStr = formatNumber(airportPriceInfo.getBestPriceTotal())
             txt_price.text = context.resources.getString(R.string.best_price_from, bestPriceTotalStr)
         }
