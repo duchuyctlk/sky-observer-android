@@ -137,14 +137,11 @@ public class PricePerDayFragmentAndroidTest {
     public void shouldClassCatchCastException() throws Exception {
         mockApiResponse(true, true);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 5);
-
         onView(withId(R.id.edit_text_month_year)).perform(click());
         onView(withId(R.id.year_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.YEAR)));
+                .perform(NumberPickerActions.setNumber(Calendar.getInstance().get(Calendar.YEAR)));
         onView(withId(R.id.month_picker))
-                .perform(NumberPickerActions.setNumber(calendar.get(Calendar.MONTH)));
+                .perform(NumberPickerActions.setNumber(11));
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.btn_get_prices)).perform(click());
@@ -161,9 +158,9 @@ public class PricePerDayFragmentAndroidTest {
         pickerDialogField.setAccessible(false);
 
         try {
-            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(5).perform(click());
-        } catch (Exception exception) {
-            fail("Unexpected behavior happened.");
+            onData(anything()).inAdapterView(withId(R.id.grid_view_price)).atPosition(0).perform(click());
+        } catch (ClassCastException exception) {
+            fail("ClassCastException is not handled.");
         }
     }
 

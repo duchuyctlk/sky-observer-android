@@ -3,7 +3,6 @@ package com.huynd.skyobserver.fragments.cheapestflight.date
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,32 +74,28 @@ class DateCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     }
 
     private fun onBtnFindFlightsClick() {
-        try {
-            val flightInfo = getFlightDates()
+        val flightInfo = getFlightDates()
 
-            val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
-            srcPort?.run {
-                flightInfo.run {
-                    val yearOutbound = getInt("yearOutbound")
-                    val monthOutbound = getInt("monthOutbound")
-                    val dayOutbound = getInt("dayOutbound")
-                    val returnTrip = getBoolean("returnTrip")
-                    var yearInbound = yearOutbound
-                    var monthInbound = monthOutbound
-                    var dayInbound = dayOutbound
-                    if (returnTrip) {
-                        yearInbound = getInt("yearInbound")
-                        monthInbound = getInt("monthInbound")
-                        dayInbound = getInt("dayInbound")
-                    }
-                    mPresenter.getPrices(
-                            yearOutbound, monthOutbound, dayOutbound,
-                            yearInbound, monthInbound, dayInbound,
-                            srcPort.id, returnTrip)
+        val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
+        srcPort?.run {
+            flightInfo.run {
+                val yearOutbound = getInt("yearOutbound")
+                val monthOutbound = getInt("monthOutbound")
+                val dayOutbound = getInt("dayOutbound")
+                val returnTrip = getBoolean("returnTrip")
+                var yearInbound = yearOutbound
+                var monthInbound = monthOutbound
+                var dayInbound = dayOutbound
+                if (returnTrip) {
+                    yearInbound = getInt("yearInbound")
+                    monthInbound = getInt("monthInbound")
+                    dayInbound = getInt("dayInbound")
                 }
+                mPresenter.getPrices(
+                        yearOutbound, monthOutbound, dayOutbound,
+                        yearInbound, monthInbound, dayInbound,
+                        srcPort.id, returnTrip)
             }
-        } catch (e: ClassCastException) {
-            Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.")
         }
     }
 
