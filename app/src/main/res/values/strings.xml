@@ -45,4 +45,6 @@
     <string name="month_cheapest_outbound_flight">%1$s - %2$s: -> %3$s</string>
     <string name="month_cheapest_inbound_flight">%1$s - %2$s: %3$s -></string>
     <string name="best_price_date_place_holder">%1$d/%2$d/%3$d</string>
+
+    <string name="trip_length">Trip length (days):</string>
 </resources>

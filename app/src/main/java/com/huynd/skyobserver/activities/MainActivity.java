@@ -16,6 +16,7 @@ import com.huynd.skyobserver.fragments.ChooseOneDayFragment;
 import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
+import com.huynd.skyobserver.fragments.bestdates.BestDatesRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestResultFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener;
@@ -115,6 +116,10 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
             case 3:
                 setFragment(MonthCheapestRequestFragment.Companion.newInstance(),
                         MonthCheapestRequestFragment.Companion.getTAG(), true);
+                break;
+            case 4:
+                setFragment(BestDatesRequestFragment.Companion.newInstance(),
+                        BestDatesRequestFragment.Companion.getTAG(), true);
                 break;
         }
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/fragment_vertical_margin"
+    android:paddingEnd="@dimen/fragment_horizontal_margin">
+
+    <TextView
+        android:id="@+id/tv_src_port_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fragment_horizontal_margin"
+        android:gravity="start|center_vertical"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/fragment_vertical_margin"
+        android:paddingEnd="@dimen/fragment_horizontal_margin"
+        android:text="@string/src_port"
+        app:layout_constraintEnd_toStartOf="@id/spinner_src_port"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner_src_port"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fragment_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="@id/tv_src_port_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintStart_toEndOf="@id/tv_src_port_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_dest_port_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fragment_horizontal_margin"
+        android:gravity="start|center_vertical"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/fragment_vertical_margin"
+        android:paddingEnd="@dimen/fragment_horizontal_margin"
+        android:text="@string/dst_port"
+        app:layout_constraintEnd_toStartOf="@id/spinner_dest_port"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_src_port_label" />
+
+    <Spinner
+        android:id="@+id/spinner_dest_port"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fragment_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="@id/tv_dest_port_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintStart_toEndOf="@id/tv_dest_port_label"
+        app:layout_constraintTop_toTopOf="@id/tv_dest_port_label" />
+
+    <CheckBox
+        android:id="@+id/chk_return_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fragment_horizontal_margin"
+        android:layout_marginEnd="@dimen/fragment_horizontal_margin"
+        android:checked="true"
+        android:paddingStart="@dimen/fragment_horizontal_margin"
+        android:paddingEnd="0dp"
+        android:text="@string/return_trip"
+        app:layout_constraintTop_toBottomOf="@id/tv_dest_port_label" />
+
+    <TextView
+        android:id="@+id/tv_trip_length"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fragment_horizontal_margin"
+        android:gravity="start|center_vertical"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/fragment_vertical_margin"
+        android:paddingEnd="@dimen/fragment_horizontal_margin"
+        android:text="@string/trip_length"
+        app:layout_constraintEnd_toStartOf="@id/spinner_trip_length"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chk_return_trip" />
+
+    <Spinner
+        android:id="@+id/spinner_trip_length"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fragment_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="@id/tv_trip_length"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintStart_toEndOf="@id/tv_trip_length"
+        app:layout_constraintTop_toTopOf="@id/tv_trip_length" />
+
+    <Button
+        android:id="@+id/btn_find_flights"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/find_flights"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
