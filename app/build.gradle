@@ -52,6 +52,10 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 jacoco {
     toolVersion "0.8.1"
 }

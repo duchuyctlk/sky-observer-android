@@ -1,16 +1,20 @@
 package com.huynd.skyobserver.utils
 
 import com.huynd.skyobserver.models.PricePerDay
-
-import java.util.Comparator
-
-import com.huynd.skyobserver.utils.PriceComparator.SortOrder.*
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.AIRLINES
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.DEPART_EARLIEST
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.DEPART_LATEST
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.PRICE_ONLY_HIGHEST
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.PRICE_ONLY_LOWEST
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.TOTAL_PRICE_HIGHEST
+import com.huynd.skyobserver.utils.PriceComparator.SortOrder.TOTAL_PRICE_LOWEST
+import java.util.*
 
 /**
  * Created by HuyND on 10/11/2017.
  */
 
-class PriceComparator: Comparator<PricePerDay> {
+class PriceComparator : Comparator<PricePerDay> {
     enum class SortOrder {
         PRICE_ONLY_LOWEST,
         PRICE_ONLY_HIGHEST,
@@ -46,10 +50,22 @@ class PriceComparator: Comparator<PricePerDay> {
             PRICE_ONLY_HIGHEST -> price2.price - price1.price
             TOTAL_PRICE_LOWEST -> price1.priceTotal - price2.priceTotal
             TOTAL_PRICE_HIGHEST -> price2.priceTotal - price1.priceTotal
-            DEPART_EARLIEST -> price1.departureTime.compareTo(price2.departureTime)
-            DEPART_LATEST -> price2.departureTime.compareTo(price1.departureTime)
+            DEPART_EARLIEST -> compareTwoNullableDate(price1.getDepartureTime(), price2.getDepartureTime())
+            DEPART_LATEST -> compareTwoNullableDate(price2.getDepartureTime(), price1.getDepartureTime())
             AIRLINES -> price1.carrier.compareTo(price2.carrier)
             else -> 0
+        }
+    }
+
+    private fun compareTwoNullableDate(date1: Date?, date2: Date?): Int {
+        return if (date1 == null && date2 == null) {
+            0
+        } else if (date1 == null) {
+            -1
+        } else if (date2 == null) {
+            1
+        } else {
+            date1.compareTo(date2)
         }
     }
 

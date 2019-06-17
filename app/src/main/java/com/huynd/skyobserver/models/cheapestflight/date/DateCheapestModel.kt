@@ -114,7 +114,7 @@ class DateCheapestModel {
                                         pricePerDayResponse.destinationCode else
                                         pricePerDayResponse.originCode
 
-                                    val country = getCountryByCode(getAirportById(destinationPort).countryCode)
+                                    val country = getCountryByCode(getAirportById(destinationPort).getCountryCode())
 
                                     // get AirportPriceInfo for destination port
                                     var dstAirportPriceInfo: AirportPriceInfo? = null
@@ -153,7 +153,7 @@ class DateCheapestModel {
                                     }
 
                                     pricePerDayResponse.priceList?.firstOrNull()?.apply {
-                                        setCarrier(pricePerDayResponse.provider)
+                                        this.carrier = pricePerDayResponse.provider
                                         setArrivalTime(pricePerDayResponse.arrivalTime)
                                         setDepartureTime(pricePerDayResponse.arrivalTime)
 

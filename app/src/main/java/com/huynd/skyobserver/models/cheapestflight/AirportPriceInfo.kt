@@ -1,17 +1,23 @@
 package com.huynd.skyobserver.models.cheapestflight
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.PricePerDay
-import java.util.Date
+import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 /**
  * Created by HuyND on 9/28/2017.
  */
 
-class AirportPriceInfo {
-    private var mAirport: Airport? = null
-    private var mPricePerDayOutbound: PricePerDay? = null
-    private var mPricePerDayInbound: PricePerDay? = null
+@SuppressLint("ParcelCreator")
+@Parcelize
+class AirportPriceInfo(
+        private var mAirport: Airport? = null,
+        private var mPricePerDayOutbound: PricePerDay? = null,
+        private var mPricePerDayInbound: PricePerDay? = null
+) : Parcelable {
 
     fun getAirportName(): String = mAirport?.toString() ?: ""
 
@@ -27,9 +33,9 @@ class AirportPriceInfo {
 
     fun getInboundCarrier() = mPricePerDayInbound?.carrier
 
-    fun getOutboundDepartureTime(): Date = mPricePerDayOutbound?.departureTime ?: Date()
+    fun getOutboundDepartureTime(): Date = mPricePerDayOutbound?.getDepartureTime() ?: Date()
 
-    fun getInboundDepartureTime(): Date = mPricePerDayInbound?.departureTime ?: Date()
+    fun getInboundDepartureTime(): Date = mPricePerDayInbound?.getDepartureTime() ?: Date()
 
     fun setAirport(airport: Airport) {
         mAirport = airport

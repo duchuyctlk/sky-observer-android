@@ -50,8 +50,8 @@ class ListViewPriceOneDayAdapter(@NonNull context: Context) :
                 val localDateFormat = SimpleDateFormat("HH:mm")
                 localDateFormat.timeZone = TimeZone.getTimeZone("GMT+7:00")
 
-                tvDepart.text = localDateFormat.format(item.departureTime)
-                tvArrive.text = localDateFormat.format(item.arrivalTime)
+                tvDepart.text = localDateFormat.format(item.getDepartureTime())
+                tvArrive.text = localDateFormat.format(item.getArrivalTime())
                 btnSelect.setOnClickListener(this@ListViewPriceOneDayAdapter)
                 val price =
                         if (mShouldShowTotalPrice)

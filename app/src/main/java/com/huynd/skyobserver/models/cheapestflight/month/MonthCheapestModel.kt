@@ -212,10 +212,10 @@ class MonthCheapestModel {
                             originPort)
                 }
         val airport: Airport = getAirportById(destination)
-        var countryPriceInfo = mListCountryPriceInfo.find { it.country.countryCode == airport.countryCode }
+        var countryPriceInfo = mListCountryPriceInfo.find { it.country.countryCode == airport.getCountryCode() }
         if (countryPriceInfo == null) {
             countryPriceInfo = CountryPriceInfo().apply {
-                country = getCountryByCode(airport.countryCode)
+                country = getCountryByCode(airport.getCountryCode())
                 airportPriceInfos = mutableListOf()
             }
             mListCountryPriceInfo.add(countryPriceInfo)
