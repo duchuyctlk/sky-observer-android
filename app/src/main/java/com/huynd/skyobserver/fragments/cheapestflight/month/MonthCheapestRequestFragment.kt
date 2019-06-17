@@ -2,7 +2,6 @@ package com.huynd.skyobserver.fragments.cheapestflight.month
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,29 +75,25 @@ class MonthCheapestRequestFragment : BaseFragment(), DateCheapestRequestView {
     }
 
     private fun onBtnFindFlightsClick() {
-        try {
-            val flightInfo = getFlightDates()
+        val flightInfo = getFlightDates()
 
-            val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
-            srcPort?.run {
-                flightInfo.run {
-                    val yearOutbound = getInt("yearOutbound")
-                    val monthOutbound = getInt("monthOutbound")
-                    val returnTrip = getBoolean("returnTrip")
-                    var yearInbound = yearOutbound
-                    var monthInbound = monthOutbound
-                    if (returnTrip) {
-                        yearInbound = getInt("yearInbound")
-                        monthInbound = getInt("monthInbound")
-                    }
-                    mPresenter.getPrices(
-                            yearOutbound, monthOutbound,
-                            yearInbound, monthInbound,
-                            srcPort.id, returnTrip)
+        val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
+        srcPort?.run {
+            flightInfo.run {
+                val yearOutbound = getInt("yearOutbound")
+                val monthOutbound = getInt("monthOutbound")
+                val returnTrip = getBoolean("returnTrip")
+                var yearInbound = yearOutbound
+                var monthInbound = monthOutbound
+                if (returnTrip) {
+                    yearInbound = getInt("yearInbound")
+                    monthInbound = getInt("monthInbound")
                 }
+                mPresenter.getPrices(
+                        yearOutbound, monthOutbound,
+                        yearInbound, monthInbound,
+                        srcPort.id, returnTrip)
             }
-        } catch (e: ClassCastException) {
-            Log.d(TAG, "Activity must implement OnFlightInfoSelectedListener.")
         }
     }
 

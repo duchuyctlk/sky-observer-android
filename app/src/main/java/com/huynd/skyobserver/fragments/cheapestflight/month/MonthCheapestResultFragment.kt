@@ -58,8 +58,8 @@ class MonthCheapestResultFragment : BaseFragment(), DateCheapestResultView {
 
         // get data from intent
         arguments?.run {
-            val listCountryPriceInfo = getParcelableArray("listCountryPriceInfo")?.toList()
-                    ?: listOf<CountryPriceInfo>()
+            val listCountryPriceInfo =
+                    getParcelableArray("listCountryPriceInfo")?.toList() ?: listOf<CountryPriceInfo>()
 
             updateListViewInboundPrices(listCountryPriceInfo as List<CountryPriceInfo>)
 
