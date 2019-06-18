@@ -5,4 +5,5 @@ package com.huynd.skyobserver.presenters.bestdates
  */
 
 interface BestDatesRequestPresenter {
+    fun initSpinnersValues()
 }

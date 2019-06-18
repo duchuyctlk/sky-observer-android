@@ -22,6 +22,8 @@ class Constants {
 
         const val CONVENIENCE_FEE_IN_K = 70
 
+        const val MAX_TRIP_LENGTH = 10
+
         const val BUNDLE_KEY_FLIGHT_WITH_CHEAPEST_PRICE = "flightWithCheapestPrice"
 
         const val CHOOSE_ONE_DAY_FRAGMENT_SUFFIX_WITH_DST = "_CHOOSE_ONE_DAY_FRAGMENT_WITH_DST"
