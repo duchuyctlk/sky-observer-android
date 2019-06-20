@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.fragments.bestdates
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenter
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenterImpl
 import com.huynd.skyobserver.utils.Constants.Companion.MAX_TRIP_LENGTH
 import com.huynd.skyobserver.views.bestdates.BestDatesRequestView
+import com.jakewharton.rxbinding2.widget.RxCompoundButton
 import kotlinx.android.synthetic.main.fragment_best_dates_request.*
 
 /**
@@ -32,6 +34,7 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
         return inflater.inflate(R.layout.fragment_best_dates_request, container, false)
     }
 
+    @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -40,6 +43,9 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
         mSpinnerDestPortAdapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, arrayListOf())
         spinner_src_port.adapter = mSpinnerSrcPortAdapter
         spinner_dest_port.adapter = mSpinnerDestPortAdapter
+        RxCompoundButton.checkedChanges(chk_return_trip).subscribe { isChecked ->
+            onChkReturnTripCheckedChanged(isChecked)
+        }
 
         // initialize MPV pattern
         mPresenter = BestDatesRequestPresenterImpl(this)
@@ -69,5 +75,9 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
                         android.R.layout.simple_spinner_dropdown_item,
                         (1..MAX_TRIP_LENGTH).toMutableList()
                 )
+    }
+
+    private fun onChkReturnTripCheckedChanged(isChecked: Boolean) {
+        spinner_trip_length.isEnabled = isChecked
     }
 }
