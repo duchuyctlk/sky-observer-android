@@ -8,7 +8,7 @@ import com.huynd.skyobserver.utils.CountryAirportUtils
  */
 class BestDatesModel {
     interface EventListener {
-        // TODO
+        fun onGetPricesResponse(result: Any)
     }
 
     private var mListener: EventListener? = null
@@ -19,4 +19,9 @@ class BestDatesModel {
     }
 
     fun getAirports(): List<Airport> = mAirports
+
+    fun getPrices(srcPort: String, destPort: String) {
+        // TODO
+        mListener?.onGetPricesResponse(Any())
+    }
 }

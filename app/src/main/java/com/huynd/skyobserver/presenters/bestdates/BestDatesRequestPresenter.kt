@@ -6,4 +6,6 @@ package com.huynd.skyobserver.presenters.bestdates
 
 interface BestDatesRequestPresenter {
     fun initSpinnersValues()
+
+    fun getPrices(srcPort: String, destPort: String)
 }

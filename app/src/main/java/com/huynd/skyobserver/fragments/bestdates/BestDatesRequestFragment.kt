@@ -13,6 +13,7 @@ import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenter
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenterImpl
 import com.huynd.skyobserver.utils.Constants.Companion.MAX_TRIP_LENGTH
 import com.huynd.skyobserver.views.bestdates.BestDatesRequestView
+import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxCompoundButton
 import kotlinx.android.synthetic.main.fragment_best_dates_request.*
 
@@ -43,6 +44,7 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
         mSpinnerDestPortAdapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, arrayListOf())
         spinner_src_port.adapter = mSpinnerSrcPortAdapter
         spinner_dest_port.adapter = mSpinnerDestPortAdapter
+        RxView.clicks(btn_find_flights).subscribe { onBtnFindFlightsClick() }
         RxCompoundButton.checkedChanges(chk_return_trip).subscribe { isChecked ->
             onChkReturnTripCheckedChanged(isChecked)
         }
@@ -75,6 +77,19 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
                         android.R.layout.simple_spinner_dropdown_item,
                         (1..MAX_TRIP_LENGTH).toMutableList()
                 )
+    }
+
+    override fun updateListView(data: Any) {
+        // TODO
+    }
+
+    private fun onBtnFindFlightsClick() {
+        val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
+        val destPort = mSpinnerDestPortAdapter.getItem(spinner_dest_port.selectedItemPosition)
+
+        if (srcPort != null && destPort != null) {
+            mPresenter.getPrices(srcPort.id, destPort.id)
+        }
     }
 
     private fun onChkReturnTripCheckedChanged(isChecked: Boolean) {
