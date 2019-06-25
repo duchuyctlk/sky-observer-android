@@ -7,15 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.huynd.skyobserver.R
+import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenter
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenterImpl
+import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.Constants.Companion.MAX_TRIP_LENGTH
 import com.huynd.skyobserver.views.bestdates.BestDatesRequestView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxCompoundButton
 import kotlinx.android.synthetic.main.fragment_best_dates_request.*
+import lombok.Generated
+import javax.inject.Inject
 
 /**
  * Created by HuyND on 6/17/2019.
@@ -26,6 +30,10 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
         val TAG: String = BestDatesRequestFragment::class.java.simpleName
         fun newInstance() = BestDatesRequestFragment()
     }
+
+    @Generated
+    lateinit var mPricesAPI: PricesAPI
+        @Inject set
 
     private lateinit var mSpinnerSrcPortAdapter: ArrayAdapter<Airport>
     private lateinit var mSpinnerDestPortAdapter: ArrayAdapter<Airport>
@@ -39,6 +47,9 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // inject
+        (activity!!.application as SkyObserverApp).skyObserverComponent.inject(this)
+
         // initialize UI widgets
         mSpinnerSrcPortAdapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, arrayListOf())
         mSpinnerDestPortAdapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, arrayListOf())
@@ -50,7 +61,7 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
         }
 
         // initialize MPV pattern
-        mPresenter = BestDatesRequestPresenterImpl(this)
+        mPresenter = BestDatesRequestPresenterImpl(this, mPricesAPI)
         mPresenter.initSpinnersValues()
     }
 
@@ -86,9 +97,11 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
     private fun onBtnFindFlightsClick() {
         val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
         val destPort = mSpinnerDestPortAdapter.getItem(spinner_dest_port.selectedItemPosition)
+        val isReturnTrip = chk_return_trip.isChecked
+        val tripLength = if (isReturnTrip) (spinner_trip_length.selectedItem as Int) else 0
 
         if (srcPort != null && destPort != null) {
-            mPresenter.getPrices(srcPort.id, destPort.id)
+            mPresenter.getPrices(srcPort.id, destPort.id, isReturnTrip, tripLength)
         }
     }
 
