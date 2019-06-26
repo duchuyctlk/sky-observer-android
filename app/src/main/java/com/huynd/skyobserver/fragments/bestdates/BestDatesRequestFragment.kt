@@ -10,6 +10,7 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.Airport
+import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenter
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI
@@ -90,7 +91,7 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
                 )
     }
 
-    override fun updateListView(data: Any) {
+    override fun updateListView(data: List<CheapestPricePerMonthResponse>) {
         // TODO
     }
 

@@ -10,6 +10,7 @@ data class CheapestPricePerMonthResponse(
         val id: ResponseId = ResponseId(),
         @SerializedName("c")
         val cheapestPrice: Int = 0,
+        var cheapestTotalPrice: Int = 0,
         @SerializedName("p")
         val carrier: String = ""
 )
