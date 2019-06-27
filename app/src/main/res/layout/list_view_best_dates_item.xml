@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/fragment_horizontal_margin"
+    android:background="@color/list_view_best_price_background"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="@dimen/list_view_best_price_item_corner_radius"
+    app:cardElevation="@dimen/list_view_best_price_item_corner_elevation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_view_best_price_vertical_spacing"
+        android:layout_marginBottom="@dimen/list_view_best_price_vertical_spacing"
+        android:paddingStart="@dimen/list_view_best_price_horizontal_spacing"
+        android:paddingEnd="@dimen/grid_view_price_horizontal_spacing">
+
+        <TextView
+            android:id="@+id/txt_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/list_view_best_price_horizontal_spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="January" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
