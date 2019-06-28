@@ -24,7 +24,7 @@ import java.util.*
 @SuppressLint("CheckResult")
 class BestDatesModel(private val mPricesAPI: PricesAPI) {
     interface EventListener {
-        fun onGetPricesResponse(result: List<CheapestPricePerMonthResponse>)
+        fun onGetPricesResponse(result: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>)
 
         fun onGetPricesError(throwable: Throwable)
     }
@@ -171,7 +171,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
 
     private fun handleFindOneWayCheapestResponseResult(cheapestResponses: List<CheapestPricePerMonthResponse>) {
         if (cheapestResponses.isEmpty()) {
-            mListener?.onGetPricesResponse(cheapestResponses)
+            mListener?.onGetPricesResponse(Pair(cheapestResponses, listOf()))
         } else {
             mOutResponses.clear()
             mOutResponses.addAll(cheapestResponses)
@@ -245,7 +245,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         val inboundResponses = pairResponses.second
 
         if (outboundResponses.isEmpty() || inboundResponses.isEmpty()) {
-            mListener?.onGetPricesResponse(outboundResponses)
+            mListener?.onGetPricesResponse(Pair(listOf(), listOf()))
         } else {
             mOutResponses.clear()
             mOutResponses.addAll(outboundResponses)
@@ -373,7 +373,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
             mInResponses.forEach {
                 it.cheapestTotalPrice = mPriceCache[mDestPort]!![it.cheapestPrice]!!
             }
-            mListener?.onGetPricesResponse(mOutResponses)
+            mListener?.onGetPricesResponse(Pair(mOutResponses, mInResponses))
         }
     }
 }

@@ -17,6 +17,7 @@ import com.huynd.skyobserver.fragments.OnFlightInfoSelectedListener;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
 import com.huynd.skyobserver.fragments.bestdates.BestDatesRequestFragment;
+import com.huynd.skyobserver.fragments.bestdates.BestDatesResultFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestResultFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener;
@@ -150,6 +151,13 @@ public class MainActivity extends BaseActivity implements ListView.OnItemClickLi
                 MonthCheapestResultFragment.Companion.newInstance();
         fragment.setArguments(priceInfo);
         setFragment(fragment, MonthCheapestResultFragment.Companion.getTAG(), false);
+    }
+
+    @Override
+    public void showBestDates(Bundle bundle) {
+        BestDatesResultFragment fragment = BestDatesResultFragment.Companion.newInstance();
+        fragment.setArguments(bundle);
+        setFragment(fragment, BestDatesResultFragment.Companion.getTAG(), false);
     }
 
     private void checkForCrashes() {

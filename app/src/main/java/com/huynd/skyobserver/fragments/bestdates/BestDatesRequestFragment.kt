@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
+import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener
 import com.huynd.skyobserver.models.Airport
 import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenter
@@ -91,8 +92,27 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
                 )
     }
 
-    override fun updateListView(data: List<CheapestPricePerMonthResponse>) {
-        // TODO
+    override fun updateListView(data: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>) {
+        val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
+        val destPort = mSpinnerDestPortAdapter.getItem(spinner_dest_port.selectedItemPosition)
+        val isReturnTrip = chk_return_trip.isChecked
+        val tripLength = if (isReturnTrip) (spinner_trip_length.selectedItem as Int) else 0
+
+        val outData = data.first
+        val inData = data.second
+        val bundle = Bundle().apply {
+            putParcelableArray("outData", outData.toTypedArray())
+            putParcelableArray("inData", inData.toTypedArray())
+            putBoolean("isReturnTrip", isReturnTrip)
+            putInt("tripLength", tripLength)
+        }
+        if (srcPort != null) {
+            bundle.putString("srcPort", srcPort.id)
+        }
+        if (destPort != null) {
+            bundle.putString("destPort", destPort.id)
+        }
+        (activity as CheapestFlightListener).showBestDates(bundle)
     }
 
     private fun onBtnFindFlightsClick() {

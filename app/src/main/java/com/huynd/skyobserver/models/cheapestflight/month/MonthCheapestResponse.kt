@@ -1,10 +1,16 @@
 package com.huynd.skyobserver.models.cheapestflight.month
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by HuyND on 6/3/2019.
  */
+
+@SuppressLint("ParcelCreator")
+@Parcelize
 data class CheapestPricePerMonthResponse(
         @SerializedName("_id")
         val id: ResponseId = ResponseId(),
@@ -13,8 +19,10 @@ data class CheapestPricePerMonthResponse(
         var cheapestTotalPrice: Int = 0,
         @SerializedName("p")
         val carrier: String = ""
-)
+) : Parcelable
 
+@SuppressLint("ParcelCreator")
+@Parcelize
 data class ResponseId(
         @SerializedName("dim")
         val dayInMonth: Int = 1,
@@ -26,4 +34,4 @@ data class ResponseId(
         val origin: String = "",
         @SerializedName("d")
         val destination: String = ""
-)
+) : Parcelable

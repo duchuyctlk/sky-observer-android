@@ -29,7 +29,7 @@ class BestDatesRequestPresenterImpl(private val mView: BestDatesRequestView, pri
         mModel.getPrices(srcPort, destPort, isReturnTrip, tripLength)
     }
 
-    override fun onGetPricesResponse(result: List<CheapestPricePerMonthResponse>) {
+    override fun onGetPricesResponse(result: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>) {
         mView.run {
             updateListView(result)
             dismissLoadingDialog()

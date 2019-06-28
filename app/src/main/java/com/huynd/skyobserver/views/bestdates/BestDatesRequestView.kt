@@ -13,5 +13,5 @@ interface BestDatesRequestView : BaseView {
 
     fun updatePossibleTripLength()
 
-    fun updateListView(data: List<CheapestPricePerMonthResponse>)
+    fun updateListView(data: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>)
 }
