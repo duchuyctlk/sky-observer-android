@@ -9,16 +9,11 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.adapters.BestDatesResultAdapter
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
+import com.huynd.skyobserver.models.bestdates.BestDatesInfo
 import com.huynd.skyobserver.utils.Constants
 import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.views.bestdates.BestDatesResultView
-import kotlinx.android.synthetic.main.fragment_best_dates_request.*
 import kotlinx.android.synthetic.main.fragment_best_dates_result.*
-import kotlinx.android.synthetic.main.fragment_best_dates_result.chk_return_trip
-import kotlinx.android.synthetic.main.fragment_best_dates_result.spinner_dest_port
-import kotlinx.android.synthetic.main.fragment_best_dates_result.spinner_src_port
-import kotlinx.android.synthetic.main.fragment_best_dates_result.spinner_trip_length
 
 /**
  * Created by HuyND on 06/27/2019
@@ -61,17 +56,11 @@ class BestDatesResultFragment : BaseFragment(), BestDatesResultView {
 
         // get data from intent
         arguments?.run {
-            val outData =
-                    getParcelableArray("outData")?.toList()
-                            ?: listOf<CheapestPricePerMonthResponse>()
-            val inData =
-                    getParcelableArray("inData")?.toList()
-                            ?: listOf<CheapestPricePerMonthResponse>()
+            val data =
+                    getParcelableArray("data")?.toList()
+                            ?: listOf<BestDatesInfo>()
 
-            updateListViewData(
-                    outData as List<CheapestPricePerMonthResponse>,
-                    inData as List<CheapestPricePerMonthResponse>
-            )
+            updateListViewData(data as List<BestDatesInfo>)
 
             val srcPort = getString("srcPort", "")
             val destPort = getString("destPort", "")
@@ -109,12 +98,9 @@ class BestDatesResultFragment : BaseFragment(), BestDatesResultView {
         spinner_dest_port.setSelection(1)
     }
 
-    override fun updateListViewData(
-            outData: List<CheapestPricePerMonthResponse>,
-            inData: List<CheapestPricePerMonthResponse>) {
+    override fun updateListViewData(data: List<BestDatesInfo>) {
         mAdapter.clear()
-        mAdapter.addAll(outData, true)
-        mAdapter.addAll(inData, false)
+        mAdapter.addAll(data)
         mAdapter.notifyDataSetChanged()
     }
 

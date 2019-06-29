@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.views.bestdates
 
 import com.huynd.skyobserver.models.Airport
+import com.huynd.skyobserver.models.bestdates.BestDatesInfo
 import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.views.BaseView
 
@@ -13,5 +14,5 @@ interface BestDatesRequestView : BaseView {
 
     fun updatePossibleTripLength()
 
-    fun updateListView(data: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>)
+    fun updateListView(data: List<BestDatesInfo>)
 }

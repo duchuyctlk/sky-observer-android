@@ -11,6 +11,7 @@ import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener
 import com.huynd.skyobserver.models.Airport
+import com.huynd.skyobserver.models.bestdates.BestDatesInfo
 import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenter
 import com.huynd.skyobserver.presenters.bestdates.BestDatesRequestPresenterImpl
@@ -92,17 +93,14 @@ class BestDatesRequestFragment : BaseFragment(), BestDatesRequestView {
                 )
     }
 
-    override fun updateListView(data: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>) {
+    override fun updateListView(data: List<BestDatesInfo>) {
         val srcPort = mSpinnerSrcPortAdapter.getItem(spinner_src_port.selectedItemPosition)
         val destPort = mSpinnerDestPortAdapter.getItem(spinner_dest_port.selectedItemPosition)
         val isReturnTrip = chk_return_trip.isChecked
         val tripLength = if (isReturnTrip) (spinner_trip_length.selectedItem as Int) else 0
 
-        val outData = data.first
-        val inData = data.second
         val bundle = Bundle().apply {
-            putParcelableArray("outData", outData.toTypedArray())
-            putParcelableArray("inData", inData.toTypedArray())
+            putParcelableArray("data", data.toTypedArray())
             putBoolean("isReturnTrip", isReturnTrip)
             putInt("tripLength", tripLength)
         }

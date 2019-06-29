@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.presenters.bestdates
 
+import com.huynd.skyobserver.models.bestdates.BestDatesInfo
 import com.huynd.skyobserver.models.bestdates.BestDatesModel
 import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.services.PricesAPI
@@ -29,7 +30,7 @@ class BestDatesRequestPresenterImpl(private val mView: BestDatesRequestView, pri
         mModel.getPrices(srcPort, destPort, isReturnTrip, tripLength)
     }
 
-    override fun onGetPricesResponse(result: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>) {
+    override fun onGetPricesResponse(result: List<BestDatesInfo>) {
         mView.run {
             updateListView(result)
             dismissLoadingDialog()

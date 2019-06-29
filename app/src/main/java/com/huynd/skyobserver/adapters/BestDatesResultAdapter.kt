@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import com.huynd.skyobserver.R
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
-import com.huynd.skyobserver.utils.CheapestPricePerMonthResponseComparator
+import com.huynd.skyobserver.models.bestdates.BestDatesInfo
+import com.huynd.skyobserver.utils.BestDatesInfoComparator
+import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.utils.formatNumber
 import kotlinx.android.synthetic.main.list_view_best_dates_item.view.*
 import kotlinx.android.synthetic.main.list_view_best_dates_sub_item.view.*
+import java.util.*
 
 /**
  * Created by HuyND on 6/27/2019.
@@ -21,19 +23,18 @@ class BestDatesResultAdapter(@NonNull private val context: Context) :
         BaseExpandableListAdapter() {
     private var mIsReturnTrip: Boolean = false
 
-    private var mOutData: Map<Pair<Int, Int>, List<CheapestPricePerMonthResponse>> = mapOf()
-    private var mInData: Map<Pair<Int, Int>, List<CheapestPricePerMonthResponse>> = mapOf()
+    private var mBestDates: Map<Pair<Int, Int>, List<BestDatesInfo>> = mapOf()
 
-    override fun getGroupCount(): Int = mOutData.size
+    override fun getGroupCount(): Int = mBestDates.size
 
     override fun getChildrenCount(groupPosition: Int): Int =
-            mOutData.values.toList()[groupPosition].size
+            mBestDates.values.toList()[groupPosition].size
 
     override fun getGroup(groupPosition: Int): Any? =
-            mOutData.values.toList()[groupPosition]
+            mBestDates.values.toList()[groupPosition]
 
     override fun getChild(groupPosition: Int, childPosition: Int): Any? =
-            mOutData.values.toList()[groupPosition][childPosition]
+            mBestDates.values.toList()[groupPosition][childPosition]
 
     override fun getGroupId(groupPosition: Int): Long = 0
 
@@ -43,7 +44,7 @@ class BestDatesResultAdapter(@NonNull private val context: Context) :
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean,
                               convertView: View?, parent: ViewGroup): View? {
-        val keyAtPosition = mOutData.keys.toList()[groupPosition]
+        val keyAtPosition = mBestDates.keys.toList()[groupPosition]
         val view: View = if (convertView == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             inflater.inflate(R.layout.list_view_best_dates_item, null)
@@ -51,8 +52,7 @@ class BestDatesResultAdapter(@NonNull private val context: Context) :
             convertView
         }
         view.apply {
-            txt_month.text = context.resources.getString(R.string.best_dates_item_month,
-                    keyAtPosition.first, keyAtPosition.second)
+            txt_month.text = getDisplayYearMonth(keyAtPosition.first, keyAtPosition.second - 1)
         }
 
         return view
@@ -66,31 +66,28 @@ class BestDatesResultAdapter(@NonNull private val context: Context) :
         } else {
             convertView
         }
+
+        val bestDateInfo = mBestDates.values.toList()[groupPosition][childPosition]
         view.apply {
-            val outboundItem = mOutData.values.toList()[groupPosition][childPosition]
+            val outboundId = bestDateInfo.outboundId
             txt_outbound_date.text = context.resources.getString(R.string.best_dates_sub_item_date,
-                    outboundItem.id.year,
-                    outboundItem.id.monthInYear,
-                    outboundItem.id.dayInMonth)
-            val outboundPriceStr = formatNumber(outboundItem.cheapestTotalPrice)
+                    outboundId.year,
+                    outboundId.monthInYear,
+                    outboundId.dayInMonth)
+            val outboundPriceStr = formatNumber(bestDateInfo.outboundTotalPrice)
             txt_outbound_price.text = context.resources.getString(R.string.best_price_from, outboundPriceStr)
 
+            val viewVisibility = if (mIsReturnTrip) View.VISIBLE else View.GONE
+            txt_inbound_date.visibility = viewVisibility
+            txt_inbound_price.visibility = viewVisibility
             if (mIsReturnTrip) {
-                if (groupPosition < mInData.values.size && childPosition < mInData.values.toList()[groupPosition].size) {
-                    txt_inbound_date.visibility = View.VISIBLE
-                    txt_inbound_price.visibility = View.VISIBLE
-
-                    val inboundItem = mInData.values.toList()[groupPosition][childPosition]
-                    txt_inbound_date.text = context.resources.getString(R.string.best_dates_sub_item_date,
-                            inboundItem.id.year,
-                            inboundItem.id.monthInYear,
-                            inboundItem.id.dayInMonth)
-                    val inboundPriceStr = formatNumber(inboundItem.cheapestTotalPrice)
-                    txt_inbound_price.text = context.resources.getString(R.string.best_price_from, inboundPriceStr)
-                } else {
-                    txt_inbound_date.visibility = View.GONE
-                    txt_inbound_price.visibility = View.GONE
-                }
+                val inboundId = bestDateInfo.inboundId
+                txt_inbound_date.text = context.resources.getString(R.string.best_dates_sub_item_date,
+                        inboundId.year,
+                        inboundId.monthInYear,
+                        inboundId.dayInMonth)
+                val inboundPriceStr = formatNumber(bestDateInfo.inboundTotalPrice)
+                txt_inbound_price.text = context.resources.getString(R.string.best_price_from, inboundPriceStr)
             }
         }
 
@@ -100,23 +97,23 @@ class BestDatesResultAdapter(@NonNull private val context: Context) :
     override fun isChildSelectable(groupPosition: Int, childPosition: Int) = false
 
     fun clear() {
-        mOutData = mapOf()
-        mInData = mapOf()
+        mBestDates = mapOf()
     }
 
-    fun addAll(data: List<CheapestPricePerMonthResponse>, isOutData: Boolean) {
-        if (isOutData) {
-            mOutData = data
-                    .sortedWith(CheapestPricePerMonthResponseComparator())
-                    .groupBy { Pair(it.id.year, it.id.monthInYear) }
-        } else {
-            mInData = data
-                    .sortedWith(CheapestPricePerMonthResponseComparator())
-                    .groupBy { Pair(it.id.year, it.id.monthInYear) }
-        }
+    fun addAll(data: List<BestDatesInfo>) {
+        mBestDates = data
+                .sortedWith(BestDatesInfoComparator.instance)
+                .groupBy { Pair(it.outboundId.year, it.outboundId.monthInYear) }
     }
 
     fun setIsReturnTrip(isReturnTrip: Boolean) {
         mIsReturnTrip = isReturnTrip
+    }
+
+    private fun getDisplayYearMonth(year: Int, month: Int) : String {
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, year)
+        cal.set(Calendar.MONTH, month)
+        return DateUtils.dateToString(cal.time, "MMM yyyy")
     }
 }

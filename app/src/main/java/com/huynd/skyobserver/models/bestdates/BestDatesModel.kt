@@ -24,7 +24,7 @@ import java.util.*
 @SuppressLint("CheckResult")
 class BestDatesModel(private val mPricesAPI: PricesAPI) {
     interface EventListener {
-        fun onGetPricesResponse(result: Pair<List<CheapestPricePerMonthResponse>, List<CheapestPricePerMonthResponse>>)
+        fun onGetPricesResponse(result: List<BestDatesInfo>)
 
         fun onGetPricesError(throwable: Throwable)
     }
@@ -67,6 +67,8 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         mIsReturnTrip = isReturnTrip
         mTripLength = tripLength
 
+        mAllMonthResponses.clear()
+
         mNoOfReceivedMonthRequests = 0
 
         isOutboundLoadingDone = false
@@ -83,7 +85,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         mPriceCache[mSrcPort] = hashMapOf()
         mPriceCache[mDestPort] = hashMapOf()
 
-        for (monthIndex in 0..9) {
+        for (monthIndex in 0 until mNoOfMonths) {
             getBestDayInMonth(monthIndex)
         }
     }
@@ -171,7 +173,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
 
     private fun handleFindOneWayCheapestResponseResult(cheapestResponses: List<CheapestPricePerMonthResponse>) {
         if (cheapestResponses.isEmpty()) {
-            mListener?.onGetPricesResponse(Pair(cheapestResponses, listOf()))
+            mListener?.onGetPricesResponse(listOf())
         } else {
             mOutResponses.clear()
             mOutResponses.addAll(cheapestResponses)
@@ -245,7 +247,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         val inboundResponses = pairResponses.second
 
         if (outboundResponses.isEmpty() || inboundResponses.isEmpty()) {
-            mListener?.onGetPricesResponse(Pair(listOf(), listOf()))
+            mListener?.onGetPricesResponse(listOf())
         } else {
             mOutResponses.clear()
             mOutResponses.addAll(outboundResponses)
@@ -373,7 +375,34 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
             mInResponses.forEach {
                 it.cheapestTotalPrice = mPriceCache[mDestPort]!![it.cheapestPrice]!!
             }
-            mListener?.onGetPricesResponse(Pair(mOutResponses, mInResponses))
+
+            Observable.fromCallable {
+                prepareBestDatesInfo()
+            }
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { data ->
+                        mListener?.onGetPricesResponse(data)
+                    }
         }
+    }
+
+    private fun prepareBestDatesInfo(): List<BestDatesInfo> {
+        val data = mutableListOf<BestDatesInfo>()
+        for (i in 0 until mOutResponses.size) {
+            val info = BestDatesInfo().apply {
+                outboundId = mOutResponses[i].id
+                outboundTotalPrice = mOutResponses[i].cheapestTotalPrice
+                outboundCarrier = mOutResponses[i].carrier
+
+                inboundId = mInResponses[i].id
+                inboundTotalPrice = mInResponses[i].cheapestTotalPrice
+                inboundCarrier = mInResponses[i].carrier
+
+            }
+            data.add(info)
+        }
+
+        return data
     }
 }

@@ -47,6 +47,5 @@
     <string name="best_price_date_place_holder">%1$d/%2$d/%3$d</string>
 
     <string name="trip_length">Trip length (days):</string>
-    <string name="best_dates_item_month">%1$d - %2$d</string>
     <string name="best_dates_sub_item_date">%1$d - %2$d - %3$d</string>
 </resources>
