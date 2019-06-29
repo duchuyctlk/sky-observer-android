@@ -14,8 +14,8 @@ import kotlinx.android.parcel.Parcelize
 data class BestDatesInfo(
         var outboundId: ResponseId = ResponseId(),
         var inboundId: ResponseId = ResponseId(),
-        var outboundTotalPrice: Int = 0,
-        var inboundTotalPrice: Int = 0,
+        var outboundTotalPrice: Double = 0.0,
+        var inboundTotalPrice: Double = 0.0,
         var outboundCarrier: String = "",
         var inboundCarrier: String = ""
 ) : Parcelable

@@ -6,8 +6,7 @@ import java.text.NumberFormat
  * Created by HuyND on 5/29/2019.
  */
 
-fun formatNumber(number: Int): String = NumberFormat.getNumberInstance().format(number)
-
+fun formatNumber(number: Double): String = NumberFormat.getNumberInstance().format(number)
 
 class StringUtils {
     init {

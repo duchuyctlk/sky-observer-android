@@ -46,10 +46,10 @@ class PriceComparator : Comparator<PricePerDay> {
         }
 
         return when (mOrder) {
-            PRICE_ONLY_LOWEST -> price1.price - price2.price
-            PRICE_ONLY_HIGHEST -> price2.price - price1.price
-            TOTAL_PRICE_LOWEST -> price1.priceTotal - price2.priceTotal
-            TOTAL_PRICE_HIGHEST -> price2.priceTotal - price1.priceTotal
+            PRICE_ONLY_LOWEST -> price1.price.compareTo(price2.price)
+            PRICE_ONLY_HIGHEST -> price2.price.compareTo(price1.price)
+            TOTAL_PRICE_LOWEST -> price1.priceTotal.compareTo(price2.priceTotal)
+            TOTAL_PRICE_HIGHEST -> price2.priceTotal.compareTo(price1.priceTotal)
             DEPART_EARLIEST -> compareTwoNullableDate(price1.getDepartureTime(), price2.getDepartureTime())
             DEPART_LATEST -> compareTwoNullableDate(price2.getDepartureTime(), price1.getDepartureTime())
             AIRLINES -> price1.carrier.compareTo(price2.carrier)

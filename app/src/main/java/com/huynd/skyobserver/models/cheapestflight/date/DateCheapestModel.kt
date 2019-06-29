@@ -159,12 +159,12 @@ class DateCheapestModel {
 
                                         if (isOutbound) {
                                             val minPrice = dstAirportPriceInfo!!.getBestPriceOutbound()
-                                            if (minPrice == 0 || priceTotal < minPrice) {
+                                            if (minPrice == 0.0 || priceTotal < minPrice) {
                                                 dstAirportPriceInfo!!.setPricePerDayOutbound(this)
                                             }
                                         } else {
                                             val minPrice = dstAirportPriceInfo!!.getBestPriceInbound()
-                                            if (minPrice == 0 || priceTotal < minPrice) {
+                                            if (minPrice == 0.0 || priceTotal < minPrice) {
                                                 dstAirportPriceInfo!!.setPricePerDayInbound(this)
                                             }
                                         }

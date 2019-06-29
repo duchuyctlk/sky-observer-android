@@ -76,8 +76,8 @@ public class PricePerDayModel {
                         .subscribe(new Consumer<List<PricePerDayResponse>>() {
                             @Override
                             public void accept(List<PricePerDayResponse> pricePerDayResponses) throws Exception {
-                                int minPriceTotal = 1000000000;
-                                int minPriceBeforeTax = 0;
+                                double minPriceTotal = 1000000000;
+                                double minPriceBeforeTax = 0;
 
                                 String minCarrier = "";
 

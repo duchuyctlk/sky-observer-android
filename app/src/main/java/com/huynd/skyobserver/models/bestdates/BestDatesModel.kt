@@ -54,7 +54,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     private lateinit var mSrcPort: String
     private lateinit var mDestPort: String
 
-    private val mPriceCache: HashMap<String, HashMap<Int, Int>> = hashMapOf()
+    private val mPriceCache: HashMap<String, HashMap<Double, Double>> = hashMapOf()
 
     fun setEventListener(listener: EventListener) {
         mListener = listener
@@ -208,8 +208,8 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         if (groupedByDestPort == null || groupedByDestPort.isEmpty()) {
             return Pair(listOf(), listOf())
         }
-        var cheapestPrice = 0
         val calendar = Calendar.getInstance()
+        var cheapestPrice = 0.0
         groupedBySrcPort.forEach { outboundResponse ->
             outboundResponse.run {
                 calendar.set(Calendar.YEAR, this.id.year)
@@ -224,13 +224,13 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
             }
             inboundResponse?.run {
                 val currentBestPrice = outboundResponse.cheapestPrice + inboundResponse.cheapestPrice
-                if (cheapestPrice == 0 || cheapestPrice > currentBestPrice) {
                     pairResponses.first.clear()
                     pairResponses.second.clear()
 
                     pairResponses.first.add(outboundResponse)
                     pairResponses.second.add(inboundResponse)
 
+                if (cheapestPrice == 0.0 || cheapestPrice > currentBestPrice) {
                     cheapestPrice = currentBestPrice
                 } else if (cheapestPrice == currentBestPrice) {
                     pairResponses.first.add(outboundResponse)
