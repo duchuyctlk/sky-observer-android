@@ -7,7 +7,9 @@ import com.huynd.skyobserver.models.PricePerDayBody
 import com.huynd.skyobserver.models.PricePerDayResponse
 import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
 import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
+import com.huynd.skyobserver.models.cheapestflight.month.ResponseId
 import com.huynd.skyobserver.services.PricesAPI
+import com.huynd.skyobserver.utils.Constants.Companion.BEST_PRICE_DELTA
 import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.utils.RequestHelper
@@ -167,7 +169,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
             listOf()
         } else {
             val cheapestPrice = groupedBySrcPort.minBy { it.cheapestPrice }!!.cheapestPrice
-            groupedBySrcPort.filter { it.cheapestPrice == cheapestPrice }
+            groupedBySrcPort.filter { it.cheapestPrice - cheapestPrice <= BEST_PRICE_DELTA }
         }
     }
 
@@ -208,37 +210,48 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         if (groupedByDestPort == null || groupedByDestPort.isEmpty()) {
             return Pair(listOf(), listOf())
         }
-        val calendar = Calendar.getInstance()
+
+        // find cheapestPrice
         var cheapestPrice = 0.0
         groupedBySrcPort.forEach { outboundResponse ->
-            outboundResponse.run {
-                calendar.set(Calendar.YEAR, this.id.year)
-                calendar.set(Calendar.MONTH, this.id.monthInYear - 1)
-                calendar.set(Calendar.DAY_OF_MONTH, this.id.dayInMonth)
-                calendar.add(Calendar.DAY_OF_MONTH, mTripLength)
-            }
-            val inboundResponse = groupedByDestPort.find {
-                it.id.year == calendar.get(Calendar.YEAR)
-                        && it.id.monthInYear == calendar.get(Calendar.MONTH) + 1
-                        && it.id.dayInMonth == calendar.get(Calendar.DAY_OF_MONTH)
-            }
+            val inboundResponse = findMatchingInbound(outboundResponse.id, groupedByDestPort)
             inboundResponse?.run {
                 val currentBestPrice = outboundResponse.cheapestPrice + inboundResponse.cheapestPrice
-                    pairResponses.first.clear()
-                    pairResponses.second.clear()
-
-                    pairResponses.first.add(outboundResponse)
-                    pairResponses.second.add(inboundResponse)
-
                 if (cheapestPrice == 0.0 || cheapestPrice > currentBestPrice) {
                     cheapestPrice = currentBestPrice
-                } else if (cheapestPrice == currentBestPrice) {
+                }
+            }
+        }
+
+        pairResponses.first.clear()
+        pairResponses.second.clear()
+        groupedBySrcPort.forEach { outboundResponse ->
+            val inboundResponse = findMatchingInbound(outboundResponse.id, groupedByDestPort)
+            inboundResponse?.run {
+                val currentBestPrice = outboundResponse.cheapestPrice + inboundResponse.cheapestPrice
+                if (currentBestPrice - cheapestPrice <= BEST_PRICE_DELTA) {
                     pairResponses.first.add(outboundResponse)
                     pairResponses.second.add(inboundResponse)
                 }
             }
         }
         return pairResponses
+    }
+
+    private fun findMatchingInbound(outboundId: ResponseId,
+                                    groupedByDestPort: List<CheapestPricePerMonthResponse>)
+            : CheapestPricePerMonthResponse? {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, outboundId.year)
+        calendar.set(Calendar.MONTH, outboundId.monthInYear - 1)
+        calendar.set(Calendar.DAY_OF_MONTH, outboundId.dayInMonth)
+        calendar.add(Calendar.DAY_OF_MONTH, mTripLength)
+
+        return groupedByDestPort.find {
+            it.id.year == calendar.get(Calendar.YEAR)
+                    && it.id.monthInYear == calendar.get(Calendar.MONTH) + 1
+                    && it.id.dayInMonth == calendar.get(Calendar.DAY_OF_MONTH)
+        }
     }
 
     private fun handleFindReturnCheapestResponsesResult(
@@ -369,13 +382,6 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         val isLoadingDone = if (mIsReturnTrip) isOutboundLoadingDone && isInboundLoadingDone else isOutboundLoadingDone
 
         if (isLoadingDone) {
-            mOutResponses.forEach {
-                it.cheapestTotalPrice = mPriceCache[mSrcPort]!![it.cheapestPrice]!!
-            }
-            mInResponses.forEach {
-                it.cheapestTotalPrice = mPriceCache[mDestPort]!![it.cheapestPrice]!!
-            }
-
             Observable.fromCallable {
                 prepareBestDatesInfo()
             }
@@ -390,14 +396,25 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     private fun prepareBestDatesInfo(): List<BestDatesInfo> {
         val data = mutableListOf<BestDatesInfo>()
         for (i in 0 until mOutResponses.size) {
-            val info = BestDatesInfo().apply {
-                outboundId = mOutResponses[i].id
-                outboundTotalPrice = mOutResponses[i].cheapestTotalPrice
-                outboundCarrier = mOutResponses[i].carrier
+            val outResponse = mOutResponses[i]
+            val inResponse = mInResponses[i]
 
-                inboundId = mInResponses[i].id
-                inboundTotalPrice = mInResponses[i].cheapestTotalPrice
-                inboundCarrier = mInResponses[i].carrier
+            val srcPostPriceCache = mPriceCache[mSrcPort]!!
+            val destPostPriceCache = mPriceCache[mDestPort]!!
+
+            if (!srcPostPriceCache.containsKey(outResponse.cheapestPrice)
+                    || !destPostPriceCache.containsKey(inResponse.cheapestPrice)) {
+                continue
+            }
+
+            val info = BestDatesInfo().apply {
+                outboundId = outResponse.id
+                outboundCarrier = outResponse.carrier
+                outboundTotalPrice = srcPostPriceCache[outResponse.cheapestPrice]!!
+
+                inboundId = inResponse.id
+                inboundCarrier = inResponse.carrier
+                inboundTotalPrice = destPostPriceCache[inResponse.cheapestPrice]!!
 
             }
             data.add(info)
