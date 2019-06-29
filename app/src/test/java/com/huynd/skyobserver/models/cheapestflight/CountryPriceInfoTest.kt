@@ -41,8 +41,8 @@ class CountryPriceInfoTest {
 
     @Test
     fun bestPriceTotalShouldReturnZero() {
-        assertEquals(0, countryPriceInfoWithoutListOfAirportPriceInfo.bestPriceTotal)
-        assertEquals(0, countryPriceInfoWithEmptyListOfAirportPriceInfo.bestPriceTotal)
+        assertEquals(0.0, countryPriceInfoWithoutListOfAirportPriceInfo.bestPriceTotal)
+        assertEquals(0.0, countryPriceInfoWithEmptyListOfAirportPriceInfo.bestPriceTotal)
     }
     @Test
     fun checkCountryIsParcelable() {

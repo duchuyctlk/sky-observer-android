@@ -202,13 +202,13 @@ public class PriceOneDayFragmentAndroidTest {
         onView(withText(R.string.sorting_order_price_only_lowest)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("500")));
+                .check(matches(withText("500.0")));
 
         onView(withId(R.id.menu_item_sort_order)).perform(click());
         onView(withText(R.string.sorting_order_price_only_highest)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("900")));
+                .check(matches(withText("900.0")));
 
         onView(withId(R.id.chk_show_total_price_outbound)).perform(click());
 
@@ -216,13 +216,13 @@ public class PriceOneDayFragmentAndroidTest {
         onView(withText(R.string.sorting_order_total_price_lowest)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1070")));
+                .check(matches(withText("1070.0")));
 
         onView(withId(R.id.menu_item_sort_order)).perform(click());
         onView(withText(R.string.sorting_order_total_price_highest)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1570")));
+                .check(matches(withText("1570.0")));
 
         onView(withId(R.id.menu_item_sort_order)).perform(click());
         onView(withText(R.string.sorting_order_depart_earliest)).perform(click());
@@ -240,7 +240,7 @@ public class PriceOneDayFragmentAndroidTest {
         onView(withText(R.string.sorting_order_airlines)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1570")));
+                .check(matches(withText("1570.0")));
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(1)
                 .onChildView(withId(R.id.text_view_depart_time))
                 .check(matches(withText("17:00")));
@@ -256,19 +256,19 @@ public class PriceOneDayFragmentAndroidTest {
 
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(0)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1070")));
+                .check(matches(withText("1070.0")));
         onData(anything()).inAdapterView(withId(R.id.lst_prices_inbound)).atPosition(0)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("1070")));
+                .check(matches(withText("1070.0")));
 
         onView(withId(R.id.chk_show_total_price_outbound)).perform(click());
         onView(withId(R.id.chk_show_total_price_inbound)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lst_prices_outbound)).atPosition(0)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("500")));
+                .check(matches(withText("500.0")));
         onData(anything()).inAdapterView(withId(R.id.lst_prices_inbound)).atPosition(0)
                 .onChildView(withId(R.id.btn_select_price))
-                .check(matches(withText("500")));
+                .check(matches(withText("500.0")));
     }
 
     private void checkViewWidgetsIsDisplayed(int... ids) {
