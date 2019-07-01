@@ -1,0 +1,964 @@
+[
+  {
+    "cheapestClass": "H_Starter",
+    "cheapestPrice": 890000,
+    "provider": "BL",
+    "flightNumber": "BL 740",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T01:10:00.000Z",
+    "departureTime": "2019-07-22T23:00:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "b785326ad3a1b5578db9acdf7073e829",
+    "lastUpdateTime": "2019-06-29T15:17:11.343Z",
+    "seatCountCode": 111,
+    "priceList": [
+      {
+        "priceTotal": 1374000,
+        "price": 890000,
+        "seatClass": "H_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 89000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 89000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 2
+      }
+    ]
+  },
+  {
+    "cheapestClass": "K_Starter",
+    "cheapestPrice": 1020000,
+    "provider": "BL",
+    "flightNumber": "BL 746",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T01:40:00.000Z",
+    "departureTime": "2019-07-22T23:30:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "7df0543e8fc2a91180eed8cc433da6fb",
+    "lastUpdateTime": "2019-06-29T15:11:20.021Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1517000,
+        "price": 1020000,
+        "seatClass": "K_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 102000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 102000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "K_Starter",
+    "cheapestPrice": 1020000,
+    "provider": "BL",
+    "flightNumber": "BL 748",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T02:30:00.000Z",
+    "departureTime": "2019-07-23T00:20:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "ae76ff0e290fb8c014f3ed3190cd710c",
+    "lastUpdateTime": "2019-06-29T15:11:18.684Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1517000,
+        "price": 1020000,
+        "seatClass": "K_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 102000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 102000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "K_Starter",
+    "cheapestPrice": 1020000,
+    "provider": "BL",
+    "flightNumber": "BL 752",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T04:40:00.000Z",
+    "departureTime": "2019-07-23T02:30:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "84fc915ac73e5ab76bfaeccacc009815",
+    "lastUpdateTime": "2019-06-29T15:14:37.571Z",
+    "seatCountCode": 100,
+    "priceList": [
+      {
+        "priceTotal": 1517000,
+        "price": 1020000,
+        "seatClass": "K_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 102000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 102000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 1
+      }
+    ]
+  },
+  {
+    "cheapestClass": "K_Starter",
+    "cheapestPrice": 1020000,
+    "provider": "BL",
+    "flightNumber": "BL 764",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T07:45:00.000Z",
+    "departureTime": "2019-07-23T05:35:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "4c4e379d389b550cc67edee86301dc2c",
+    "lastUpdateTime": "2019-06-29T15:11:15.503Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1517000,
+        "price": 1020000,
+        "seatClass": "K_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 102000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 102000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "L_Starter",
+    "cheapestPrice": 1120000,
+    "provider": "BL",
+    "flightNumber": "BL 776",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T11:40:00.000Z",
+    "departureTime": "2019-07-23T09:30:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "591dfe3f4e6982f9529d9a59ca5dda3a",
+    "lastUpdateTime": "2019-06-29T15:11:13.878Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1627000,
+        "price": 1120000,
+        "seatClass": "L_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1120000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1120000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 112000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 112000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "K_Starter",
+    "cheapestPrice": 1020000,
+    "provider": "BL",
+    "flightNumber": "BL 778",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T13:45:00.000Z",
+    "departureTime": "2019-07-23T11:35:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "5ac1ccc46c13c437622fb20569593831",
+    "lastUpdateTime": "2019-06-29T15:11:10.300Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1517000,
+        "price": 1020000,
+        "seatClass": "K_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 102000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 102000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "K_Starter",
+    "cheapestPrice": 1020000,
+    "provider": "BL",
+    "flightNumber": "BL 782",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T13:25:00.000Z",
+    "departureTime": "2019-07-23T11:15:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "0ae12f85184c2336db962f102ef56d9f",
+    "lastUpdateTime": "2019-06-29T15:11:12.355Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1517000,
+        "price": 1020000,
+        "seatClass": "K_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 1020000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 102000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 102000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "H_Starter",
+    "cheapestPrice": 890000,
+    "provider": "BL",
+    "flightNumber": "BL 784",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T14:10:00.000Z",
+    "departureTime": "2019-07-23T12:00:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "f940b381eacd8832c7244f9e5ae4df6a",
+    "lastUpdateTime": "2019-06-29T15:11:06.365Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1374000,
+        "price": 890000,
+        "seatClass": "H_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 89000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 89000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "H_Starter",
+    "cheapestPrice": 890000,
+    "provider": "BL",
+    "flightNumber": "BL 786",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T13:45:00.000Z",
+    "departureTime": "2019-07-23T11:35:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "fa4e3596a2e10bb22a65b07f420c64aa",
+    "lastUpdateTime": "2019-06-29T15:11:07.982Z",
+    "seatCountCode": 511,
+    "priceList": [
+      {
+        "priceTotal": 1374000,
+        "price": 890000,
+        "seatClass": "H_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 89000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 89000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "H_Starter",
+    "cheapestPrice": 890000,
+    "provider": "BL",
+    "flightNumber": "BL 790",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T17:10:00.000Z",
+    "departureTime": "2019-07-23T15:00:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "d8803154568c3b5b510e4b0a34ef5d6e",
+    "lastUpdateTime": "2019-06-29T15:11:01.713Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1374000,
+        "price": 890000,
+        "seatClass": "H_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 89000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 89000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "H_Starter",
+    "cheapestPrice": 890000,
+    "provider": "BL",
+    "flightNumber": "BL 792",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T16:35:00.000Z",
+    "departureTime": "2019-07-23T14:25:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "0388d4a092b29397d7f3ae9f14627a7f",
+    "lastUpdateTime": "2019-06-29T15:11:04.739Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1374000,
+        "price": 890000,
+        "seatClass": "H_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 89000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 89000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  },
+  {
+    "cheapestClass": "H_Starter",
+    "cheapestPrice": 890000,
+    "provider": "BL",
+    "flightNumber": "BL 794",
+    "departureDate": 20190723,
+    "arrivalTime": "2019-07-23T16:40:00.000Z",
+    "departureTime": "2019-07-23T14:30:00.000Z",
+    "destinationCode": "HAN",
+    "originCode": "SGN",
+    "md5": "2962f3be77d509d1f9ee6e5722c056d8",
+    "lastUpdateTime": "2019-06-29T15:11:03.184Z",
+    "seatCountCode": 611,
+    "priceList": [
+      {
+        "priceTotal": 1374000,
+        "price": 890000,
+        "seatClass": "H_Starter",
+        "currency": "VND",
+        "isAgent": 0,
+        "priceFeeList": [
+          {
+            "code": "FARE_ADT",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_CHD",
+            "fee": 890000
+          },
+          {
+            "code": "FARE_INF",
+            "fee": 150000
+          },
+          {
+            "code": "UE_INF",
+            "fee": 0
+          },
+          {
+            "code": "AX_INF",
+            "fee": 0
+          },
+          {
+            "code": "YR_INF",
+            "fee": 0
+          },
+          {
+            "code": "UE_CHD",
+            "fee": 89000
+          },
+          {
+            "code": "AX_CHD",
+            "fee": 275000
+          },
+          {
+            "code": "YR_CHD",
+            "fee": 60000
+          },
+          {
+            "code": "UE_ADT",
+            "fee": 89000
+          },
+          {
+            "code": "AX_ADT",
+            "fee": 275000
+          },
+          {
+            "code": "YR_ADT",
+            "fee": 120000
+          }
+        ],
+        "seatCount": 5
+      }
+    ]
+  }
+]

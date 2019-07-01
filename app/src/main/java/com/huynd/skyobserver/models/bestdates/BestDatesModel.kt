@@ -397,14 +397,19 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         val data = mutableListOf<BestDatesInfo>()
         for (i in 0 until mOutResponses.size) {
             val outResponse = mOutResponses[i]
-            val inResponse = mInResponses[i]
-
             val srcPostPriceCache = mPriceCache[mSrcPort]!!
-            val destPostPriceCache = mPriceCache[mDestPort]!!
 
-            if (!srcPostPriceCache.containsKey(outResponse.cheapestPrice)
-                    || !destPostPriceCache.containsKey(inResponse.cheapestPrice)) {
+            if (!srcPostPriceCache.containsKey(outResponse.cheapestPrice)) {
                 continue
+            }
+
+            if (mIsReturnTrip) {
+                val inResponse = mInResponses[i]
+                val destPostPriceCache = mPriceCache[mDestPort]!!
+
+                if (!destPostPriceCache.containsKey(inResponse.cheapestPrice)) {
+                    continue
+                }
             }
 
             val info = BestDatesInfo().apply {
@@ -412,10 +417,14 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
                 outboundCarrier = outResponse.carrier
                 outboundTotalPrice = srcPostPriceCache[outResponse.cheapestPrice]!!
 
-                inboundId = inResponse.id
-                inboundCarrier = inResponse.carrier
-                inboundTotalPrice = destPostPriceCache[inResponse.cheapestPrice]!!
+                if (mIsReturnTrip) {
+                    val inResponse = mInResponses[i]
+                    val destPostPriceCache = mPriceCache[mDestPort]!!
 
+                    inboundId = inResponse.id
+                    inboundCarrier = inResponse.carrier
+                    inboundTotalPrice = destPostPriceCache[inResponse.cheapestPrice]!!
+                }
             }
             data.add(info)
         }

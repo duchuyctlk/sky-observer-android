@@ -56,9 +56,7 @@ class BestDatesResultFragment : BaseFragment(), BestDatesResultView {
 
         // get data from intent
         arguments?.run {
-            val data =
-                    getParcelableArray("data")?.toList()
-                            ?: listOf<BestDatesInfo>()
+            val data = getParcelableArray("data")?.toList() ?: listOf<BestDatesInfo>()
 
             updateListViewData(data as List<BestDatesInfo>)
 
