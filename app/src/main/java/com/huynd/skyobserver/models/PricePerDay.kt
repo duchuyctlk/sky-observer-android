@@ -14,9 +14,9 @@ import kotlinx.android.parcel.Parcelize
 @SuppressLint("ParcelCreator")
 @Parcelize
 class PricePerDay(@SerializedName("priceTotal")
-                  var priceTotal: Int = 0,
+                  var priceTotal: Double = 0.0,
                   @SerializedName("price")
-                  var price: Int = 0,
+                  var price: Double = 0.0,
                   var day: Int = 0,
                   private var arrivalTime: String = "",
                   private var departureTime: String = "",

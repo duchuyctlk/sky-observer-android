@@ -3,6 +3,7 @@ package com.huynd.skyobserver.dagger.component;
 import com.huynd.skyobserver.dagger.modules.ApiModule;
 import com.huynd.skyobserver.fragments.PriceOneDayFragment;
 import com.huynd.skyobserver.fragments.PricePerDayFragment;
+import com.huynd.skyobserver.fragments.bestdates.BestDatesRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestRequestFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.date.DateCheapestResultFragment;
 import com.huynd.skyobserver.fragments.cheapestflight.month.MonthCheapestRequestFragment;
@@ -30,4 +31,6 @@ public interface SkyObserverComponent {
     void inject(MonthCheapestRequestFragment fragment);
 
     void inject(MonthCheapestResultFragment fragment);
+
+    void inject(BestDatesRequestFragment fragment);
 }

@@ -5,7 +5,7 @@ import com.huynd.skyobserver.utils.Constants.Companion.CARRIERS
 /**
  * Created by HuyND on 11/18/2017.
  */
-class MonthCheapestBody(strYear: String, strMonth: String, strDay: String) {
+open class MonthCheapestBody() {
     var startDate: String = ""
     var endDate: String = ""
     val minPrice = 0
@@ -14,7 +14,7 @@ class MonthCheapestBody(strYear: String, strMonth: String, strDay: String) {
     val routes: MutableList<String> = mutableListOf()
     val type = "date"
 
-    init {
+    constructor(strYear: String, strMonth: String, strDay: String) : this() {
         startDate = "$strYear$strMonth$strDay"
         endDate = startDate
     }

@@ -10,4 +10,6 @@ interface CheapestFlightListener {
     fun showDateInfo(priceInfo: Bundle?)
 
     fun showMonthInfo(priceInfo: Bundle?)
+
+    fun showBestDates(bundle: Bundle?)
 }

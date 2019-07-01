@@ -21,6 +21,20 @@ public class CountryPriceInfoComparator implements Comparator<CountryPriceInfo> 
 
     @Override
     public int compare(CountryPriceInfo countryPriceInfo1, CountryPriceInfo countryPriceInfo2) {
-        return countryPriceInfo1.getBestPriceTotal() - countryPriceInfo2.getBestPriceTotal();
+        if (countryPriceInfo1 == null && countryPriceInfo2 == null) {
+            return 0;
+        }
+        if (countryPriceInfo1 == null) {
+            return -1;
+        }
+        if (countryPriceInfo2 == null) {
+            return 1;
+        }
+        double price1 = countryPriceInfo1.getBestPriceTotal();
+        double price2 = countryPriceInfo2.getBestPriceTotal();
+        if (price1 == price2) {
+            return 0;
+        }
+        return price1 > price2 ? 1 : -1;
     }
 }

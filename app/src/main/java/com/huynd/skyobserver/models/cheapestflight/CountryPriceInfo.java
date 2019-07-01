@@ -41,7 +41,7 @@ public class CountryPriceInfo implements Parcelable {
                 ? mAirportPriceInfos.get(index) : null;
     }
 
-    public int getBestPriceTotal() {
+    public double getBestPriceTotal() {
         if (mAirportPriceInfos == null || mAirportPriceInfos.size() == 0) {
             return 0;
 

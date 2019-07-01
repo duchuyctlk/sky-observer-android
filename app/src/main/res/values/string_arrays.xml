@@ -6,5 +6,6 @@
         <item>Price per day</item>
         <item>Cheapest price per day</item>
         <item>Cheapest price per month</item>
+        <item>Best dates to go</item>
     </string-array>
 </resources>

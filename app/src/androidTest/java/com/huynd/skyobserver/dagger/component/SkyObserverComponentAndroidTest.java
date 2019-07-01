@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.dagger.component;
 
 import com.huynd.skyobserver.dagger.modules.ApiModuleAndroidTest;
+import com.huynd.skyobserver.fragments.BestDatesFragmentAndroidTest;
 import com.huynd.skyobserver.fragments.ChooseOneDayAndroidTest;
 import com.huynd.skyobserver.fragments.DateCheapestFragmentAndroidTest;
 import com.huynd.skyobserver.fragments.MonthCheapestFragmentAndroidTest;
@@ -26,4 +27,6 @@ public interface SkyObserverComponentAndroidTest extends SkyObserverComponent {
     void inject(DateCheapestFragmentAndroidTest fragmentAndroidTest);
 
     void inject(MonthCheapestFragmentAndroidTest fragmentAndroidTest);
+
+    void inject(BestDatesFragmentAndroidTest fragmentAndroidTest);
 }

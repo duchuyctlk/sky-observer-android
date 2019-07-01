@@ -240,13 +240,13 @@ class MonthCheapestModel {
 
                             if (isOutbound) {
                                 val minPrice = airportPriceInfo.getBestPriceOutbound()
-                                if (minPrice == 0 || priceTotal < minPrice) {
+                                if (minPrice == 0.0 || priceTotal < minPrice) {
                                     this.day = cheapestResponseId.dayInMonth
                                     airportPriceInfo.setPricePerDayOutbound(this)
                                 }
                             } else {
                                 val minPrice = airportPriceInfo.getBestPriceInbound()
-                                if (minPrice == 0 || priceTotal < minPrice) {
+                                if (minPrice == 0.0 || priceTotal < minPrice) {
                                     this.day = cheapestResponseId.dayInMonth
                                     airportPriceInfo.setPricePerDayInbound(this)
                                 }
