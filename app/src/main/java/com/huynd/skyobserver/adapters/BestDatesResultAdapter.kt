@@ -13,6 +13,7 @@ import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.utils.formatNumber
 import kotlinx.android.synthetic.main.list_view_best_dates_item.view.*
 import kotlinx.android.synthetic.main.list_view_best_dates_sub_item.view.*
+import lombok.Generated
 import java.util.*
 
 /**
@@ -38,6 +39,7 @@ class BestDatesResultAdapter(@NonNull private val context: Context) :
 
     override fun getGroupId(groupPosition: Int): Long = 0
 
+    @Generated
     override fun getChildId(groupPosition: Int, childPosition: Int): Long = 0
 
     override fun hasStableIds(): Boolean = false

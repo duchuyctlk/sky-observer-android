@@ -128,9 +128,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ cheapestPricePerMonthResponses ->
                     handleGetBestDayInMonthResult(cheapestPricePerMonthResponses)
-                }, { throwable ->
-                    handleGetBestDayInMonthError(throwable)
-                })
+                }, { throwable -> handleGetBestDayInMonthError(throwable) })
     }
 
     private fun handleGetBestDayInMonthResult(cheapestPricePerMonthResponses: List<CheapestPricePerMonthResponse>) {
@@ -191,13 +189,10 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
 
         val responsesGroupedByPort = mAllMonthResponses.groupBy { it.id.origin }
         val groupedBySrcPort = responsesGroupedByPort[mSrcPort]
-        if (groupedBySrcPort == null || groupedBySrcPort.isEmpty()) {
-            return Pair(listOf(), listOf())
-        }
+
+        if (groupedBySrcPort == null || groupedBySrcPort.isEmpty()) return Pair(listOf(), listOf())
         val groupedByDestPort = responsesGroupedByPort[mDestPort]
-        if (groupedByDestPort == null || groupedByDestPort.isEmpty()) {
-            return Pair(listOf(), listOf())
-        }
+        if (groupedByDestPort == null || groupedByDestPort.isEmpty()) return Pair(listOf(), listOf())
 
         // find cheapestPrice
         var cheapestPrice = 0.0
@@ -297,9 +292,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ pricePerDayResponses ->
                     handleGetDetailPricesResult(cheapestResponse, pricePerDayResponses, isOutbound)
-                }, { throwable ->
-                    handleGetDetailPricesError(throwable)
-                })
+                }, { throwable -> handleGetDetailPricesError(throwable) })
     }
 
     private fun handleGetDetailPricesResult(cheapestResponse: CheapestPricePerMonthResponse,
@@ -372,36 +365,28 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
             val outResponse = mOutResponses[i]
             val srcPostPriceCache = mPriceCache[mSrcPort]!!
 
-            if (!srcPostPriceCache.containsKey(outResponse.cheapestPrice)) {
-                continue
-            }
-
-            if (mIsReturnTrip) {
-                val inResponse = mInResponses[i]
-                val destPostPriceCache = mPriceCache[mDestPort]!!
-
-                if (!destPostPriceCache.containsKey(inResponse.cheapestPrice)) {
-                    continue
+            if (srcPostPriceCache.containsKey(outResponse.cheapestPrice)) {
+                val info = BestDatesInfo().apply {
+                    outboundId = outResponse.id
+                    outboundCarrier = outResponse.carrier
+                    outboundTotalPrice = srcPostPriceCache[outResponse.cheapestPrice]!!
                 }
-            }
-
-            val info = BestDatesInfo().apply {
-                outboundId = outResponse.id
-                outboundCarrier = outResponse.carrier
-                outboundTotalPrice = srcPostPriceCache[outResponse.cheapestPrice]!!
 
                 if (mIsReturnTrip) {
                     val inResponse = mInResponses[i]
                     val destPostPriceCache = mPriceCache[mDestPort]!!
 
-                    inboundId = inResponse.id
-                    inboundCarrier = inResponse.carrier
-                    inboundTotalPrice = destPostPriceCache[inResponse.cheapestPrice]!!
+                    if (destPostPriceCache.containsKey(inResponse.cheapestPrice)) {
+                        info.apply {
+                            inboundId = inResponse.id
+                            inboundCarrier = inResponse.carrier
+                            inboundTotalPrice = destPostPriceCache[inResponse.cheapestPrice]!!
+                        }
+                    }
                 }
+                data.add(info)
             }
-            data.add(info)
         }
-
         return data
     }
 }

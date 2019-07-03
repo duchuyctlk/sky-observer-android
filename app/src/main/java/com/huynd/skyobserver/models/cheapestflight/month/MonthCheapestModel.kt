@@ -134,9 +134,7 @@ class MonthCheapestModel {
                         if (step1Done) {
                             findCheapestDays(pricesAPI, originPort)
                         }
-                    }, {
-                        returnReceivedPricesWhenFull(isOutbound, 0)
-                    })
+                    }, { returnReceivedPricesWhenFull(isOutbound, 0) })
             return 0
         }
     }

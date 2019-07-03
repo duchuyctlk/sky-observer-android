@@ -172,9 +172,7 @@ class DateCheapestModel {
                                 }
 
                                 returnReceivedPricesWhenFull(isOutbound)
-                            }, {
-                                returnReceivedPricesWhenFull(isOutbound)
-                            })
+                            }, { returnReceivedPricesWhenFull(isOutbound) })
                 }
             }
             return 0
