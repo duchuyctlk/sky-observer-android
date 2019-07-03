@@ -10,6 +10,7 @@ import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthRe
 import com.huynd.skyobserver.models.cheapestflight.month.ResponseId
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.Constants.Companion.BEST_PRICE_DELTA
+import com.huynd.skyobserver.utils.CoroutineUtils.Companion.startComputingThread
 import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.utils.RequestHelper
@@ -93,14 +94,9 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     }
 
     private fun getBestDayInMonth(monthIndex: Int) {
-        Observable.fromCallable {
-            prepareGetBestDayInMonth(monthIndex)
-        }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { observableList ->
-                    subscribeGetBestDayInMonth(observableList)
-                }
+        startComputingThread({ prepareGetBestDayInMonth(monthIndex) }, { observableList ->
+            subscribeGetBestDayInMonth(observableList)
+        })
     }
 
     private fun prepareGetBestDayInMonth(monthIndex: Int): Observable<List<CheapestPricePerMonthResponse>> {
@@ -152,14 +148,9 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     }
 
     private fun findOneWayCheapestResponse() {
-        Observable.fromCallable {
-            prepareFindOneWayCheapestResponse()
-        }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { cheapestResponses ->
-                    handleFindOneWayCheapestResponseResult(cheapestResponses)
-                }
+        startComputingThread({ prepareFindOneWayCheapestResponse() }, { cheapestResponses ->
+            handleFindOneWayCheapestResponseResult(cheapestResponses)
+        })
     }
 
     private fun prepareFindOneWayCheapestResponse(): List<CheapestPricePerMonthResponse> {
@@ -187,14 +178,9 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     }
 
     private fun findReturnCheapestResponses() {
-        Observable.fromCallable {
-            prepareFindReturnCheapestResponses()
-        }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { pairResponses ->
-                    handleFindReturnCheapestResponsesResult(pairResponses)
-                }
+        startComputingThread({ prepareFindReturnCheapestResponses() }, { pairResponses ->
+            handleFindReturnCheapestResponsesResult(pairResponses)
+        })
     }
 
     private fun prepareFindReturnCheapestResponses()
@@ -281,14 +267,9 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     private fun getDetailPrices(cheapestResponses: List<CheapestPricePerMonthResponse>,
                                 isOutbound: Boolean) {
         cheapestResponses.forEach { cheapestResponse ->
-            Observable.fromCallable {
-                prepareGetDetailPrices(cheapestResponse, isOutbound)
-            }
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { observableCheapestDay ->
-                        subscribeGetDetailPrices(observableCheapestDay, cheapestResponse, isOutbound)
-                    }
+            startComputingThread({ prepareGetDetailPrices(cheapestResponse, isOutbound) }, { observableCheapestDay ->
+                subscribeGetDetailPrices(observableCheapestDay, cheapestResponse, isOutbound)
+            })
         }
     }
 
@@ -322,14 +303,9 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     private fun handleGetDetailPricesResult(cheapestResponse: CheapestPricePerMonthResponse,
                                             pricePerDayResponses: List<PricePerDayResponse>,
                                             isOutbound: Boolean) {
-        Observable.fromCallable {
-            prepareGetPricePerDay(cheapestResponse, pricePerDayResponses, isOutbound)
-        }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { pricePerDay ->
-                    returnReceivedPricesWhenFull(pricePerDay, isOutbound)
-                }
+        startComputingThread({ prepareGetPricePerDay(cheapestResponse, pricePerDayResponses, isOutbound) }, { pricePerDay ->
+            returnReceivedPricesWhenFull(pricePerDay, isOutbound)
+        })
     }
 
     private fun handleGetDetailPricesError(throwable: Throwable) {
@@ -382,14 +358,9 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         val isLoadingDone = if (mIsReturnTrip) isOutboundLoadingDone && isInboundLoadingDone else isOutboundLoadingDone
 
         if (isLoadingDone) {
-            Observable.fromCallable {
-                prepareBestDatesInfo()
-            }
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { data ->
-                        mListener?.onGetPricesResponse(data)
-                    }
+            startComputingThread({ prepareBestDatesInfo() }, { data ->
+                mListener?.onGetPricesResponse(data)
+            })
         }
     }
 

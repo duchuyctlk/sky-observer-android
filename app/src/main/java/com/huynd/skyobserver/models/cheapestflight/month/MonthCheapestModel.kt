@@ -8,6 +8,7 @@ import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
 import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.AirportPriceInfoComparator
+import com.huynd.skyobserver.utils.CoroutineUtils.Companion.startComputingThread
 import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
 import com.huynd.skyobserver.utils.CountryAirportUtils.getCountryByCode
@@ -139,7 +140,7 @@ class MonthCheapestModel {
     }
 
     private fun findCheapestDays(pricesAPI: PricesAPI, originPort: String) {
-        Observable.fromCallable {
+        startComputingThread({
             if (mIsReturnTrip) {
                 val listOutboundPorts = outboundResponsesGroupedByPort.keys
                 val listInboundPorts = outboundResponsesGroupedByPort.keys
@@ -181,12 +182,9 @@ class MonthCheapestModel {
                     }
                 }
             }
-        }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    getDetailPrices(pricesAPI, originPort)
-                }
+        }, {
+            getDetailPrices(pricesAPI, originPort)
+        })
     }
 
     private fun getDetailPricesOnePortOneDay(pricesAPI: PricesAPI,
@@ -293,7 +291,7 @@ class MonthCheapestModel {
 
     private fun sortListCountryPriceInfoAndReturnResponse() {
         mListener?.run {
-            Observable.fromCallable {
+            startComputingThread({
                 val airportPriceInfoComparator = AirportPriceInfoComparator.getInstance()
                 mListCountryPriceInfo.forEach { countryPriceInfo ->
                     var listAirportPriceInfo = countryPriceInfo.airportPriceInfos.filter { it.getOutboundCarrier() != null }
@@ -313,12 +311,9 @@ class MonthCheapestModel {
                         .apply {
                             sortWith(CountryPriceInfoComparator.getInstance())
                         }
-            }
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { listCountryPriceInfo ->
-                        mListener?.onGetPricesResponse(listCountryPriceInfo)
-                    }
+            }, { listCountryPriceInfo ->
+                mListener?.onGetPricesResponse(listCountryPriceInfo)
+            })
         }
     }
 }
