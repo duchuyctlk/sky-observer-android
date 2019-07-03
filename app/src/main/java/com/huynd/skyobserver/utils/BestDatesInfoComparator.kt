@@ -1,6 +1,6 @@
 package com.huynd.skyobserver.utils
 
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
 
 /**
  * Created by HuyND on 6/29/2019.

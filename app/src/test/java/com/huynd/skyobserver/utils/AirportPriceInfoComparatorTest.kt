@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.utils
 
-import com.huynd.skyobserver.models.PricePerDay
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.entities.PricePerDay
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals

@@ -1,6 +1,6 @@
-package com.huynd.skyobserver.models.bestdates
+package com.huynd.skyobserver.entities.bestdates
 
-import com.huynd.skyobserver.models.cheapestflight.month.MonthCheapestBody
+import com.huynd.skyobserver.entities.cheapestflight.month.MonthCheapestBody
 
 /**
  * Created by HuyND on 06/25/2019.

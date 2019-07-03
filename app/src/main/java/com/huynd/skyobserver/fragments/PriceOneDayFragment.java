@@ -16,7 +16,7 @@ import com.huynd.skyobserver.R;
 import com.huynd.skyobserver.SkyObserverApp;
 import com.huynd.skyobserver.adapters.ListViewPriceOneDayAdapter;
 import com.huynd.skyobserver.databinding.FragmentPriceOneDayBinding;
-import com.huynd.skyobserver.models.PricePerDay;
+import com.huynd.skyobserver.entities.PricePerDay;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenter;
 import com.huynd.skyobserver.presenters.PriceOneDayPresenterImpl;
 import com.huynd.skyobserver.services.PricesAPI;

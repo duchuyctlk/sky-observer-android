@@ -1,13 +1,15 @@
 package com.huynd.skyobserver.models.bestdates
 
 import android.annotation.SuppressLint
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.PricePerDay
-import com.huynd.skyobserver.models.PricePerDayBody
-import com.huynd.skyobserver.models.PricePerDayResponse
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
-import com.huynd.skyobserver.models.cheapestflight.month.ResponseId
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.PricePerDay
+import com.huynd.skyobserver.entities.PricePerDayBody
+import com.huynd.skyobserver.entities.PricePerDayResponse
+import com.huynd.skyobserver.entities.bestdates.BestDatesBody
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.month.CheapestPricePerMonthResponse
+import com.huynd.skyobserver.entities.cheapestflight.month.ResponseId
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.Constants.Companion.BEST_PRICE_DELTA
 import com.huynd.skyobserver.utils.CoroutineUtils.Companion.startComputingThread

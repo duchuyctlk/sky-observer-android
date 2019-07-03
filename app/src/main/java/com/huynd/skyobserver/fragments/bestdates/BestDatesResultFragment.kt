@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter
 import com.huynd.skyobserver.R
 import com.huynd.skyobserver.adapters.BestDatesResultAdapter
 import com.huynd.skyobserver.fragments.BaseFragment
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
 import com.huynd.skyobserver.utils.Constants
 import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.views.bestdates.BestDatesResultView

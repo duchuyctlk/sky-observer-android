@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.models;
+package com.huynd.skyobserver.entities;
 
 /**
  * Created by HuyND on 8/12/2017.

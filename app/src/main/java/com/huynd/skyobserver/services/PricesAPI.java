@@ -1,9 +1,9 @@
 package com.huynd.skyobserver.services;
 
-import com.huynd.skyobserver.models.PricePerDayBody;
-import com.huynd.skyobserver.models.PricePerDayResponse;
-import com.huynd.skyobserver.models.cheapestflight.month.MonthCheapestBody;
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse;
+import com.huynd.skyobserver.entities.PricePerDayBody;
+import com.huynd.skyobserver.entities.PricePerDayResponse;
+import com.huynd.skyobserver.entities.cheapestflight.month.MonthCheapestBody;
+import com.huynd.skyobserver.entities.cheapestflight.month.CheapestPricePerMonthResponse;
 
 import java.util.List;
 import java.util.Map;

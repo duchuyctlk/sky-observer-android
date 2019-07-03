@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.models;
+package com.huynd.skyobserver.entities;
 
 import com.google.gson.annotations.SerializedName;
 

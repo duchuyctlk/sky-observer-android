@@ -8,7 +8,7 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.adapters.MonthCheapestResultAdapter
 import com.huynd.skyobserver.fragments.BaseFragment
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenter
 import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestResultPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI

@@ -1,11 +1,13 @@
 package com.huynd.skyobserver.models.cheapestflight.month
 
 import android.annotation.SuppressLint
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.PricePerDayBody
-import com.huynd.skyobserver.models.PricePerDayResponse
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.month.CheapestPricePerMonthResponse
+import com.huynd.skyobserver.entities.cheapestflight.month.MonthCheapestBody
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.PricePerDayBody
+import com.huynd.skyobserver.entities.PricePerDayResponse
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.AirportPriceInfoComparator
 import com.huynd.skyobserver.utils.CoroutineUtils.Companion.startComputingThread

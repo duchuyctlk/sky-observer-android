@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.presenters;
 
 import com.huynd.skyobserver.models.PriceOneDayModel;
-import com.huynd.skyobserver.models.PricePerDay;
+import com.huynd.skyobserver.entities.PricePerDay;
 import com.huynd.skyobserver.services.PricesAPI;
 import com.huynd.skyobserver.utils.PriceComparator;
 import com.huynd.skyobserver.views.PriceOneDayView;

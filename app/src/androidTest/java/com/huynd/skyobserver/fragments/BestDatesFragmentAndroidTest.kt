@@ -14,11 +14,11 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverAndroidTestApp
 import com.huynd.skyobserver.activities.MainActivity
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest
-import com.huynd.skyobserver.models.PricePerDayBody
-import com.huynd.skyobserver.models.PricePerDayResponse
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
-import com.huynd.skyobserver.models.cheapestflight.month.MonthCheapestBody
+import com.huynd.skyobserver.entities.PricePerDayBody
+import com.huynd.skyobserver.entities.PricePerDayResponse
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.cheapestflight.month.CheapestPricePerMonthResponse
+import com.huynd.skyobserver.entities.cheapestflight.month.MonthCheapestBody
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.FileUtils.getStringFromAssets
 import io.reactivex.Observable

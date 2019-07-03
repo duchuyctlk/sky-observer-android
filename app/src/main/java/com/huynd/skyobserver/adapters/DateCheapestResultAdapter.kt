@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import com.huynd.skyobserver.R
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.utils.formatNumber
 import kotlinx.android.synthetic.main.list_view_best_destinations_item.view.*
 import kotlinx.android.synthetic.main.list_view_date_cheapest_sub_item.view.*

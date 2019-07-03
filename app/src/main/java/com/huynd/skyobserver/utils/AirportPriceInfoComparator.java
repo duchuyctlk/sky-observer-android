@@ -1,6 +1,6 @@
 package com.huynd.skyobserver.utils;
 
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo;
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo;
 
 import java.util.Comparator;
 

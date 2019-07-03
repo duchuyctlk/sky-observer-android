@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.huynd.skyobserver.R
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo
 import com.huynd.skyobserver.utils.DateUtils.Companion.dateToString
 import com.huynd.skyobserver.utils.formatNumber
 import kotlinx.android.synthetic.main.list_view_month_cheapest_sub_item.view.*

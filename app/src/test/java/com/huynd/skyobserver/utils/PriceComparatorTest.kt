@@ -1,6 +1,6 @@
 package com.huynd.skyobserver.utils
 
-import com.huynd.skyobserver.models.PricePerDay
+import com.huynd.skyobserver.entities.PricePerDay
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

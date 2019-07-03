@@ -1,9 +1,9 @@
-package com.huynd.skyobserver.models.cheapestflight;
+package com.huynd.skyobserver.entities.cheapestflight;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.huynd.skyobserver.models.Country;
+import com.huynd.skyobserver.entities.Country;
 
 import java.util.ArrayList;
 import java.util.List;

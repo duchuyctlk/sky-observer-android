@@ -1,8 +1,8 @@
-package com.huynd.skyobserver.models.bestdates
+package com.huynd.skyobserver.entities.bestdates
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import com.huynd.skyobserver.models.cheapestflight.month.ResponseId
+import com.huynd.skyobserver.entities.cheapestflight.month.ResponseId
 import kotlinx.android.parcel.Parcelize
 
 /**

@@ -11,8 +11,8 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverApp
 import com.huynd.skyobserver.fragments.BaseFragment
 import com.huynd.skyobserver.fragments.cheapestflight.CheapestFlightListener
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestRequestPresenter
 import com.huynd.skyobserver.presenters.cheapestflight.date.DateCheapestRequestPresenterImpl
 import com.huynd.skyobserver.services.PricesAPI

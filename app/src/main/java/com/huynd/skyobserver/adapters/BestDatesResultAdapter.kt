@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import com.huynd.skyobserver.R
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
 import com.huynd.skyobserver.utils.BestDatesInfoComparator
 import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.utils.formatNumber

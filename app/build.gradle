@@ -154,7 +154,8 @@ task jacocoTestReport(type: JacocoReport) {
                       '**/*MembersInjector*.*',
                       '**/*DaggerApplicationComponent*.class',
                       '**/*Dagger*Component*.class',
-                      'com/huynd/skyobserver/dagger/**/*.*']
+                      'com/huynd/skyobserver/dagger/**/*.*',
+                      'com/huynd/skyobserver/entities/**/*.*']
     def debugTree = fileTree(dir: "${project.buildDir}/intermediates/javac/debug", excludes: fileFilter)
     def debugTreeKotlin = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"

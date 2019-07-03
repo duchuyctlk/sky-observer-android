@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.models;
+package com.huynd.skyobserver.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
