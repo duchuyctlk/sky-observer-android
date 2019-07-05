@@ -17,12 +17,8 @@ import com.huynd.skyobserver.utils.CountryAirportUtils
 import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.utils.RequestHelper
 import com.huynd.skyobserver.utils.StringUtils
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -101,39 +97,45 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     }
 
     private fun getBestDayInMonth(monthIndex: Int) {
-        startComputingThread({ prepareGetBestDayInMonth(monthIndex) }, { observableList ->
-            subscribeGetBestDayInMonth(observableList)
-        })
-    }
+        CoroutineScope(Dispatchers.Default).launch {
+            val payloadDatePattern = "yyyyMMdd"
+            val routes = mutableListOf("$mSrcPort$mDestPort")
+            if (mIsReturnTrip) {
+                routes.add("$mDestPort$mSrcPort")
+            }
+            val cal = Calendar.getInstance()
+            cal.add(Calendar.MONTH, monthIndex)
+            val startDate = cal.let {
+                it.set(Calendar.DAY_OF_MONTH, 1)
+                DateUtils.dateToString(it.time, payloadDatePattern)
+            }
+            val endDate = cal.let {
+                it.set(Calendar.DAY_OF_MONTH, it.getActualMaximum(Calendar.DAY_OF_MONTH))
+                DateUtils.dateToString(it.time, payloadDatePattern)
+            }
+            val postData = BestDatesBody(startDate, endDate)
+            postData.setRoutes(routes)
 
-    private fun prepareGetBestDayInMonth(monthIndex: Int): Observable<List<CheapestPricePerMonthResponse>> {
-        val payloadDatePattern = "yyyyMMdd"
-        val routes = mutableListOf("$mSrcPort$mDestPort")
-        if (mIsReturnTrip) {
-            routes.add("$mDestPort$mSrcPort")
-        }
-        val cal = Calendar.getInstance()
-        cal.add(Calendar.MONTH, monthIndex)
-        val startDate = cal.let {
-            it.set(Calendar.DAY_OF_MONTH, 1)
-            DateUtils.dateToString(it.time, payloadDatePattern)
-        }
-        val endDate = cal.let {
-            it.set(Calendar.DAY_OF_MONTH, it.getActualMaximum(Calendar.DAY_OF_MONTH))
-            DateUtils.dateToString(it.time, payloadDatePattern)
-        }
-        val postData = BestDatesBody(startDate, endDate)
-        postData.setRoutes(routes)
-        return mPricesAPI.getCheapestPricePerMonth(mHeaders, postData)
-    }
+            withContext(Dispatchers.IO) {
+                var cheapestPricePerMonthResponses: List<CheapestPricePerMonthResponse>? = null
+                var throwable: Throwable? = null
+                try {
+                    cheapestPricePerMonthResponses = mPricesAPI.getListCheapestPricePerMonth(mHeaders, postData)
+                } catch (ex: Exception) {
+                    throwable = ex
+                    ex.printStackTrace()
+                }
 
-    private fun subscribeGetBestDayInMonth(observable: Observable<List<CheapestPricePerMonthResponse>>) {
-        observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ cheapestPricePerMonthResponses ->
-                    handleGetBestDayInMonthResult(cheapestPricePerMonthResponses)
-                }, { throwable -> handleGetBestDayInMonthError(throwable) })
+                withContext(Dispatchers.Main) {
+                    cheapestPricePerMonthResponses?.run {
+                        handleGetBestDayInMonthResult(this)
+                    }
+                    throwable?.run {
+                        handleGetBestDayInMonthError(throwable)
+                    }
+                }
+            }
+        }
     }
 
     private fun handleGetBestDayInMonthResult(cheapestPricePerMonthResponses: List<CheapestPricePerMonthResponse>) {

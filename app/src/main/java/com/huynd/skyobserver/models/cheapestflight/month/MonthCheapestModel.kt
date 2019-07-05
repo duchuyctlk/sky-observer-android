@@ -18,9 +18,6 @@ import com.huynd.skyobserver.utils.CountryAirportUtils.getCountryByCode
 import com.huynd.skyobserver.utils.CountryPriceInfoComparator
 import com.huynd.skyobserver.utils.RequestHelper
 import com.huynd.skyobserver.utils.StringUtils.Companion.formatDayMonthWithZero
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -108,38 +105,49 @@ class MonthCheapestModel {
             mListener?.notifyInvalidDate()
             return -1
         } else {
-            val strYear = "$year"
-            val strMonth = formatDayMonthWithZero(month)
-            val strDay = formatDayMonthWithZero(today)
+            CoroutineScope(Dispatchers.Default).launch {
+                val strYear = "$year"
+                val strMonth = formatDayMonthWithZero(month)
+                val strDay = formatDayMonthWithZero(today)
 
-            val headers = RequestHelper.getDefaultHeaders()
-            val postData = MonthCheapestBody(strYear, strMonth, strDay).apply {
-                setRoutes(mAirports
-                        .filter { it.id != originPort }
-                        .map { if (isOutbound) "$originPort${it.id}" else "${it.id}$originPort" }
-                )
-            }
-            val observableList: Observable<List<CheapestPricePerMonthResponse>> =
-                    pricesAPI.getCheapestPricePerMonth(headers, postData)
-            observableList
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ cheapestPricePerMonthResponses ->
-                        if (isOutbound) {
-                            outboundResponsesGroupedByPort = cheapestPricePerMonthResponses.groupBy { it.id.destination }
-                            mIsStep1OutboundLoaded = true
+                val headers = RequestHelper.getDefaultHeaders()
+                val postData = MonthCheapestBody(strYear, strMonth, strDay).apply {
+                    setRoutes(mAirports
+                            .filter { it.id != originPort }
+                            .map { if (isOutbound) "$originPort${it.id}" else "${it.id}$originPort" }
+                    )
+                }
+
+                withContext(Dispatchers.IO) {
+                    var cheapestPricePerMonthResponses: List<CheapestPricePerMonthResponse>? = null
+                    try {
+                        cheapestPricePerMonthResponses = pricesAPI.getListCheapestPricePerMonth(headers, postData)
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        if (cheapestPricePerMonthResponses != null) {
+                            if (isOutbound) {
+                                outboundResponsesGroupedByPort = cheapestPricePerMonthResponses.groupBy { it.id.destination }
+                                mIsStep1OutboundLoaded = true
+                            } else {
+                                inboundResponsesGroupedByPort = cheapestPricePerMonthResponses.groupBy { it.id.origin }
+                                mIsStep1InboundLoaded = true
+                            }
+
+                            val step1Done =
+                                    if (mIsReturnTrip) mIsStep1OutboundLoaded && mIsStep1InboundLoaded else mIsStep1OutboundLoaded
+
+                            if (step1Done) {
+                                findCheapestDays(pricesAPI, originPort)
+                            }
                         } else {
-                            inboundResponsesGroupedByPort = cheapestPricePerMonthResponses.groupBy { it.id.origin }
-                            mIsStep1InboundLoaded = true
+                            returnReceivedPricesWhenFull(isOutbound, 0)
                         }
-
-                        val step1Done =
-                                if (mIsReturnTrip) mIsStep1OutboundLoaded && mIsStep1InboundLoaded else mIsStep1OutboundLoaded
-
-                        if (step1Done) {
-                            findCheapestDays(pricesAPI, originPort)
-                        }
-                    }, { returnReceivedPricesWhenFull(isOutbound, 0) })
+                    }
+                }
+            }
             return 0
         }
     }

@@ -23,11 +23,6 @@ interface PricesAPI {
             @Path("srcPort") srcPort: String,
             @Path("dstPort") dstPort: String): Observable<List<PricePerDayResponse>>
 
-    @POST("addon/prodash/getlist")
-    fun getCheapestPricePerMonth(
-            @HeaderMap headers: Map<String, String>,
-            @Body body: MonthCheapestBody): Observable<List<CheapestPricePerMonthResponse>>
-
     // new approach
     @POST("sapi/getprices/{carrier}/{srcPort}/{dstPort}")
     suspend fun getListPricePerDay(
@@ -36,4 +31,9 @@ interface PricesAPI {
             @Path("carrier") carrier: String,
             @Path("srcPort") srcPort: String,
             @Path("dstPort") dstPort: String): List<PricePerDayResponse>
+
+    @POST("addon/prodash/getlist")
+    suspend fun getListCheapestPricePerMonth(
+            @HeaderMap headers: Map<String, String>,
+            @Body body: MonthCheapestBody): List<CheapestPricePerMonthResponse>
 }

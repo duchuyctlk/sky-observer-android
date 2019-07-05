@@ -27,9 +27,6 @@ import com.huynd.skyobserver.utils.FileUtils.getStringFromAssets
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
-import io.reactivex.Observable
-import io.reactivex.Observable.error
-import io.reactivex.Observable.just
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.hamcrest.Description
@@ -195,11 +192,10 @@ class MonthCheapestFragmentAndroidTest {
 
     @Throws(Exception::class)
     private fun mockApiResponse(requestSuccess: Boolean, responseSuccess: Boolean, srcPort: String) {
-        val monthObservableList: Observable<List<CheapestPricePerMonthResponse>>
-
         if (requestSuccess) {
             val outboundDay: List<PricePerDayResponse>
             val inboundDay: List<PricePerDayResponse>
+            val monthList: List<CheapestPricePerMonthResponse>
 
             val gson = Gson()
             val assetManager = getInstrumentation().context.assets
@@ -214,7 +210,7 @@ class MonthCheapestFragmentAndroidTest {
                 inboundDay = inRes.toList()
 
                 val monthRes = gson.fromJson(getStringFromAssets(assetManager, month_response), targetMonthClass)
-                monthObservableList = just(monthRes.toList())
+                monthList = monthRes.toList()
             } else {
                 val responseDay: Response<List<PricePerDayResponse>> = Response.error(404,
                         ResponseBody.create(
@@ -231,7 +227,7 @@ class MonthCheapestFragmentAndroidTest {
 
                 outboundDay = resBody
                 inboundDay = resBody
-                monthObservableList = just(responseMonth.body())
+                monthList = responseMonth.body()!!
             }
 
             mock<PricesAPI> {
@@ -251,11 +247,15 @@ class MonthCheapestFragmentAndroidTest {
                             any(),
                             eq(srcPort)
                     )).thenReturn(inboundDay)
+
+                    `when`(mPricesAPI.getListCheapestPricePerMonth(
+                            anyMap(),
+                            any()
+                    )).thenReturn(monthList)
                 }
             }
         } else {
             val exception = Exception("Exception")
-            monthObservableList = error(exception)
 
             mock<PricesAPI> {
                 runBlocking {
@@ -274,13 +274,13 @@ class MonthCheapestFragmentAndroidTest {
                             any(),
                             eq(srcPort)
                     )).thenThrow(exception)
+
+                    `when`(mPricesAPI.getListCheapestPricePerMonth(
+                            anyMap(),
+                            any()
+                    )).thenThrow(exception)
                 }
             }
         }
-
-        `when`(mPricesAPI.getCheapestPricePerMonth(
-                anyMap(),
-                any()
-        )).thenReturn(monthObservableList)
     }
 }
