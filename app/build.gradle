@@ -87,6 +87,8 @@ dependencies {
         exclude module: 'design'
     }
 
+    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+
     // Retrofit
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

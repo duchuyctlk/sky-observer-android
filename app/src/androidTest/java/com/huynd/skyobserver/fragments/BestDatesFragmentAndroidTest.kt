@@ -14,13 +14,13 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverAndroidTestApp
 import com.huynd.skyobserver.activities.MainActivity
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest
-import com.huynd.skyobserver.entities.PricePerDayBody
 import com.huynd.skyobserver.entities.PricePerDayResponse
 import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
 import com.huynd.skyobserver.entities.cheapestflight.month.CheapestPricePerMonthResponse
-import com.huynd.skyobserver.entities.cheapestflight.month.MonthCheapestBody
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.FileUtils.getStringFromAssets
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Observable
 import io.reactivex.Observable.just
 import okhttp3.ResponseBody
@@ -31,9 +31,7 @@ import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyMap
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
 import retrofit2.Response
 import javax.inject.Inject
@@ -166,22 +164,22 @@ class BestDatesFragmentAndroidTest {
 
         Mockito.`when`(mPricesAPI.getCheapestPricePerMonth(
                 anyMap(),
-                any(MonthCheapestBody::class.java)
+                any()
         )).thenReturn(monthObservableList)
 
         Mockito.`when`(mPricesAPI.getPricePerDay(
                 anyMap(),
-                any(PricePerDayBody::class.java),
-                any(String::class.java),
+                any(),
+                any(),
                 eq(srcPort),
-                any(String::class.java)
+                any()
         )).thenReturn(outboundDay)
 
         Mockito.`when`(mPricesAPI.getPricePerDay(
                 anyMap(),
-                any(PricePerDayBody::class.java),
-                any(String::class.java),
-                any(String::class.java),
+                any(),
+                any(),
+                any(),
                 eq(srcPort)
         )).thenReturn(inboundODay)
     }
