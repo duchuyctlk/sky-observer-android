@@ -20,6 +20,11 @@ import com.huynd.skyobserver.utils.StringUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 /**
@@ -264,35 +269,31 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
     private fun getDetailPrices(cheapestResponses: List<CheapestPricePerMonthResponse>,
                                 isOutbound: Boolean) {
         cheapestResponses.forEach { cheapestResponse ->
-            startComputingThread({ prepareGetDetailPrices(cheapestResponse, isOutbound) }, { observableCheapestDay ->
-                subscribeGetDetailPrices(observableCheapestDay, cheapestResponse, isOutbound)
-            })
+            CoroutineScope(Dispatchers.Default).launch {
+                val destination = if (isOutbound) mDestPort else mSrcPort
+                val origin = if (isOutbound) mSrcPort else mDestPort
+
+                val cheapestResponseId = cheapestResponse.id
+                val strDay = StringUtils.formatDayMonthWithZero(cheapestResponseId.dayInMonth)
+                val strYear = StringUtils.formatDayMonthWithZero(cheapestResponseId.year)
+                val strMonth = StringUtils.formatDayMonthWithZero(cheapestResponseId.monthInYear)
+                val postDataForDayRequest = PricePerDayBody(strYear, strMonth, strDay)
+
+                withContext(Dispatchers.IO) {
+                    var pricePerDayResponses: List<PricePerDayResponse>? = null
+                    try {
+                        pricePerDayResponses = mPricesAPI.getListPricePerDay(mHeaders, postDataForDayRequest, cheapestResponse.carrier, origin, destination)
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
+                    withContext(Dispatchers.Main) {
+                        pricePerDayResponses?.run {
+                            handleGetDetailPricesResult(cheapestResponse, this, isOutbound)
+                        }
+                    }
+                }
+            }
         }
-    }
-
-    private fun prepareGetDetailPrices(cheapestResponse: CheapestPricePerMonthResponse,
-                                       isOutbound: Boolean): Observable<List<PricePerDayResponse>> {
-        val destination = if (isOutbound) mDestPort else mSrcPort
-        val origin = if (isOutbound) mSrcPort else mDestPort
-
-        val cheapestResponseId = cheapestResponse.id
-        val strDay = StringUtils.formatDayMonthWithZero(cheapestResponseId.dayInMonth)
-        val strYear = StringUtils.formatDayMonthWithZero(cheapestResponseId.year)
-        val strMonth = StringUtils.formatDayMonthWithZero(cheapestResponseId.monthInYear)
-        val postDataForDayRequest = PricePerDayBody(strYear, strMonth, strDay)
-
-        return mPricesAPI.getPricePerDay(mHeaders, postDataForDayRequest, cheapestResponse.carrier, origin, destination)
-    }
-
-    private fun subscribeGetDetailPrices(observable: Observable<List<PricePerDayResponse>>,
-                                         cheapestResponse: CheapestPricePerMonthResponse,
-                                         isOutbound: Boolean) {
-        observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ pricePerDayResponses ->
-                    handleGetDetailPricesResult(cheapestResponse, pricePerDayResponses, isOutbound)
-                }, { throwable -> handleGetDetailPricesError(throwable) })
     }
 
     private fun handleGetDetailPricesResult(cheapestResponse: CheapestPricePerMonthResponse,
@@ -301,10 +302,6 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         startComputingThread({ prepareGetPricePerDay(cheapestResponse, pricePerDayResponses, isOutbound) }, { pricePerDay ->
             returnReceivedPricesWhenFull(pricePerDay, isOutbound)
         })
-    }
-
-    private fun handleGetDetailPricesError(throwable: Throwable) {
-        mListener?.onGetPricesError(throwable)
     }
 
     private fun prepareGetPricePerDay(cheapestResponse: CheapestPricePerMonthResponse,
