@@ -1,6 +1,7 @@
 package com.huynd.skyobserver.models
 
 import android.os.Parcel
+import com.huynd.skyobserver.entities.Country
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner

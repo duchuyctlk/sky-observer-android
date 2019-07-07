@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.utils;
 
-import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.models.Country;
+import com.huynd.skyobserver.entities.Airport;
+import com.huynd.skyobserver.entities.Country;
 
 import java.util.ArrayList;
 import java.util.List;

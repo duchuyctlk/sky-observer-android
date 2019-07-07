@@ -21,14 +21,14 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverAndroidTestApp
 import com.huynd.skyobserver.activities.MainActivity
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest
-import com.huynd.skyobserver.models.PricePerDayBody
-import com.huynd.skyobserver.models.PricePerDayResponse
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.PricePerDayResponse
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.FileUtils.getStringFromAssets
-import io.reactivex.Observable
-import io.reactivex.Observable.error
-import io.reactivex.Observable.just
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -40,9 +40,7 @@ import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyMap
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.`when`
 import retrofit2.Response
 import java.util.*
@@ -155,51 +153,72 @@ class DateCheapestFragmentAndroidTest {
 
     @Throws(Exception::class)
     private fun mockApiResponse(requestSuccess: Boolean, responseSuccess: Boolean, srcPort: String) {
-        val outboundObservableList: Observable<List<PricePerDayResponse>>
-        val inboundObservableList: Observable<List<PricePerDayResponse>>
-
         if (requestSuccess) {
+            val outboundList: List<PricePerDayResponse>
+            val inboundList: List<PricePerDayResponse>
+
             val gson = Gson()
             val assetManager = getInstrumentation().context.assets
             val targetClass = Array<PricePerDayResponse>::class.java
 
             if (responseSuccess) {
                 val outRes = gson.fromJson(getStringFromAssets(assetManager, outbound_response), targetClass)
-                outboundObservableList = just<List<PricePerDayResponse>>(outRes.toList())
+                outboundList = outRes.toList()
 
                 val inRes = gson.fromJson(getStringFromAssets(assetManager, inbound_response), targetClass)
-                inboundObservableList = just<List<PricePerDayResponse>>(inRes.toList())
+                inboundList = inRes.toList()
             } else {
-                val response: Response<List<PricePerDayResponse>> = Response.error(404,
-                        ResponseBody.create(
-                                null,
-                                getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
-                        ))
+                val responseBody = ResponseBody.create(
+                        null,
+                        getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
+                )
+                val response: Response<List<PricePerDayResponse>> = Response.error(404, responseBody)
                 val resBody = response.body()!!
 
-                outboundObservableList = just<List<PricePerDayResponse>>(resBody)
-                inboundObservableList = just<List<PricePerDayResponse>>(resBody)
+                outboundList = resBody
+                inboundList = resBody
+            }
+
+            mock<PricesAPI> {
+                runBlocking {
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            eq(srcPort),
+                            any()
+                    )).thenReturn(outboundList)
+
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            any(),
+                            eq(srcPort)
+                    )).thenReturn(inboundList)
+                }
             }
         } else {
             val exception = Exception("Exception")
-            outboundObservableList = error(exception)
-            inboundObservableList = error(exception)
+            mock<PricesAPI> {
+                runBlocking {
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            eq(srcPort),
+                            any()
+                    )).thenThrow(exception)
+
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            any(),
+                            eq(srcPort)
+                    )).thenThrow(exception)
+                }
+            }
         }
-
-        `when`(mPricesAPI.getPricePerDay(
-                anyMap(),
-                any(PricePerDayBody::class.java),
-                any(String::class.java),
-                eq(srcPort),
-                any(String::class.java)
-        )).thenReturn(outboundObservableList)
-
-        `when`(mPricesAPI.getPricePerDay(
-                anyMap(),
-                any(PricePerDayBody::class.java),
-                any(String::class.java),
-                any(String::class.java),
-                eq(srcPort)
-        )).thenReturn(inboundObservableList)
     }
 }

@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.views;
 
-import com.huynd.skyobserver.models.Airport;
-import com.huynd.skyobserver.models.PricePerDay;
+import com.huynd.skyobserver.entities.Airport;
+import com.huynd.skyobserver.entities.PricePerDay;
 
 import java.util.List;
 

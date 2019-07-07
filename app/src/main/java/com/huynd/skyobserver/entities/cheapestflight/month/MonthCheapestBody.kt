@@ -1,4 +1,4 @@
-package com.huynd.skyobserver.models.cheapestflight.month
+package com.huynd.skyobserver.entities.cheapestflight.month
 
 import com.huynd.skyobserver.utils.Constants.Companion.CARRIERS
 

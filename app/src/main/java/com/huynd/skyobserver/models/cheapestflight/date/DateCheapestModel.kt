@@ -1,11 +1,11 @@
 package com.huynd.skyobserver.models.cheapestflight.date
 
 import android.annotation.SuppressLint
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.PricePerDayBody
-import com.huynd.skyobserver.models.PricePerDayResponse
-import com.huynd.skyobserver.models.cheapestflight.AirportPriceInfo
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.PricePerDayBody
+import com.huynd.skyobserver.entities.PricePerDayResponse
+import com.huynd.skyobserver.entities.cheapestflight.AirportPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.AirportPriceInfoComparator
 import com.huynd.skyobserver.utils.Constants
@@ -14,9 +14,10 @@ import com.huynd.skyobserver.utils.CountryAirportUtils.getAirportById
 import com.huynd.skyobserver.utils.CountryAirportUtils.getCountryByCode
 import com.huynd.skyobserver.utils.CountryPriceInfoComparator
 import com.huynd.skyobserver.utils.RequestHelper
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 /**
@@ -97,87 +98,94 @@ class DateCheapestModel {
                     val srcPort = if (isOutbound) originPort else airport.id
                     val dstPort = if (isOutbound) airport.id else originPort
 
-                    val observableList: Observable<List<PricePerDayResponse>> = pricesAPI
-                            .getPricePerDay(headers, postData, carrier, srcPort, dstPort)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        var pricePerDayResponses: List<PricePerDayResponse>? = null
+                        try {
+                            pricePerDayResponses = pricesAPI.getListPricePerDay(headers, postData, carrier, srcPort, dstPort)
+                        } catch (ex: Exception) {
+                            ex.printStackTrace()
+                        }
 
-                    observableList
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({ pricePerDayResponses ->
-                                pricePerDayResponses.forEach { pricePerDayResponse ->
-                                    if (pricePerDayResponse.provider == null) {
-                                        return@forEach
-                                    }
-
-                                    // determine destination port
-                                    val destinationPort = if (isOutbound)
-                                        pricePerDayResponse.destinationCode else
-                                        pricePerDayResponse.originCode
-
-                                    val country = getCountryByCode(getAirportById(destinationPort).getCountryCode())
-
-                                    // get AirportPriceInfo for destination port
-                                    var dstAirportPriceInfo: AirportPriceInfo? = null
-                                    var listAirportPriceInfo: MutableList<AirportPriceInfo>? = null
-                                    val dstCountryPriceInfo = mCountryPriceInfos.firstOrNull { countryPriceInfo ->
-                                        countryPriceInfo.country.countryCode == country.countryCode
-                                    }
-
-                                    dstCountryPriceInfo?.run {
-                                        listAirportPriceInfo = this.airportPriceInfos
-                                        dstAirportPriceInfo = listAirportPriceInfo?.firstOrNull { info ->
-                                            info.getAirportId() == destinationPort
-                                        }
-                                    }
-
-                                    // add new entry for destination (country & airport)
-                                    if (dstAirportPriceInfo == null) {
-                                        val airportPriceInfo = AirportPriceInfo().apply {
-                                            setAirport(airport)
-                                        }
-
-                                        if (listAirportPriceInfo == null) {
-                                            listAirportPriceInfo = mutableListOf()
-                                        }
-                                        listAirportPriceInfo!!.add(airportPriceInfo)
-
-                                        if (dstCountryPriceInfo == null) {
-                                            mCountryPriceInfos.add(CountryPriceInfo()
-                                                    .apply {
-                                                        this.airportPriceInfos = listAirportPriceInfo
-                                                        this.country = country
-                                                    })
-                                        }
-
-                                        dstAirportPriceInfo = airportPriceInfo
-                                    }
-
-                                    pricePerDayResponse.priceList?.firstOrNull()?.apply {
-                                        this.carrier = pricePerDayResponse.provider
-                                        setArrivalTime(pricePerDayResponse.arrivalTime)
-                                        setDepartureTime(pricePerDayResponse.arrivalTime)
-
-                                        if (isOutbound) {
-                                            val minPrice = dstAirportPriceInfo!!.getBestPriceOutbound()
-                                            if (minPrice == 0.0 || priceTotal < minPrice) {
-                                                dstAirportPriceInfo!!.setPricePerDayOutbound(this)
-                                            }
-                                        } else {
-                                            val minPrice = dstAirportPriceInfo!!.getBestPriceInbound()
-                                            if (minPrice == 0.0 || priceTotal < minPrice) {
-                                                dstAirportPriceInfo!!.setPricePerDayInbound(this)
-                                            }
-                                        }
-                                    }
-                                }
-
-                                returnReceivedPricesWhenFull(isOutbound)
-                            }, {
-                                returnReceivedPricesWhenFull(isOutbound)
-                            })
+                        withContext(Dispatchers.Main) {
+                            pricePerDayResponses?.run {
+                                handleGetPricePerDayResult(this, airport, isOutbound)
+                            }
+                            returnReceivedPricesWhenFull(isOutbound)
+                        }
+                    }
                 }
             }
             return 0
+        }
+    }
+
+    private fun handleGetPricePerDayResult(pricePerDayResponses: List<PricePerDayResponse>,
+                                           airport: Airport, isOutbound: Boolean) {
+        pricePerDayResponses.forEach { pricePerDayResponse ->
+            if (pricePerDayResponse.provider == null) {
+                return@forEach
+            }
+
+            // determine destination port
+            val destinationPort = if (isOutbound)
+                pricePerDayResponse.destinationCode else
+                pricePerDayResponse.originCode
+
+            val country = getCountryByCode(getAirportById(destinationPort).getCountryCode())
+
+            // get AirportPriceInfo for destination port
+            var dstAirportPriceInfo: AirportPriceInfo? = null
+            var listAirportPriceInfo: MutableList<AirportPriceInfo>? = null
+            val dstCountryPriceInfo = mCountryPriceInfos.firstOrNull { countryPriceInfo ->
+                countryPriceInfo.country.countryCode == country.countryCode
+            }
+
+            dstCountryPriceInfo?.run {
+                listAirportPriceInfo = this.airportPriceInfos
+                dstAirportPriceInfo = listAirportPriceInfo?.firstOrNull { info ->
+                    info.getAirportId() == destinationPort
+                }
+            }
+
+            // add new entry for destination (country & airport)
+            if (dstAirportPriceInfo == null) {
+                val airportPriceInfo = AirportPriceInfo().apply {
+                    setAirport(airport)
+                }
+
+                if (listAirportPriceInfo == null) {
+                    listAirportPriceInfo = mutableListOf()
+                }
+                listAirportPriceInfo!!.add(airportPriceInfo)
+
+                if (dstCountryPriceInfo == null) {
+                    mCountryPriceInfos.add(CountryPriceInfo()
+                            .apply {
+                                this.airportPriceInfos = listAirportPriceInfo
+                                this.country = country
+                            })
+                }
+
+                dstAirportPriceInfo = airportPriceInfo
+            }
+
+            pricePerDayResponse.priceList?.firstOrNull()?.apply {
+                this.carrier = pricePerDayResponse.provider
+                setArrivalTime(pricePerDayResponse.arrivalTime)
+                setDepartureTime(pricePerDayResponse.arrivalTime)
+
+                if (isOutbound) {
+                    val minPrice = dstAirportPriceInfo!!.getBestPriceOutbound()
+                    if (minPrice == 0.0 || priceTotal < minPrice) {
+                        dstAirportPriceInfo!!.setPricePerDayOutbound(this)
+                    }
+                } else {
+                    val minPrice = dstAirportPriceInfo!!.getBestPriceInbound()
+                    if (minPrice == 0.0 || priceTotal < minPrice) {
+                        dstAirportPriceInfo!!.setPricePerDayInbound(this)
+                    }
+                }
+            }
         }
     }
 

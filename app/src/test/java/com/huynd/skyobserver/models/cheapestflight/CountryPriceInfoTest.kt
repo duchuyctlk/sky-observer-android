@@ -1,7 +1,8 @@
 package com.huynd.skyobserver.models.cheapestflight
 
 import android.os.Parcel
-import com.huynd.skyobserver.models.Country
+import com.huynd.skyobserver.entities.Country
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

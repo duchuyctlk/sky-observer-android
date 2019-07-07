@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.presenters.cheapestflight.month
 
 import com.huynd.skyobserver.models.cheapestflight.month.MonthCheapestModel
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.DateUtils
 import com.huynd.skyobserver.views.date.DateCheapestRequestView

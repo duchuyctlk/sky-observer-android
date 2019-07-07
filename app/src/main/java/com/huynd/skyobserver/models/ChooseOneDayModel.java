@@ -1,5 +1,6 @@
 package com.huynd.skyobserver.models;
 
+import com.huynd.skyobserver.entities.Airport;
 import com.huynd.skyobserver.utils.CountryAirportUtils;
 
 import java.util.List;

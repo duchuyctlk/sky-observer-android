@@ -14,15 +14,15 @@ import com.huynd.skyobserver.R
 import com.huynd.skyobserver.SkyObserverAndroidTestApp
 import com.huynd.skyobserver.activities.MainActivity
 import com.huynd.skyobserver.dagger.component.SkyObserverComponentAndroidTest
-import com.huynd.skyobserver.models.PricePerDayBody
-import com.huynd.skyobserver.models.PricePerDayResponse
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
-import com.huynd.skyobserver.models.cheapestflight.month.MonthCheapestBody
+import com.huynd.skyobserver.entities.PricePerDayResponse
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.utils.FileUtils.getStringFromAssets
-import io.reactivex.Observable
-import io.reactivex.Observable.just
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -31,10 +31,9 @@ import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyMap
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -120,11 +119,11 @@ class BestDatesFragmentAndroidTest {
 
     @Throws(Exception::class)
     private fun mockApiResponse(requestSuccess: Boolean, responseSuccess: Boolean, srcPort: String) {
-        val outboundDay: Observable<List<PricePerDayResponse>>
-        val inboundODay: Observable<List<PricePerDayResponse>>
-        val monthObservableList: Observable<List<CheapestPricePerMonthResponse>>
-
         if (requestSuccess) {
+            val outboundDay: List<PricePerDayResponse>
+            val inboundODay: List<PricePerDayResponse>
+            val monthList: List<CheapestPricePerMonthResponse>
+
             val gson = Gson()
             val assetManager = getInstrumentation().context.assets
             val targetClass = Array<PricePerDayResponse>::class.java
@@ -132,13 +131,13 @@ class BestDatesFragmentAndroidTest {
 
             if (responseSuccess) {
                 val outRes = gson.fromJson(getStringFromAssets(assetManager, outbound_response), targetClass)
-                outboundDay = just<List<PricePerDayResponse>>(outRes.toList())
+                outboundDay = outRes.toList()
 
                 val inRes = gson.fromJson(getStringFromAssets(assetManager, inbound_response), targetClass)
-                inboundODay = just<List<PricePerDayResponse>>(inRes.toList())
+                inboundODay = inRes.toList()
 
                 val monthRes = gson.fromJson(getStringFromAssets(assetManager, month_response), targetMonthClass)
-                monthObservableList = just<List<CheapestPricePerMonthResponse>>(monthRes.toList())
+                monthList = monthRes.toList()
             } else {
                 val responseDay: Response<List<PricePerDayResponse>> = Response.error(404,
                         ResponseBody.create(
@@ -153,36 +152,62 @@ class BestDatesFragmentAndroidTest {
                                 getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
                         ))
 
-                outboundDay = just<List<PricePerDayResponse>>(resBody)
-                inboundODay = just<List<PricePerDayResponse>>(resBody)
-                monthObservableList = just<List<CheapestPricePerMonthResponse>>(responseMonth.body())
+                outboundDay = resBody
+                inboundODay = resBody
+                monthList = responseMonth.body()!!
+            }
+
+            mock<PricesAPI> {
+                runBlocking {
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            eq(srcPort),
+                            any()
+                    )).thenReturn(outboundDay)
+
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            any(),
+                            eq(srcPort)
+                    )).thenReturn(inboundODay)
+
+                    Mockito.`when`(mPricesAPI.getListCheapestPricePerMonth(
+                            anyMap(),
+                            any()
+                    )).thenReturn(monthList)
+                }
             }
         } else {
             val exception = Exception("Exception")
-            outboundDay = Observable.error(exception)
-            inboundODay = Observable.error(exception)
-            monthObservableList = Observable.error(exception)
+
+            mock<PricesAPI> {
+                runBlocking {
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            eq(srcPort),
+                            any()
+                    )).thenThrow(exception)
+
+                    `when`(mPricesAPI.getListPricePerDay(
+                            anyMap(),
+                            any(),
+                            any(),
+                            any(),
+                            eq(srcPort)
+                    )).thenThrow(exception)
+
+                    Mockito.`when`(mPricesAPI.getListCheapestPricePerMonth(
+                            anyMap(),
+                            any()
+                    )).thenThrow(exception)
+                }
+            }
         }
-
-        Mockito.`when`(mPricesAPI.getCheapestPricePerMonth(
-                anyMap(),
-                any(MonthCheapestBody::class.java)
-        )).thenReturn(monthObservableList)
-
-        Mockito.`when`(mPricesAPI.getPricePerDay(
-                anyMap(),
-                any(PricePerDayBody::class.java),
-                any(String::class.java),
-                eq(srcPort),
-                any(String::class.java)
-        )).thenReturn(outboundDay)
-
-        Mockito.`when`(mPricesAPI.getPricePerDay(
-                anyMap(),
-                any(PricePerDayBody::class.java),
-                any(String::class.java),
-                any(String::class.java),
-                eq(srcPort)
-        )).thenReturn(inboundODay)
     }
 }

@@ -1,9 +1,9 @@
-package com.huynd.skyobserver.models.cheapestflight
+package com.huynd.skyobserver.entities.cheapestflight
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.PricePerDay
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.PricePerDay
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 

@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.utils
 
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
-import com.huynd.skyobserver.models.cheapestflight.month.ResponseId
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.cheapestflight.month.ResponseId
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals

@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.huynd.skyobserver.R
-import com.huynd.skyobserver.models.PricePerDay
+import com.huynd.skyobserver.entities.PricePerDay
 import com.huynd.skyobserver.utils.Constants.Companion.CONVENIENCE_FEE_IN_K
 import com.huynd.skyobserver.utils.RequestHelper
 import kotlinx.android.synthetic.main.grid_view_price_per_day_item.view.*

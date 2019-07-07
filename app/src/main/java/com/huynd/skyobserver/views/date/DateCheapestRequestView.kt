@@ -1,7 +1,7 @@
 package com.huynd.skyobserver.views.date
 
-import com.huynd.skyobserver.models.Airport
-import com.huynd.skyobserver.models.cheapestflight.CountryPriceInfo
+import com.huynd.skyobserver.entities.Airport
+import com.huynd.skyobserver.entities.cheapestflight.CountryPriceInfo
 import com.huynd.skyobserver.views.BaseView
 
 /**

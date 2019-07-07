@@ -1,6 +1,6 @@
 package com.huynd.skyobserver.views;
 
-import com.huynd.skyobserver.models.Airport;
+import com.huynd.skyobserver.entities.Airport;
 
 import java.util.List;
 

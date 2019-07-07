@@ -1,8 +1,7 @@
 package com.huynd.skyobserver.presenters.bestdates
 
-import com.huynd.skyobserver.models.bestdates.BestDatesInfo
+import com.huynd.skyobserver.entities.bestdates.BestDatesInfo
 import com.huynd.skyobserver.models.bestdates.BestDatesModel
-import com.huynd.skyobserver.models.cheapestflight.month.CheapestPricePerMonthResponse
 import com.huynd.skyobserver.services.PricesAPI
 import com.huynd.skyobserver.views.bestdates.BestDatesRequestView
 

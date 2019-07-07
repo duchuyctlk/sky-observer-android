@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
 import com.huynd.skyobserver.databinding.FragmentChooseOneDayBinding;
-import com.huynd.skyobserver.models.Airport;
+import com.huynd.skyobserver.entities.Airport;
 import com.huynd.skyobserver.models.ChooseOneDayModel;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenter;
 import com.huynd.skyobserver.presenters.ChooseOneDayPresenterImpl;
