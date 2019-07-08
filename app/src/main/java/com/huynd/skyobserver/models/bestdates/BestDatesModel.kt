@@ -31,8 +31,6 @@ import java.util.*
 class BestDatesModel(private val mPricesAPI: PricesAPI) {
     interface EventListener {
         fun onGetPricesResponse(result: List<BestDatesInfo>)
-
-        fun onGetPricesError(throwable: Throwable)
     }
 
     private var mListener: EventListener? = null
@@ -131,7 +129,7 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
                         handleGetBestDayInMonthResult(this)
                     }
                     throwable?.run {
-                        handleGetBestDayInMonthError(throwable)
+                        handleGetBestDayInMonthResult(listOf())
                     }
                 }
             }
@@ -148,10 +146,6 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
                 findReturnCheapestResponses()
             }
         }
-    }
-
-    private fun handleGetBestDayInMonthError(throwable: Throwable) {
-        mListener?.onGetPricesError(throwable)
     }
 
     private fun findOneWayCheapestResponse() {
@@ -283,14 +277,19 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
 
                 withContext(Dispatchers.IO) {
                     var pricePerDayResponses: List<PricePerDayResponse>? = null
+                    var throwable: Throwable? = null
                     try {
                         pricePerDayResponses = mPricesAPI.getListPricePerDay(mHeaders, postDataForDayRequest, cheapestResponse.carrier, origin, destination)
                     } catch (ex: Exception) {
+                        throwable = ex
                         ex.printStackTrace()
                     }
                     withContext(Dispatchers.Main) {
                         pricePerDayResponses?.run {
                             handleGetDetailPricesResult(cheapestResponse, this, isOutbound)
+                        }
+                        throwable?.run {
+                            returnReceivedPricesWhenFull(null, isOutbound)
                         }
                     }
                 }
@@ -338,13 +337,17 @@ class BestDatesModel(private val mPricesAPI: PricesAPI) {
         }
     }
 
-    private fun returnReceivedPricesWhenFull(pricePerDay: PricePerDay, isOutbound: Boolean) {
+    private fun returnReceivedPricesWhenFull(pricePerDay: PricePerDay?, isOutbound: Boolean) {
         if (isOutbound) {
-            mPriceCache[mSrcPort]!![pricePerDay.price] = pricePerDay.priceTotal
+            pricePerDay?.run {
+                mPriceCache[mSrcPort]!![pricePerDay.price] = pricePerDay.priceTotal
+            }
             mNoOfReceivedOutboundRequests++
             isOutboundLoadingDone = mNoOfReceivedOutboundRequests == mNoOfSentOutboundRequests
         } else {
-            mPriceCache[mDestPort]!![pricePerDay.price] = pricePerDay.priceTotal
+            pricePerDay?.run {
+                mPriceCache[mDestPort]!![pricePerDay.price] = pricePerDay.priceTotal
+            }
             mNoOfReceivedInboundRequests++
             isInboundLoadingDone = mNoOfReceivedInboundRequests == mNoOfSentInboundRequests
         }

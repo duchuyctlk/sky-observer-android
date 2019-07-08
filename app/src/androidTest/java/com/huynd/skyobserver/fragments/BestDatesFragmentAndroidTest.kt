@@ -34,6 +34,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyMap
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -80,7 +81,7 @@ class BestDatesFragmentAndroidTest {
 
     @Test
     fun shouldSendReturnRequestAndDisplayResponse() {
-        mockApiResponse(true, true, "SGN")
+        mockApiResponse(true, true, true, "SGN")
 
         // find flight
         onView(withId(R.id.btn_find_flights)).perform(click())
@@ -95,8 +96,30 @@ class BestDatesFragmentAndroidTest {
     }
 
     @Test
+    fun shouldSendReturnRequestAndHandleEmptyMonthResponse() {
+        mockApiResponse(true, false, false, "SGN")
+
+        // find flight
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        // check on result fragment
+        checkViewWidgetsIsDisplayed(R.id.lst_best_dates)
+    }
+
+    @Test
+    fun shouldSendReturnRequestAndHandleEmptyDayResponse() {
+        mockApiResponse(true, true, false, "SGN")
+
+        // find flight
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        // check on result fragment
+        checkViewWidgetsIsDisplayed(R.id.lst_best_dates)
+    }
+
+    @Test
     fun shouldSendOneWayRequestAndDisplayResponse() {
-        mockApiResponse(true, true, "SGN")
+        mockApiResponse(true, true, true, "SGN")
 
         // find flight
         onView(withId(R.id.chk_return_trip)).perform(click())
@@ -111,6 +134,30 @@ class BestDatesFragmentAndroidTest {
                 .inAdapterView(withId(R.id.lst_best_dates)).atPosition(0).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun shouldSendOneWayRequestAndHandleEmptyMonthResponse() {
+        mockApiResponse(true, false, false, "SGN")
+
+        // find flight
+        onView(withId(R.id.chk_return_trip)).perform(click())
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        // check on result fragment
+        checkViewWidgetsIsDisplayed(R.id.lst_best_dates)
+    }
+
+    @Test
+    fun shouldSendOneWayRequestAndHandleEmptyDayResponse() {
+        mockApiResponse(true, true, false, "SGN")
+
+        // find flight
+        onView(withId(R.id.chk_return_trip)).perform(click())
+        onView(withId(R.id.btn_find_flights)).perform(click())
+
+        // check on result fragment
+        checkViewWidgetsIsDisplayed(R.id.lst_best_dates)
+    }
+
     private fun checkViewWidgetsIsDisplayed(vararg ids: Int) {
         ids.forEach { id ->
             onView(withId(id)).check(matches(isDisplayed()))
@@ -118,67 +165,104 @@ class BestDatesFragmentAndroidTest {
     }
 
     @Throws(Exception::class)
-    private fun mockApiResponse(requestSuccess: Boolean, responseSuccess: Boolean, srcPort: String) {
+    private fun mockApiResponse(requestSuccess: Boolean,
+                                monthResponseSuccess: Boolean,
+                                dayResponseSuccess: Boolean,
+                                srcPort: String) {
         if (requestSuccess) {
-            val outboundDay: List<PricePerDayResponse>
-            val inboundODay: List<PricePerDayResponse>
-            val monthList: List<CheapestPricePerMonthResponse>
-
             val gson = Gson()
             val assetManager = getInstrumentation().context.assets
             val targetClass = Array<PricePerDayResponse>::class.java
             val targetMonthClass = Array<CheapestPricePerMonthResponse>::class.java
 
-            if (responseSuccess) {
+            if (dayResponseSuccess) {
+                val outboundDay: List<PricePerDayResponse>
+                val inboundODay: List<PricePerDayResponse>
+
                 val outRes = gson.fromJson(getStringFromAssets(assetManager, outbound_response), targetClass)
                 outboundDay = outRes.toList()
 
                 val inRes = gson.fromJson(getStringFromAssets(assetManager, inbound_response), targetClass)
                 inboundODay = inRes.toList()
 
-                val monthRes = gson.fromJson(getStringFromAssets(assetManager, month_response), targetMonthClass)
-                monthList = monthRes.toList()
+                mock<PricesAPI> {
+                    runBlocking {
+                        `when`(mPricesAPI.getListPricePerDay(
+                                anyMap(),
+                                any(),
+                                any(),
+                                eq(srcPort),
+                                any()
+                        )).thenReturn(outboundDay)
+
+                        `when`(mPricesAPI.getListPricePerDay(
+                                anyMap(),
+                                any(),
+                                any(),
+                                any(),
+                                eq(srcPort)
+                        )).thenReturn(inboundODay)
+                    }
+                }
             } else {
-                val responseDay: Response<List<PricePerDayResponse>> = Response.error(404,
-                        ResponseBody.create(
-                                null,
-                                getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
-                        ))
-                val resBody = responseDay.body()!!
+                val resBody = ResponseBody.create(
+                        null,
+                        getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
+                )
+                val responseDay: Response<List<PricePerDayResponse>> = Response.error(404, resBody)
+                val dayException = HttpException(responseDay)
 
-                val responseMonth: Response<List<CheapestPricePerMonthResponse>> = Response.error(404,
-                        ResponseBody.create(
-                                null,
-                                getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
-                        ))
+                mock<PricesAPI> {
+                    runBlocking {
+                        `when`(mPricesAPI.getListPricePerDay(
+                                anyMap(),
+                                any(),
+                                any(),
+                                eq(srcPort),
+                                any()
+                        )).thenThrow(dayException)
 
-                outboundDay = resBody
-                inboundODay = resBody
-                monthList = responseMonth.body()!!
+                        `when`(mPricesAPI.getListPricePerDay(
+                                anyMap(),
+                                any(),
+                                any(),
+                                any(),
+                                eq(srcPort)
+                        )).thenThrow(dayException)
+                    }
+                }
             }
 
-            mock<PricesAPI> {
-                runBlocking {
-                    `when`(mPricesAPI.getListPricePerDay(
-                            anyMap(),
-                            any(),
-                            any(),
-                            eq(srcPort),
-                            any()
-                    )).thenReturn(outboundDay)
+            if (monthResponseSuccess) {
+                val monthList: List<CheapestPricePerMonthResponse>
 
-                    `when`(mPricesAPI.getListPricePerDay(
-                            anyMap(),
-                            any(),
-                            any(),
-                            any(),
-                            eq(srcPort)
-                    )).thenReturn(inboundODay)
+                val monthRes = gson.fromJson(getStringFromAssets(assetManager, month_response), targetMonthClass)
+                monthList = monthRes.toList()
 
-                    Mockito.`when`(mPricesAPI.getListCheapestPricePerMonth(
-                            anyMap(),
-                            any()
-                    )).thenReturn(monthList)
+                mock<PricesAPI> {
+                    runBlocking {
+                        Mockito.`when`(mPricesAPI.getListCheapestPricePerMonth(
+                                anyMap(),
+                                any()
+                        )).thenReturn(monthList)
+                    }
+                }
+            } else {
+                val resBody = ResponseBody.create(
+                        null,
+                        getStringFromAssets(getInstrumentation().context.assets, code_404_not_found)
+                )
+                val responseMonth: Response<List<CheapestPricePerMonthResponse>> = Response.error(404, resBody)
+
+                val monthException = HttpException(responseMonth)
+
+                mock<PricesAPI> {
+                    runBlocking {
+                        `when`(mPricesAPI.getListCheapestPricePerMonth(
+                                anyMap(),
+                                any()
+                        )).thenThrow(monthException)
+                    }
                 }
             }
         } else {
