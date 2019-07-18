@@ -35,8 +35,4 @@ class BestDatesRequestPresenterImpl(private val mView: BestDatesRequestView, pri
             dismissLoadingDialog()
         }
     }
-
-    override fun onGetPricesError(throwable: Throwable) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }
