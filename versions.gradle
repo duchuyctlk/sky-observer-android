@@ -1,0 +1,123 @@
+def versions = [:]
+versions.gradle_plugin = '3.4.2'
+versions.coveralls_gradle_plugin = '2.6.3'
+versions.kotlin = '1.3.40'
+versions.kotlin_test = '1.1.4-3'
+versions.kotlinx = '1.3.0-M2'
+versions.android_support = '28.0.0'
+versions.android_support_constraint_layout = '1.1.3'
+versions.monthyearpicker = '0.0.1'
+versions.dagger = '2.17'
+versions.glassfish = '10.0-b28'
+versions.espresso = '2.2.2'
+versions.google_gson = '2.8.5'
+versions.retrofit = '2.6.0'
+versions.okhttp = '3.12.0'
+versions.okhttp_logging_interceptor = '3.8.0'
+versions.rxandroid = '2.0.1'
+versions.rxjava = '2.1.3'
+versions.rxbinding = '2.0.0'
+versions.glide = '4.7.1'
+versions.lombok = '1.16.20'
+versions.mockito = '2.25.0'
+versions.mockito_kotlin = '2.1.0'
+versions.junit = '4.12'
+versions.robolectric = '4.2'
+versions.robolectric_shadows_support = '3.4-rc2'
+versions.jacoco = '0.8.1'
+
+def deps = [:]
+
+def android = [:]
+android.gradle_plugin = "com.android.tools.build:gradle:$versions.gradle_plugin"
+deps.android = android
+
+def kotlin = [:]
+kotlin.gradle_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+kotlin.android_extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$versions.kotlin"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+kotlin.test = "org.jetbrains.kotlin:kotlin-test:$versions.kotlin_test"
+kotlin.test_junit = "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin_test"
+deps.kotlin = kotlin
+
+def kotlinx = [:]
+kotlinx.coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinx"
+kotlinx.coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinx"
+deps.kotlinx = kotlinx
+
+def coveralls = [:]
+coveralls.gradle_plugin = "org.kt3k.gradle.plugin:coveralls-gradle-plugin:$versions.coveralls_gradle_plugin"
+deps.coveralls = coveralls
+
+def support = [:]
+support.appcompat = "com.android.support:appcompat-v7:$versions.android_support"
+support.cardview = "com.android.support:cardview-v7:$versions.android_support"
+support.supportv4 = "com.android.support:support-v4:$versions.android_support"
+support.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.android_support_constraint_layout"
+deps.support = support
+
+def twinkle942910 = [:]
+twinkle942910.monthyearpicker = "com.github.twinkle942910:monthyearpicker:$versions.monthyearpicker"
+deps.twinkle942910 = twinkle942910
+
+def dagger = [:]
+dagger.dagger = "com.google.dagger:dagger:$versions.dagger"
+dagger.compiler = "com.google.dagger:dagger-compiler:$versions.dagger"
+deps.dagger = dagger
+
+def glassfish = [:]
+glassfish.annotation = "org.glassfish:javax.annotation:$versions.glassfish"
+deps.glassfish = glassfish
+
+def android_testing = [:]
+android_testing.core = "com.android.support.test.espresso:espresso-core:$versions.espresso"
+android_testing.contrib = "com.android.support.test.espresso:espresso-contrib:$versions.espresso"
+deps.android_testing = android_testing
+
+def unit_testing = [:]
+unit_testing.junit = "junit:junit:$versions.junit"
+unit_testing.robolectric = "org.robolectric:robolectric:$versions.robolectric"
+unit_testing.robolectric_shadows_support = "org.robolectric:shadows-support-v4:$versions.robolectric_shadows_support"
+deps.unit_testing = unit_testing
+
+def google = [:]
+google.gson = "com.google.code.gson:gson:$versions.google_gson"
+deps.google = google
+
+def retrofit = [:]
+retrofit.retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
+retrofit.convert_gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.adapter_rxjava2 = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+deps.retrofit = retrofit
+
+def okhttp = [:]
+okhttp.okhttp = "com.squareup.okhttp3:okhttp:$versions.okhttp"
+okhttp.logging_interceptor = "com.squareup.okhttp3:logging-interceptor:$versions.okhttp_logging_interceptor"
+deps.okhttp = okhttp
+
+def reactivex = [:]
+reactivex.rxandroid = "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+reactivex.rxjava = "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+deps.reactivex = reactivex
+
+def rxbinding = [:]
+rxbinding.rxjava = "com.jakewharton.rxbinding2:rxbinding:$versions.rxbinding"
+rxbinding.support = "com.jakewharton.rxbinding2:rxbinding-support-v4:$versions.rxbinding"
+rxbinding.appcompat = "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:$versions.rxbinding"
+deps.rxbinding = rxbinding
+
+def bumptech = [:]
+bumptech.glide = "com.github.bumptech.glide:glide:$versions.glide"
+deps.bumptech = bumptech
+
+def projectlombok = [:]
+projectlombok.lombok = "org.projectlombok:lombok:$versions.lombok"
+deps.projectlombok = projectlombok
+
+def mockito = [:]
+mockito.core = "org.mockito:mockito-core:$versions.mockito"
+mockito.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.mockito"
+mockito.mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockito_kotlin"
+deps.mockito = mockito
+
+ext.deps = deps
